@@ -6,8 +6,6 @@ const imgContainer = document.querySelector('.image')
 // 提交函数
 async function generateImage() {
   try {
-    // 如果 imgContainer 有图片，删除
-    imgContainer.children.length && imgContainer.removeChild(imgContainer.children[0])
     // 获取输入的文本
     const text = textarea.value
     // 如果没有输入文本，不发送请求
@@ -24,6 +22,8 @@ async function generateImage() {
     const img = document.createElement('img')
     // 设置图片的 src
     img.src = imgUrl
+    // 如果 imgContainer 有图片，删除
+    imgContainer.children.length && imgContainer.removeChild(imgContainer.children[0])
     // 添加到 imgContainer
     imgContainer.appendChild(img)
     // 恢复按钮
