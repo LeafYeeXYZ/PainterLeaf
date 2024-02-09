@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leaf Painter</title>
+  <title>赛博画师小叶子</title>
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
   <div class="container">
-    <div class="image">
 
+    <div class="image">
+      <p>欢迎使用小叶子的AI绘画小程序<br>请在下方输入提示词并点击生成按钮</p>
     </div>
+
     <form action="#">
-      <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请输入你想画的内容（中英文皆可，推荐英文）"></textarea>
+      <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请输入你想画的内容（暂时只支持英文）"></textarea>
       <button id="submit">生成</button>
     </form>
+
+    <dialog>
+      <div id="notice">
+        <div class="noticeContent"></div>
+        <button class="noticeButton">确定</button>
+      </div>
+    </dialog>
+
   </div>
 
   <script src="main.js"></script>

@@ -2,10 +2,14 @@
 const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
 const imgContainer = document.querySelector('.image')
+const dialog = document.querySelector('dialog')
 
 // 提交函数
 async function generateImage() {
   try {
+    // 禁用按钮
+    submit.disabled = true
+    submit.textContent = '生成中...'
     // 获取输入的文本
     const text = textarea.value
     // 如果没有输入文本，不发送请求
@@ -22,7 +26,7 @@ async function generateImage() {
     const img = document.createElement('img')
     // 设置图片的 src
     img.src = imgUrl
-    // 如果 imgContainer 有图片，删除
+    // 如果 imgContainer 有内容，删除
     imgContainer.children.length && imgContainer.removeChild(imgContainer.children[0])
     // 添加到 imgContainer
     imgContainer.appendChild(img)
@@ -30,8 +34,10 @@ async function generateImage() {
     submit.disabled = false
     submit.textContent = '生成'
   } catch (err) {
-    // 打印错误
-    alert('生成失败：' + err)
+    // 设置弹窗内容
+    dialog.style.setProperty('--errorContent', `"${err.message || err}"`)
+    // 打开弹窗
+    dialog.show()
     // 恢复按钮
     submit.disabled = false
     submit.textContent = '生成'
@@ -41,13 +47,16 @@ async function generateImage() {
 // 监听点击事件
 submit.addEventListener('click', e => {
   e.preventDefault()
-  submit.disabled = true
-  submit.textContent = '生成中...'
   generateImage()
 })
 
-
-
+// 关闭弹窗的函数
+document.querySelector('.noticeButton').addEventListener('click', () => {
+  // 关闭弹窗
+  dialog.close()
+  // 清除弹窗内容
+  dialog.style.setProperty('--errorContent', '')
+})
 
 
 
