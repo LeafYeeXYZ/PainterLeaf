@@ -17,12 +17,7 @@ async function generateImage() {
     // 编码为 URL
     const encodedText = encodeURI(text)
     // 发送请求
-    const res = await fetch(`https://painter.leafyee.xyz/?prompt=${encodedText}`, {
-      headers: {
-        'Accept': 'image/png',
-        'Access-Control-Allow-Origin': 'https://paint.leafyee.xyz'
-      }      
-    })
+    const res = await fetch(`https://painter.leafyee.xyz/?prompt=${encodedText}`)
     // 响应头为 'content-type': 'image/png'
     const blob = await res.blob()
     // 创建一个 URL 对象
