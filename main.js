@@ -1,8 +1,14 @@
 // 获取元素
 const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
-const imgContainer = document.querySelector('.image')
+const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
+const container = document.querySelector('.container')
+
+// 比较（宽度）和（高度 -210px）的大小，取小的那个的 0.9 倍
+const imgWidth = Math.min(window.innerWidth, window.innerHeight - 210) * 0.9
+// 设置图片的宽度
+container.style.setProperty('--imgsize', `${imgWidth}px`)
 
 // 提交函数
 async function generateImage() {
@@ -26,8 +32,8 @@ async function generateImage() {
     const img = document.createElement('img')
     // 设置图片的 src
     img.src = imgUrl
-    // 如果 imgContainer 有内容，删除
-    imgContainer.children.length && imgContainer.removeChild(imgContainer.children[0])
+    // 设置图片的 类名
+    img.className = 'swiper-slide'
     // 添加到 imgContainer
     imgContainer.appendChild(img)
     // 恢复按钮

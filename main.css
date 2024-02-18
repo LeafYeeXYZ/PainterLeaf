@@ -1,3 +1,7 @@
+:root {
+  overflow: hidden;
+}
+
 .container {
   position: absolute;
   width: 100%;
@@ -12,27 +16,33 @@
 }
 
 .image {
+  position: relative;
   width: 100%;
   height: calc(100% - 210px);
   background-color: var(--imgback);
-  & img {
+  & > p {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
-  }
-  & p {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
     line-height: 40px;
     text-align: center;
-    font-family: Microsoft YaHei;
     font-weight: bold;
     color: var(--textcolor);
     opacity: 0.9;
+  }
+  & .imgContainer {
+    position: absolute;
+    width: var(--imgsize);
+    height: var(--imgsize);
+    margin: calc((100vh - 210px - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
+    top: 0;
+    & > .swiper-wrapper > .swiper-slide {
+      border-radius: 20px;
+      object-fit: contain;
+      object-position: center;
+    }
   }
 }
 

@@ -6,17 +6,30 @@
   <title>赛博画师小叶子</title>
   <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="main.css">
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 <body>
 
   <div class="container">
 
     <div class="image">
-      <p>欢迎使用小叶子的AI绘画小程序<br>请在下方输入提示词并点击生成按钮</p>
+      <p>欢迎使用小叶子的AI绘画小程序！<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词</p>
+      <div class="imgContainer">
+        <div class="swiper-wrapper">
+        </div>
+      </div>
     </div>
+    <script>
+      const swiper = new Swiper(".imgContainer", {
+        effect: "cards",
+        grabCursor: true,
+      })
+    </script>
 
     <form action="#">
-      <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请输入 英文自然语言 或 StableDiffusion提示词 描述你想生成的图像"></textarea>
+      <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请描述你想生成的图像"></textarea>
       <button id="submit">生成</button>
     </form>
 
