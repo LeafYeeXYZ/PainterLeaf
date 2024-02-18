@@ -36,6 +36,8 @@ async function generateImage() {
     img.className = 'swiper-slide'
     // 添加到 imgContainer
     imgContainer.appendChild(img)
+    // 更新 swiper
+    swiper.update()
     // 恢复按钮
     submit.disabled = false
     submit.textContent = '生成'
