@@ -34,8 +34,8 @@ async function generateImage() {
     img.src = imgUrl
     // 设置图片的 类名
     img.className = 'swiper-slide'
-    // 添加到 imgContainer
-    imgContainer.appendChild(img)
+    // 添加到 imgContainer（插入到开头）
+    imgContainer.prepend(img)
     // 更新 swiper
     swiper.update()
     // 恢复按钮
