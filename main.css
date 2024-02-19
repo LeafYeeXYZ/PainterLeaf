@@ -72,6 +72,9 @@ form {
       font-weight: bold;
       color: var(--textcolor);
     }
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   & button {
     width: 80%;
