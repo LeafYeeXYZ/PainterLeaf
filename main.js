@@ -42,19 +42,27 @@ async function generateImage() {
     submit.disabled = false
     submit.textContent = '生成'
   } catch (err) {
-    // 设置弹窗内容
-    dialog.style.setProperty('--errorContent', `"${err.message || err}"`)
-    // 打开弹窗
-    dialog.show()
-    // 恢复按钮
-    submit.disabled = false
-    submit.textContent = '生成'
+    if (retry) {
+      // 设置弹窗内容
+      dialog.style.setProperty('--errorContent', `"${err.message || err}"`)
+      // 打开弹窗
+      dialog.show()
+      // 恢复按钮
+      submit.disabled = false
+      submit.textContent = '生成'
+    } else {
+      retry = true
+      // 重新生成图片
+      generateImage()
+    }
   }
 }
 
 // 监听点击事件
+let retry = false
 submit.addEventListener('click', e => {
   e.preventDefault()
+  retry = false
   generateImage()
 })
 
