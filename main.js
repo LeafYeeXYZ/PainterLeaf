@@ -13,15 +13,17 @@ function setWidth() {
   container.style.setProperty('--imgsize', `${imgWidth}px`)
 }
 setWidth()
-// 监听窗口大小变化，并进行防抖处理，设置图片宽度
-function debounce(fn, delay) { // 防抖函数
+// 监听窗口大小变化，设置图片宽度
+function throttle(fn, delay) { // 节流函数
   let timer
   return function() {
-    timer && clearTimeout(timer)
-    timer = setTimeout(fn, delay)
+    if (!timer) {
+      fn()
+      timer = setTimeout(() => timer = 0, delay)
+    }
   }
 }
-addEventListener('resize', debounce(setWidth, 500))
+addEventListener('resize', throttle(setWidth, 50))
 
 // 提交函数
 async function generateImage() {
