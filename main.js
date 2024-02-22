@@ -5,26 +5,6 @@ const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
 const container = document.querySelector('.container')
 
-// 设置图片宽度
-function setWidth() {
-  // 比较（宽度）和（高度 -210px）的大小，取小的那个的 0.9 倍
-  const imgWidth = Math.min(window.innerWidth, window.innerHeight - 210) * 0.9
-  // 设置图片的宽度
-  container.style.setProperty('--imgsize', `${imgWidth}px`)
-}
-setWidth()
-// 监听窗口大小变化，设置图片宽度
-function throttle(fn, delay) { // 节流函数
-  let timer
-  return function() {
-    if (!timer) {
-      fn()
-      timer = setTimeout(() => timer = 0, delay)
-    }
-  }
-}
-addEventListener('resize', throttle(setWidth, 50))
-
 // 提交函数
 async function generateImage() {
   try {

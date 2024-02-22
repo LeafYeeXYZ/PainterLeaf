@@ -13,6 +13,7 @@
   --backcolor-hover: #ffcece;
   --boradercolor: #a04141;
   --imgback: rgb(255, 242, 244);
+  --imgsize: min((100vh - 210px)*0.9, 100vw*0.9);
 }
 
 .image {
