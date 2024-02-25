@@ -8,6 +8,10 @@ const container = document.querySelector('.container')
 // 提交函数
 async function generateImage() {
   try {
+    // 设置超时
+    setTimeout(() => {
+      throw new Error('请求超时')
+    }, 30000)
     // 禁用按钮
     submit.disabled = true
     submit.textContent = '生成中...'
