@@ -1,0 +1,24 @@
+{
+  "name": "painter-leaf",
+  "version": "1.0.0",
+  "description": "赛博画师小叶子",
+  "source": "./src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/LeafYeeXYZ/PainterLeaf.git"
+  },
+  "author": "LeafYeeXYZ",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/LeafYeeXYZ/PainterLeaf/issues"
+  },
+  "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  },
+  "private": true
+}

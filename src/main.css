@@ -1,0 +1,187 @@
+:root {
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --textcolor: #ff7171;
+  --textcolor-hover: #ff4f4f;
+  --backcolor: #ffe1e1;
+  --backcolor-hover: #ffcece;
+  --boradercolor: #a04141;
+  --imgback: rgb(255, 242, 244);
+  --imgsize: min((100vh - 210px)*0.9, 100vw*0.9);
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 210px);
+  background-color: var(--imgback);
+  & > p {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--textcolor);
+    opacity: 0.9;
+  }
+  & .imgContainer {
+    position: absolute;
+    width: var(--imgsize);
+    height: var(--imgsize);
+    margin: calc((100vh - 210px - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
+    top: 0;
+    & > .swiper-wrapper > .swiper-slide {
+      border-radius: 20px;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
+}
+
+form {
+  width: 100%;
+  height: 170px;
+  & textarea {
+    width: 80%;
+    height: 100px;
+    margin: 0 10%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    resize: none;
+    padding: 10px;
+    border: 1px solid var(--boradercolor);
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: var(--textcolor);
+    &:focus {
+      transform: scale(1.02);
+      outline: none;
+    }
+    &::placeholder {
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: var(--textcolor);
+    }
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  & button {
+    width: 80%;
+    height: 40px;
+    margin: 0 10%;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    transition: all 0.2s ease;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: var(--textcolor);
+    background-color: var(--backcolor);
+    &:hover {
+      transform: scale(1.02);
+      background-color: var(--backcolor-hover);
+      color: var(--textcolor-hover);
+    }
+    &:active {
+      transform: scale(0.98);
+      background-color: var(--backcolor-hover);
+      color: var(--textcolor-hover);
+    }
+    &:disabled {
+      cursor: progress;
+    }
+  }
+}
+
+dialog {
+  --errorContent: "";
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: none;
+  background-color: rgba(15, 0, 0, 0.3);
+  & #notice {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    & .noticeContent {
+      width: 300px;
+      height: 200px;
+      background-color: var(--imgback);
+      border-radius: 20px;
+      overflow: hidden;
+      &::before {
+        content: "生成失败";
+        display: block;
+        width: 300px;
+        height: 45px;
+        line-height: 45px;
+        text-align: left;
+        padding-left: 18px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: var(--textcolor);
+        border-radius: 20px 20px 0 0;
+      }
+      &::after {
+        content: var(--errorContent);
+        display: block;
+        width: 264px;
+        height: calc(100% - 40px);
+        text-align: left;
+        padding: 0 18px;
+        font-family: Microsoft YaHei;
+        color: var(--textcolor);
+        opacity: 0.9;
+      }
+    }
+    & .noticeButton {
+      width: 300px;
+      height: 40px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      transition: all 0.2s ease;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: var(--textcolor);
+      background-color: var(--backcolor);
+      &:hover {
+        transform: scale(1.02);
+        background-color: var(--backcolor-hover);
+        color: var(--textcolor-hover);
+      }
+      &:active {
+        transform: scale(0.98);
+        background-color: var(--backcolor-hover);
+        color: var(--textcolor-hover);
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
