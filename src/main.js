@@ -1,11 +1,15 @@
 // 定义服务端地址
 const server = 'https://painter.leafyee.xyz'
+// 初始化 swiper
+const swiper = new Swiper('.imgContainer', {
+  effect: "cards",
+  grabCursor: true,
+})
 // 获取元素
 const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
 const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
-const container = document.querySelector('.container')
 
 // 提交函数
 async function generateImage() {
