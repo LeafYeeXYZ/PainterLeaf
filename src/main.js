@@ -10,6 +10,7 @@ const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
 const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
+const IMG = document.querySelector('#loading').href
 
 // 提交函数
 async function generateImage() {
@@ -91,7 +92,7 @@ class Loading {
   // 创建加载图片元素 <div><img></div>
   constructor() {
     this.img = document.createElement('img')
-    this.img.src = './loading.gif'
+    this.img.src = IMG
     this.img.className = 'loading-img'
     this.ele = document.createElement('div').appendChild(this.img)
     this.ele.className = 'loading-con swiper-slide'
