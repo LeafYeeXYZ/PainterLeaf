@@ -19,8 +19,7 @@
   },
   "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
   "devDependencies": {
-    "parcel": "^2.12.0",
-    "parcel-reporter-static-files-copy": "^1.5.3"
+    "parcel": "^2.12.0"
   },
   "private": true
 }

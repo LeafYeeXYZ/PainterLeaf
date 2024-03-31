@@ -32,6 +32,9 @@ async function generateImage() {
     // 响应头为 'content-type': 'image/png'
     const blob = await res.blob()
 
+    // 移除加载图片
+    Loading.remove()
+
     // 创建一个 URL 对象
     const imgUrl = URL.createObjectURL(blob)
     // 创建一个图片元素
