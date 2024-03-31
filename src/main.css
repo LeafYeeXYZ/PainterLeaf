@@ -9,11 +9,12 @@
   overflow: hidden;
   --textcolor: #ff7171;
   --textcolor-hover: #ff4f4f;
-  --backcolor: #ffe1e1;
+  --backcolor: #fff0f0;
   --backcolor-hover: #ffcece;
   --boradercolor: #a04141;
   --imgback: rgb(255, 242, 244);
   --imgsize: min((100vh - 210px)*0.9, 100vw*0.9);
+  --loading-back: #fffbfb;
 }
 
 .image {
@@ -178,7 +179,9 @@ dialog {
   }
 }
 
-
+.loading-con {
+  padding: 15%;
+}
 
 
 

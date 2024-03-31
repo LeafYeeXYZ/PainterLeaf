@@ -21,12 +21,17 @@ async function generateImage() {
     const text = textarea.value
     // 如果没有输入文本，不发送请求
     if (!text) throw '请输入文本'
+
+    // 插入加载图片
+    Loading.insert()
+
     // 编码为 URL
     const encodedText = encodeURI(text)
     // 发送请求
     const res = await fetch(`${server}/?prompt=${encodedText}`)
     // 响应头为 'content-type': 'image/png'
     const blob = await res.blob()
+
     // 创建一个 URL 对象
     const imgUrl = URL.createObjectURL(blob)
     // 创建一个图片元素
@@ -39,6 +44,7 @@ async function generateImage() {
     imgContainer.prepend(img)
     // 更新 swiper
     swiper.update()
+
     // 恢复按钮
     submit.disabled = false
     submit.textContent = '生成'
@@ -46,6 +52,8 @@ async function generateImage() {
     if (retry) {
       // 设置弹窗内容
       dialog.style.setProperty('--errorContent', `"${err.message || err}"`)
+      // 移除加载图片
+      Loading.remove()
       // 打开弹窗
       dialog.show()
       // 恢复按钮
@@ -74,6 +82,33 @@ document.querySelector('.noticeButton').addEventListener('click', () => {
   // 清除弹窗内容
   dialog.style.setProperty('--errorContent', '')
 })
+
+// 插入和删除加载图片
+class Loading {
+  // 创建加载图片元素 <div><img></div>
+  constructor() {
+    this.img = document.createElement('img')
+    this.img.src = './loading.gif'
+    this.img.className = 'loading-img'
+    this.ele = document.createElement('div').appendChild(this.img)
+    this.ele.className = 'loading-con swiper-slide'
+    this.ele.style.backgroundColor = 'var(--loading-back)'
+  }
+  // 插入加载图片 (如果不存在)
+  static insert() {
+    const ele = document.querySelector('.loading-con') || null
+    const loading = new Loading()
+    ele || imgContainer.prepend(loading.ele)
+    swiper.update()
+  }
+  // 删除加载图片 (如果存在)
+  static remove() {
+    const loading = document.querySelector('.loading-con') || null
+    loading && loading.remove()
+    swiper.update()
+  }
+}
+
 
 
 
