@@ -96,7 +96,6 @@ class Loading {
     this.img.className = 'loading-img'
     this.ele = document.createElement('div').appendChild(this.img)
     this.ele.className = 'loading-con swiper-slide'
-    this.ele.style.backgroundColor = 'var(--loading-back)'
   }
   // 插入加载图片 (如果不存在)
   static insert() {
