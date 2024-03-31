@@ -181,6 +181,7 @@ dialog {
 
 .loading-con {
   padding: 15%;
+  background-color: var(--loading-back);
 }
 
 
