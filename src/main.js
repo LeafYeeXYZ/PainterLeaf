@@ -36,7 +36,7 @@ async function generateImage() {
     // 移除加载图片
     Loading.remove()
 
-    // 创建一个 URL 对象
+    // 创建图片对象的 URL
     const imgUrl = URL.createObjectURL(blob)
     // 创建一个图片元素
     const img = document.createElement('img')

@@ -4,7 +4,6 @@
   "description": "赛博画师小叶子",
   "source": "./src/index.html",
   "scripts": {
-    "start": "parcel",
     "dev": "parcel",
     "build": "parcel build"
   },
