@@ -27,6 +27,10 @@
     <!-- 下部表单容器 -->
     <form action="#">
       <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请描述你想生成的图像"></textarea>
+      <select name="model" id="model" placeholder="请选择模型">
+        <option value="@cf/bytedance/stable-diffusion-xl-lightning" selected>▼ @cf/bytedance/stable-diffusion-xl-lightning</option>
+        <option value="@cf/stabilityai/stable-diffusion-xl-base-1.0">▼ @cf/stabilityai/stable-diffusion-xl-base-1.0</option>
+      </select> 
       <button id="submit">生成</button>
     </form>
     <!-- 提示框 -->

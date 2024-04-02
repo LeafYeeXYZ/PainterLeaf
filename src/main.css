@@ -3,6 +3,8 @@
 }
 
 .container {
+  --form-height: 260px; /* 一个 button / select 为 50px */
+  --form-item-width: 100%;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -13,14 +15,24 @@
   --backcolor-hover: #ffcece;
   --boradercolor: #a04141;
   --imgback: rgb(255, 242, 244);
-  --imgsize: min((100vh - 210px)*0.9, 100vw*0.9);
+  --imgsize: min((100vh - var(--form-height))*0.9, 100vw*0.9);
   --loading-back: #fffbfb;
+}
+
+@media screen and (min-width: 768px){
+  .container {
+    --form-height: 210px;
+    --form-item-width: calc(50% - 8px);
+  }
+  #submit {
+    margin-left: 10px;
+  }
 }
 
 .image {
   position: relative;
   width: 100%;
-  height: calc(100% - 210px);
+  height: calc(100% - var(--form-height));
   background-color: var(--imgback);
   & > p {
     width: 100%;
@@ -38,7 +50,7 @@
     position: absolute;
     width: var(--imgsize);
     height: var(--imgsize);
-    margin: calc((100vh - 210px - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
+    margin: calc((100vh - var(--form-height) - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
     top: 0;
     & > .swiper-wrapper > .swiper-slide {
       border-radius: 20px;
@@ -50,13 +62,13 @@
 
 form {
   width: 100%;
-  height: 170px;
+  height: var(--form-height);
+  padding: 30px 10%;
+  margin: 0;
+  overflow: hidden;
   & textarea {
-    width: 80%;
+    width: 100%;
     height: 100px;
-    margin: 0 10%;
-    margin-top: 30px;
-    margin-bottom: 10px;
     resize: none;
     padding: 10px;
     border: 1px solid var(--boradercolor);
@@ -78,19 +90,23 @@ form {
       display: none;
     }
   }
-  & button {
-    width: 80%;
+  & button,
+  & select {
+    display: inline-block;
+    width: var(--form-item-width);
     height: 40px;
-    margin: 0 10%;
-    margin-bottom: 30px;
     border: none;
     border-radius: 20px;
-    padding: 10px;
+    margin-top: 10px;
+    padding: 10px 15px;
     transition: all 0.2s ease;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: var(--textcolor);
     background-color: var(--backcolor);
+    outline: none;
+  }
+  & button {
     &:hover {
       transform: scale(1.02);
       background-color: var(--backcolor-hover);
@@ -103,7 +119,10 @@ form {
     }
     &:disabled {
       cursor: progress;
-    }
+    } 
+  }
+  & select {
+    appearance: none;
   }
 }
 

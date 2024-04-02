@@ -1,5 +1,5 @@
 // 定义服务端地址
-const server = 'https://painter.leafyee.xyz'
+const SERVER = 'https://painter.leafyee.xyz'
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
@@ -10,6 +10,7 @@ const swiper = new Swiper('.imgContainer', {
 // 获取元素
 const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
+const select = document.querySelector('#model')
 const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
 const introduction = document.querySelector('#introduction')
@@ -26,14 +27,17 @@ async function generateImage() {
     const text = textarea.value
     // 如果没有输入文本，不发送请求
     if (!text) throw '请输入文本'
+    // 获取模型
+    const model = select.value
 
     // 插入加载图片
     Loading.insert()
 
     // 编码为 URL
     const encodedText = encodeURI(text)
+    const encodedModel = encodeURI(model)
     // 发送请求
-    const res = await fetch(`${server}/?prompt=${encodedText}`)
+    const res = await fetch(`${SERVER}/?prompt=${encodedText}&model=${encodedModel}`)
     // 响应头为 'content-type': 'image/png'
     const blob = await res.blob()
 
