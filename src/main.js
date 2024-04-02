@@ -1,8 +1,8 @@
 // 定义服务端地址
 const server = 'https://painter.leafyee.xyz'
 // 初始化 swiper
-import Swiper from 'swiper'
-import 'swiper/css'
+import Swiper from 'swiper/bundle'
+import 'swiper/css/bundle'
 const swiper = new Swiper('.imgContainer', {
   effect: "cards",
   grabCursor: true,
