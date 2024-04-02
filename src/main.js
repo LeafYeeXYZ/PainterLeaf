@@ -168,7 +168,7 @@ class Page {
     MODELS.forEach(model => {
       const option = document.createElement('option')
       option.value = model
-      option.innerHTML = `▶&nbsp;&nbsp;${model}`
+      option.innerHTML = `⊕&nbsp;&nbsp;${model}`
       Elements.select.appendChild(option)
     })
     // 设置指导语
