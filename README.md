@@ -9,9 +9,9 @@ const server = "https://your.server.domain" // 你的服务器地址
 
 ```bash
 # 安装依赖
-npm i
+pnpm i
 # 本地运行
-npm start
+pnpm dev
 # 打包
-npm run build
+pnpm build
 ```

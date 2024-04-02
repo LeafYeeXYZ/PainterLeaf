@@ -1,6 +1,8 @@
 // 定义服务端地址
 const server = 'https://painter.leafyee.xyz'
 // 初始化 swiper
+import Swiper from 'swiper'
+import 'swiper/css'
 const swiper = new Swiper('.imgContainer', {
   effect: "cards",
   grabCursor: true,
@@ -10,7 +12,9 @@ const textarea = document.querySelector('#prompt')
 const submit = document.querySelector('#submit')
 const imgContainer = document.querySelector('.swiper-wrapper')
 const dialog = document.querySelector('dialog')
-const IMG = document.querySelector('#loading').href
+const introduction = document.querySelector('#introduction')
+// 设置指导语
+introduction.innerHTML = '欢迎使用小叶子的AI绘画小程序<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词'
 
 // 提交函数
 async function generateImage() {
@@ -72,14 +76,14 @@ async function generateImage() {
 }
 
 // 监听点击事件
+// 图片生成按钮
 let retry = false
 submit.addEventListener('click', e => {
   e.preventDefault()
   retry = false
   generateImage()
 })
-
-// 关闭弹窗的函数
+// 关闭弹窗按钮
 document.querySelector('.noticeButton').addEventListener('click', () => {
   // 关闭弹窗
   dialog.close()
@@ -92,7 +96,7 @@ class Loading {
   // 创建加载图片元素 <div><img></div>
   constructor() {
     this.img = document.createElement('img')
-    this.img.src = IMG
+    this.img.src = '/loading.gif'
     this.img.className = 'loading-img'
     this.ele = document.createElement('div').appendChild(this.img)
     this.ele.className = 'loading-con swiper-slide'

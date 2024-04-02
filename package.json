@@ -2,10 +2,10 @@
   "name": "painter-leaf",
   "version": "1.0.0",
   "description": "赛博画师小叶子",
-  "source": "./src/index.html",
   "scripts": {
-    "dev": "parcel",
-    "build": "parcel build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
   "devDependencies": {
-    "parcel": "^2.12.0"
+    "vite": "^5.2.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "swiper": "^11.1.0"
+  }
 }

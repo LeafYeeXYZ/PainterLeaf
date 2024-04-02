@@ -3,44 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <title>赛博画师小叶子</title>
   <!-- CSS -->
-  <link rel="stylesheet" href="normalize.css">
-  <link rel="stylesheet" href="main.css">
-  <!-- Swiper -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.7/swiper-bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.0.7/swiper-bundle.min.css">
+  <link rel="stylesheet" href="src/normalize.css">
+  <link rel="stylesheet" href="src/main.css">
   <!-- JS -->
-  <script defer src="main.js" type="module"></script>
+  <script defer src="src/main.js" type="module"></script>
   <!-- 预加载加载图片 -->
-  <link rel="preload" href="loading.gif" as="image" id="loading">
+  <link rel="preload" href="/loading.gif" as="image" id="loading">
 </head>
 <body>
-
+  <!-- 页面容器 -->
   <div class="container">
-
+    <!-- 上部图片容器 -->
     <div class="image">
-      <p>欢迎使用小叶子的AI绘画小程序！<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词</p>
+      <p id="introduction"></p>
       <div class="imgContainer">
         <div class="swiper-wrapper">
         </div>
       </div>
     </div>
-
+    <!-- 下部表单容器 -->
     <form action="#">
       <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请描述你想生成的图像"></textarea>
       <button id="submit">生成</button>
     </form>
-
+    <!-- 提示框 -->
     <dialog>
       <div id="notice">
         <div class="noticeContent"></div>
         <button class="noticeButton">确定</button>
       </div>
     </dialog>
-
   </div>
-  
 </body>
 </html>
