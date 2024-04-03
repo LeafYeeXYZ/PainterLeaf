@@ -1,7 +1,7 @@
 // 定义常量
 const SERVER = 'https://painter.leafyee.xyz'
 const INTRO = '欢迎使用小叶子的AI绘画小程序<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词'
-const MODELS = {} // 模型列表, 由后端返回, 由 Page.init() 初始化
+const MODELS = await (await fetch(`${SERVER}/api/models/`)).json()
 
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
@@ -159,9 +159,7 @@ class Page {
     }
   }
   /** 初始化页面 */
-  static async init() {
-    // 获取模型
-    MODELS = await (await fetch(`${SERVER}/api/models/`)).json()
+  static init() {
     // 初始化模型选择
     for (const model in MODELS) {
       const option = document.createElement('option')
