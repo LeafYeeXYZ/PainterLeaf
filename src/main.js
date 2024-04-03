@@ -1,10 +1,12 @@
 // 定义常量
-const SERVER = 'https://painter.leafyee.xyz'
+const SERVER = 'https://painter.leafyee.xyz' + '/api/text'
 const INTRO = '欢迎使用小叶子的AI绘画小程序<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词'
 const MODELS = [
   '@cf/lykon/dreamshaper-8-lcm',
   '@cf/stabilityai/stable-diffusion-xl-base-1.0',
   '@cf/bytedance/stable-diffusion-xl-lightning',
+  '@hf/stabilityai/stable-diffusion-2-1',
+  // @cf/runwayml/stable-diffusion-v1-5-img2img 图生图模型, 后续版本可能会支持
 ]
 
 // 初始化 swiper
