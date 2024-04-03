@@ -1,20 +1,12 @@
 // 定义常量
-const SERVER = 'https://painter.leafyee.xyz' + '/api/text'
+const SERVER = 'https://painter.leafyee.xyz'
 const INTRO = '欢迎使用小叶子的AI绘画小程序<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词'
-const MODELS = [
-  '@cf/lykon/dreamshaper-8-lcm',
-  '@cf/stabilityai/stable-diffusion-xl-base-1.0',
-  '@cf/bytedance/stable-diffusion-xl-lightning',
-  '@hf/cagliostrolab/animagine-xl-3.1',
-  '@hf/runwayml/stable-diffusion-v1-5',
-  '@hf/stabilityai/stable-diffusion-2-1',
-  '@hf/playgroundai/playground-v2.5-1024px-aesthetic',
-  // @cf/runwayml/stable-diffusion-v1-5-img2img 图生图模型, 后续版本可能会支持
-]
+const MODELS = await (await fetch(SERVER + '/api/models/')).json()
 
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
+import { M } from 'vite/dist/node/types.d-aGj9QkWt'
 const swiper = new Swiper('.imgContainer', {
   effect: "cards",
   grabCursor: true,
@@ -125,7 +117,7 @@ class Page {
       const encodedText = encodeURI(text)
       const encodedModel = encodeURI(model)
       // 发送请求
-      const res = await fetch(`${SERVER}/?prompt=${encodedText}&model=${encodedModel}`)
+      const res = await fetch(`${SERVER}/api/text/?prompt=${encodedText}&model=${encodedModel}`)
       // 响应头为 'content-type': 'image/png'
       const blob = await res.blob()
   
@@ -170,12 +162,12 @@ class Page {
   /** 初始化页面 */
   static init() {
     // 初始化模型选择
-    MODELS.forEach(model => {
+    for (const model in MODELS) {
       const option = document.createElement('option')
       option.value = model
-      option.innerHTML = `>&nbsp;&nbsp;${model}`
+      option.innerHTML = `>&nbsp;&nbsp;${MODELS[model]}`
       Elements.select.appendChild(option)
-    })
+    }
     // 设置指导语
     document.querySelector('#introduction').innerHTML = INTRO
     // 侦听提交按钮点击事件
