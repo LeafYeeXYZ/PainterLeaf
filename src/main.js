@@ -1,6 +1,6 @@
 // 定义常量
 const SERVER = 'https://painter.leafyee.xyz'
-const INTRO = '欢迎使用小叶子的AI绘画小程序<br>请在下方输入英文描述并点击生成按钮<br>支持自然语言和StableDiffusion提示词'
+const INTRO = '这里是赛博画师小叶子<br>在下方输入英文提示词并点击生成<br>大部分模型输入自然语言即可'
 
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
