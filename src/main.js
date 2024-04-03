@@ -161,7 +161,10 @@ class Page {
   /** 初始化页面 */
   static async init() {
     // 获取模型
-    MODELS = await (await fetch(`${SERVER}/api/models/`)).json()
+    const models = await (await fetch(`${SERVER}/api/models/`)).json()
+    for (const model of models) {
+      MODELS[model] = models[model]
+    }
     // 初始化模型选择
     for (const model in MODELS) {
       const option = document.createElement('option')
