@@ -119,6 +119,8 @@ class Page {
       // 响应头为 'content-type': 'image/png'
       const blob = await res.blob()
   
+      // 根据图片大小判断是否为错误信息
+      if (blob.size < 1024) throw '服务端返回空白图片'
       // 移除加载图片
       Loading.remove()
   
@@ -167,12 +169,12 @@ class Page {
       option.innerHTML = `>&nbsp;&nbsp;${models[model]}`
       Elements.select.appendChild(option)
     }
-    // 设置指导语
-    document.querySelector('#introduction').innerHTML = INTRO
     // 侦听提交按钮点击事件
     Elements.submit.addEventListener('click', e => Page.submitHandler(e))
     // 侦听关闭弹窗按钮点击事件
     Elements.dialogButton.addEventListener('click', e => Page.closeDialogHandler(e))
+    // 设置指导语
+    document.querySelector('#introduction').innerHTML = INTRO
   }
 }
 
