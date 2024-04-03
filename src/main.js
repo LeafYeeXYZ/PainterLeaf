@@ -5,7 +5,10 @@ const MODELS = [
   '@cf/lykon/dreamshaper-8-lcm',
   '@cf/stabilityai/stable-diffusion-xl-base-1.0',
   '@cf/bytedance/stable-diffusion-xl-lightning',
+  '@hf/cagliostrolab/animagine-xl-3.1',
+  '@hf/runwayml/stable-diffusion-v1-5',
   '@hf/stabilityai/stable-diffusion-2-1',
+  '@hf/playgroundai/playground-v2.5-1024px-aesthetic',
   // @cf/runwayml/stable-diffusion-v1-5-img2img 图生图模型, 后续版本可能会支持
 ]
 
