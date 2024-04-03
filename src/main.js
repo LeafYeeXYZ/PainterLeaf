@@ -121,8 +121,6 @@ class Page {
   
       // 移除加载图片
       Loading.remove()
-      // 如果 blob 为空，抛出错误
-      if (!blob) throw 'The res.blob() is empty'
   
       // 创建图片对象的 URL
       const imgUrl = URL.createObjectURL(blob)
