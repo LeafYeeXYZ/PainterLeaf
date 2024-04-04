@@ -1,17 +1,29 @@
-# 赛博画师小叶子
-一个基于 `Cloudflare Workers AI` 的图片生成网站，后端见[这个项目](https://github.com/LeafYeeXYZ/PainterLeafServer)
+**[中文](README_ZH.md) | English**
 
-## 使用
+# PainterLeaf
+An AI image generation tool written in native `JavaScript`, adopting a front-end and back-end separation design. The front-end can be deployed on static website hosting services such as `Cloudflare Pages`, `Vercel`, etc., and the back-end is deployed on `Cloudflare Workers` based on `Hono`, see [this project](https://github.com/LeafYeeXYZ/PainterLeafServer)
+
+## Usage
+### Modify src/config.json
 ```javascript
-// 修改 src/main.js 的第二行
-const server = "https://your.server.domain" // 你的服务器地址
+{
+  "SERVER": "https://xxx.workers.dev", // Your server address
+  "INTRO": "xxxxxx<br>xxxxxxx", // Website introduction
+}
 ```
 
+### Install dependencies
 ```bash
-# 安装依赖
+npm i -g pnpm
 pnpm i
-# 本地运行
+```
+
+### Local run
+```bash
 pnpm dev
-# 打包
+```
+
+### Build
+```bash
 pnpm build
 ```

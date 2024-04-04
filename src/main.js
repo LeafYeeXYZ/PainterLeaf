@@ -1,7 +1,5 @@
-// 定义常量
-const SERVER = 'https://painter.leafyee.xyz'
-const INTRO = '这里是赛博画师小叶子<br>在下方输入英文提示词并点击生成<br>大部分模型输入自然语言即可'
-
+// 引入设置
+import { SERVER, INTRO } from './config.json'
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
