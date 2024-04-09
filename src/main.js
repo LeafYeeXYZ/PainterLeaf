@@ -113,7 +113,7 @@ class Page {
       const encodedText = encodeURI(text)
       const encodedModel = encodeURI(model)
       // 发送请求
-      const res = await fetch(`${SERVER}/api/text/?prompt=${encodedText}&model=${encodedModel}`)
+      const res = await fetch(`${SERVER}/painter/generate?prompt=${encodedText}&model=${encodedModel}`)
       // 响应头为 'content-type': 'image/png'
       const blob = await res.blob()
   
@@ -160,7 +160,7 @@ class Page {
   /** 初始化页面 */
   static async init() {
     // 获取模型
-    const models = await (await fetch(`${SERVER}/api/models/`)).json()
+    const models = await (await fetch(`${SERVER}/painter/models`)).json()
     for (const model in models) {
       const option = document.createElement('option')
       option.value = model
