@@ -1,4 +1,4 @@
 {
   "SERVER": "https://api.leafyee.xyz",
-  "INTRO": "这里是赛博画师小叶子<br>在下方输入英文提示词并点击生成<br>大部分模型输入自然语言即可"
+  "INTRO": "<span>这里是赛博画师小叶子<br>在下方输入<span id='sour-lang'>英文</span>提示词并点击生成<br>大部分模型输入自然语言即可</span>"
 }

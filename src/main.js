@@ -2,8 +2,7 @@
 import { SERVER, INTRO } from './config.json'
 // 初始化 swiper
 import Swiper from 'swiper/bundle'
-import 'swiper/css/bundle'
-const swiper = new Swiper('.imgContainer', {
+export const swiper = new Swiper('.imgContainer', {
   effect: "cards",
   grabCursor: true,
 })
@@ -19,7 +18,7 @@ const swiper = new Swiper('.imgContainer', {
  * @property {HTMLElement} dialog - 弹窗
  * @property {HTMLElement} dialogButton - 弹窗内的关闭按钮
  */
-class Elements {
+export class Elements {
   static submit = document.querySelector('#submit')
   static disableSubmit() {
     this.submit.disabled = true
@@ -41,7 +40,7 @@ class Elements {
  * @method insert - 插入加载图片 (如果不存在)
  * @method remove - 删除加载图片 (如果存在)
  */
-class Loading {
+export class Loading {
   /** 创建加载图片元素 <div><img></div> */
   constructor() {
     const img = document.createElement('img')
@@ -67,23 +66,23 @@ class Loading {
 
 /** 
  * @class 页面事件和初始化数据相关
- * @property {boolean} #retry - 记录是否重试
+ * @property {boolean} retry - 记录是否重试
  * @method submitHandler - 提交事件处理函数
  * @method closeDialogHandler - 关闭弹窗事件处理函数
  * @method generateImage - 生成图片
  * @method init - 初始化页面
  */
-class Page {
+export class Page {
   /** 记录是否重试 */
-  static #retry = false
+  static retry = false
   /** 提交事件处理函数 */
-  static submitHandler(e) {
+  static submitHandler(e, customPrompt = null) {
     // 阻止默认事件
     e.preventDefault()
     // 重置重试标志
-    this.#retry = false
+    this.retry = false
     // 生成图片
-    Page.generateImage()
+    Page.generateImage(customPrompt)
   }
   /** 关闭弹窗事件处理函数 */
   static closeDialogHandler() {
@@ -93,14 +92,13 @@ class Page {
     Elements.dialog.style.setProperty('--errorContent', '')
   }
   /** 生成图片 */
-  static async generateImage() {
+  static async generateImage(customPrompt = null) {
+    // 禁用按钮
+    Elements.disableSubmit()
+    // 获取输入的文本
+    const text = customPrompt || Elements.textarea.value
+
     try {
-
-      // 禁用按钮
-      Elements.disableSubmit()
-
-      // 获取输入的文本
-      const text = Elements.textarea.value
       // 如果没有输入文本，不发送请求
       if (!text) throw '请输入文本'
       // 获取模型
@@ -140,7 +138,7 @@ class Page {
 
     } catch (err) {
 
-      if (this.#retry) {
+      if (this.retry) {
         // 设置弹窗内容
         Elements.dialog.style.setProperty('--errorContent', `"${err.message || err}"`)
         // 移除加载图片
@@ -150,9 +148,9 @@ class Page {
         // 恢复按钮
         Elements.enableSubmit()
       } else {
-        this.#retry = true
+        this.retry = true
         // 重新生成图片
-        Page.generateImage()
+        Page.generateImage(text)
       }
 
     }
@@ -168,13 +166,10 @@ class Page {
       Elements.select.appendChild(option)
     }
     // 侦听提交按钮点击事件
-    Elements.submit.addEventListener('click', e => Page.submitHandler(e))
+    Elements.submit.addEventListener('click', Page.submitHandler)
     // 侦听关闭弹窗按钮点击事件
-    Elements.dialogButton.addEventListener('click', e => Page.closeDialogHandler(e))
+    Elements.dialogButton.addEventListener('click', Page.closeDialogHandler)
     // 设置指导语
     document.querySelector('#introduction').innerHTML = INTRO
   }
 }
-
-// 页面初始化
-Page.init()

@@ -1,0 +1,10 @@
+#sour-lang {
+  color: #fa255e;
+}
+
+.lang-switcher {
+  position: fixed;
+  top: 1rem;
+  left: 1.1rem;
+  z-index: 100;
+}

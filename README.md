@@ -1,13 +1,13 @@
 **[中文](README_ZH.md) | English**
 
 # PainterLeaf
-An AI image generation tool written in native `JavaScript`, adopting a front-end and back-end separation design. The front-end can be deployed on static website hosting services such as `Cloudflare Pages`, `Vercel`, etc., and the back-end is deployed on `Cloudflare Workers` based on `Hono`, see [this project](https://github.com/LeafYeeXYZ/PainterLeafServer)
+An AI image generation tool, supports Chinese and English (Chinese will automatically call the AI translation), adopts front-end and back-end separation design, the front-end can be deployed on static website hosting services such as `Cloudflare Pages`, `Vercel`, and the back-end is based on `Hono`, deployed on `Cloudflare Workers`, see [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 
 ## Usage
 ### Modify src/config.json
 ```javascript
 {
-  "SERVER": "https://xxx.workers.dev", // Your server address
+  "SERVER": "https://api.xxx.workers.dev", // Your server address
   "INTRO": "xxxxxx<br>xxxxxxx", // Website introduction
 }
 ```

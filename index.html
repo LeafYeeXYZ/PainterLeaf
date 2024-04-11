@@ -9,13 +9,15 @@
   <link rel="stylesheet" href="src/normalize.css">
   <link rel="stylesheet" href="src/main.css">
   <!-- JS -->
-  <script defer src="src/main.js" type="module"></script>
+  <script defer src="src/react.jsx" type="module"></script>
   <!-- 预加载加载图片 -->
   <link rel="preload" href="/loading.gif" as="image" id="loading">
 </head>
 <body>
   <!-- 页面容器 -->
   <div class="container">
+    <!-- 输入语言切换按钮 (React) -->
+    <section id="react"></section>
     <!-- 上部图片容器 -->
     <div class="image">
       <p id="introduction">加载中...</p>
@@ -32,7 +34,7 @@
       <button id="submit">生成</button>
     </form>
     <!-- 提示框 -->
-    <dialog>
+    <dialog id="dialog">
       <div id="notice">
         <div class="noticeContent"></div>
         <button class="noticeButton">确定</button>
