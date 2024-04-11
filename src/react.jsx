@@ -34,7 +34,6 @@ function callbackZh(e) {
   .then(response => response.json())
   .then(data => {
     const textEN = data.result.translated_text
-    console.log(textEN)
     Page.submitHandler(e, textEN)
   })
   .catch(_err => {
