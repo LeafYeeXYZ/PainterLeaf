@@ -1,8 +1,14 @@
 .lang-switcher {
   position: absolute;
   top: 100px;
-  right: 11.5%;
+  right: 11%;
   z-index: 100;
+}
+
+@media screen and (max-width: 768px) {
+  .lang-switcher {
+    right: 11.5%;
+  }
 }
 
 @media screen and (max-width: 512px) {
