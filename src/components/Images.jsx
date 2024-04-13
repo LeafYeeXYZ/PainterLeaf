@@ -50,15 +50,17 @@ function Images({ images, zhMode }) {
           本站源码开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
         </span>
       </div>
-      <Swiper
-        effect={'cards'}
-        grabCursor={true}
-        modules={[EffectCards]}
-        className="images-swiper"
-        style={{ display: images.length ? 'block' : 'none' }}
-      >
-        {slides}
-      </Swiper>
+      {
+        images.length === 0 ||
+        <Swiper
+          effect={'cards'}
+          grabCursor={true}
+          modules={[EffectCards]}
+          className="images-swiper"
+        >
+          {slides}
+        </Swiper>
+      }
     </div>
   )
 }

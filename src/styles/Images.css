@@ -77,6 +77,6 @@
 @media screen and (max-width: 512px) {
   .image-downloader {
     transform: scale(0.85);
-    margin: 0.45rem 0.3rem;
+    margin: 0.35rem 0.3rem;
   }  
 }
