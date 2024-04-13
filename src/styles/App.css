@@ -1,0 +1,24 @@
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  --form-height: 260px; /* 一个 button / select 为 50px */
+  --form-item-width: 100%;
+  --textcolor: #ff7171;
+  --textcolor-hover: #ff4f4f;
+  --textcolor-highlight: #fa255e;
+  --backcolor: #fff0f0;
+  --backcolor-hover: #ffcece;
+  --boradercolor: #a04141;
+  --imgback: rgb(255, 242, 244);
+  --imgsize: min((100vh - var(--form-height))*0.9, 100vw*0.9);
+  --loading-back: #fffbfb;
+}
+
+@media screen and (min-width: 768px){
+  .container {
+    --form-height: 210px;
+    --form-item-width: calc(50% - 8px);
+  }
+}

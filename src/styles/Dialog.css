@@ -1,0 +1,74 @@
+.dialog-main {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: none;
+  background-color: rgba(15, 0, 0, 0.3);
+
+  & .dialog-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    & .dialog-sub {
+      width: 300px;
+      height: 200px;
+      background-color: var(--imgback);
+      border-radius: 20px;
+      overflow: hidden;
+
+      & .dialog-title {
+        display: block;
+        width: 300px;
+        height: 45px;
+        line-height: 45px;
+        text-align: left;
+        padding-left: 18px;
+        font-family: Microsoft YaHei;
+        font-weight: bold;
+        color: var(--textcolor);
+        border-radius: 20px 20px 0 0;
+      }
+
+      & .dialog-content {
+        content: var(--errorContent);
+        display: block;
+        width: 264px;
+        height: calc(100% - 40px);
+        text-align: left;
+        padding: 0 18px;
+        font-family: Microsoft YaHei;
+        color: var(--textcolor);
+        opacity: 0.9;
+      }
+    }
+
+    & .dialog-button {
+      width: 300px;
+      height: 40px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      transition: all 0.2s ease;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: var(--textcolor);
+      background-color: var(--backcolor);
+      &:hover {
+        transform: scale(1.02);
+        background-color: var(--backcolor-hover);
+        color: var(--textcolor-hover);
+      }
+      &:active {
+        transform: scale(0.98);
+        background-color: var(--backcolor-hover);
+        color: var(--textcolor-hover);
+      }
+    }
+  }
+}

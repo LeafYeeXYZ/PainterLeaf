@@ -1,0 +1,47 @@
+.images-container {
+  position: relative;
+  width: 100%;
+  height: calc(100% - var(--form-height));
+  background-color: var(--imgback);
+
+  & .images-intro {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--textcolor);
+    opacity: 0.9;
+
+    & .image-intro-lang {
+      color: var(--textcolor-highlight);
+    }
+  }
+
+  & .images-swiper {
+    position: absolute;
+    width: var(--imgsize);
+    height: var(--imgsize);
+    margin: calc((100vh - var(--form-height) - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
+    top: 0;
+
+    & .swiper-slide {
+      border-radius: 20px;
+    }
+    
+    & .image-item {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    & .image-loading {
+      padding: 15%;
+      background-color: var(--loading-back);
+    }
+  }
+}

@@ -30,7 +30,7 @@ button {
   cursor: pointer;
   /* 鼠标经过时显示可点击提示 */
 }
-body {
-  font-family: xxx;
-  background-color: xxx;
+
+:root {
+  overflow: hidden;
 }

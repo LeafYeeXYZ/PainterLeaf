@@ -1,45 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <title>赛博画师小叶子</title>
-  <!-- CSS -->
-  <link rel="stylesheet" href="src/normalize.css">
-  <link rel="stylesheet" href="src/main.css">
-  <!-- JS -->
-  <script defer src="src/react.jsx" type="module"></script>
-  <!-- 预加载加载图片 -->
-  <link rel="preload" href="/loading.gif" as="image" id="loading">
-</head>
-<body>
-  <!-- 页面容器 -->
-  <div class="container">
-    <!-- 输入语言切换按钮 (React) -->
-    <section id="react"></section>
-    <!-- 上部图片容器 -->
-    <div class="image">
-      <p id="introduction">加载中...</p>
-      <div class="imgContainer">
-        <div class="swiper-wrapper">
-        </div>
-      </div>
-    </div>
-    <!-- 下部表单容器 -->
-    <form action="#">
-      <textarea name="prompt" id="prompt" cols="30" rows="10" placeholder="请描述你想生成的图像"></textarea>
-      <select name="model" id="model" placeholder="请选择模型">
-      </select> 
-      <button id="submit">生成</button>
-    </form>
-    <!-- 提示框 -->
-    <dialog id="dialog">
-      <div id="notice">
-        <div class="noticeContent"></div>
-        <button class="noticeButton">确定</button>
-      </div>
-    </dialog>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <title>赛博画师小叶子</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
