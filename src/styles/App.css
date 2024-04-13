@@ -11,9 +11,13 @@
   --backcolor: #fff0f0;
   --backcolor-hover: #ffcece;
   --boradercolor: #a04141;
-  --imgback: rgb(255, 242, 244);
+  --imgback: #fff3f5;
   --imgsize: min((100vh - var(--form-height))*0.9, 100vw*0.9);
   --loading-back: #fffbfb;
+}
+
+a {
+  color: var(--textcolor-highlight);
 }
 
 @media screen and (min-width: 768px){

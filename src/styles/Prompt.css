@@ -4,6 +4,7 @@
   padding: 30px 10%;
   margin: 0;
   overflow: hidden;
+  position: relative;
 
   & .prompt-textarea {
     width: 100%;
@@ -16,17 +17,15 @@
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: var(--textcolor);
+    scrollbar-width: none;
     &:focus {
-      transform: scale(1.02);
+      transform: scale(1.01);
       outline: none;
     }
     &::placeholder {
       font-family: Microsoft YaHei;
       font-weight: bold;
       color: var(--textcolor);
-    }
-    &::-webkit-scrollbar {
-      display: none;
     }
   }
   & .prompt-models,
@@ -44,13 +43,13 @@
     color: var(--textcolor);
     background-color: var(--backcolor);
     outline: none;
-  }
-  & .prompt-submit {
     &:hover {
       transform: scale(1.02);
       background-color: var(--backcolor-hover);
       color: var(--textcolor-hover);
     }
+  }
+  & .prompt-submit {
     &:active {
       transform: scale(0.98);
       background-color: var(--backcolor-hover);

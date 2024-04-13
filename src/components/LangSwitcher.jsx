@@ -11,14 +11,14 @@ function LangSwitcher({ setZhMode }) {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: '#F18F01', /* 亮色背景颜色 */
-          colorPrimaryHover: '#D16F00', /* 亮色背景颜色 (hover) */
-          colorTextQuaternary: '#D16F00', /* 暗色背景颜色 */
-          colorTextTertiary: '#D16F00', /* 暗色背景颜色 (hover) */
+          colorPrimary: '#ff7171', /* 亮色背景颜色 */
+          colorPrimaryHover: '#ff4f4f', /* 亮色背景颜色 (hover) */
+          colorTextQuaternary: '#ff7171', /* 暗色背景颜色 */
+          colorTextTertiary: '#ff4f4f', /* 暗色背景颜色 (hover) */
         },
         components: {
           Switch: {
-            handleBg: '#FFD700',
+            handleBg: '#ffe1e1',
           },
         },
       }}

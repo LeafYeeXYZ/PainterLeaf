@@ -16,7 +16,7 @@
     color: var(--textcolor);
     opacity: 0.9;
 
-    & .image-intro-lang {
+    & .images-intro-lang {
       color: var(--textcolor-highlight);
     }
   }
@@ -44,4 +44,39 @@
       background-color: var(--loading-back);
     }
   }
+}
+
+.image-downloader {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.65rem 0.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-size: 1rem;
+  font-weight: bold;
+  backdrop-filter: blur(10px);
+  color: var(--textcolor);
+  background: var(--backcolor);
+  transition: all 0.3s ease;
+  &::before {
+    content: '下载';
+    display: inline-block;
+    width: 0;
+    height: 1rem;
+    font-weight: normal;
+    font-size: 0.8rem;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  &:hover::before {
+    width: 2rem;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .image-downloader {
+    transform: scale(0.85);
+    margin: 0.45rem 0.3rem;
+  }  
 }

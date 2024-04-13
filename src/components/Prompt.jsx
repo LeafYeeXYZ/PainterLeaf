@@ -14,10 +14,10 @@ try {
 // 生成模型选项
 const options = []
 for (const model in models) {
-  options.push(<option value={model} key={model}>{'>'}&nbsp;&nbsp;{models[model]}</option>)
+  options.push(<option value={model} key={model}>{models[model]}</option>)
 }
 
-function Prompt({ images, setImages, dialogAction, zhMode }) {
+function Prompt({ children, images, setImages, dialogAction, zhMode }) {
   // 引用元素
   const submitRef = useRef(null)
   const promptRef = useRef(null)
@@ -126,6 +126,8 @@ function Prompt({ images, setImages, dialogAction, zhMode }) {
   return (
     <form action="#" className='prompt-container'>
 
+      {children}
+
       <textarea
         name="prompt" 
         cols="30" 
@@ -164,6 +166,7 @@ Prompt.propTypes = {
   setImages: PropTypes.func.isRequired,
   dialogAction: PropTypes.func.isRequired,
   zhMode: PropTypes.bool.isRequired,
+  children: PropTypes.element,
 }
 
 export default Prompt

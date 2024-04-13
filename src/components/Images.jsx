@@ -5,6 +5,7 @@ import { EffectCards } from 'swiper/modules'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import localforage from 'localforage'
+import { DownloadOutlined } from '@ant-design/icons'
 
 // 尝试从 localforage 中获取加载图片
 // 如果不存在则向服务器请求
@@ -20,7 +21,6 @@ if (!loadingImage) {
 }
 
 function Images({ images, zhMode }) {
-  // 
   // 将 images 倒置
   images = images.slice().reverse()
   // 渲染图片列表
@@ -32,6 +32,10 @@ function Images({ images, zhMode }) {
           <img src={imgurl} className='image-loading image-item' /> :
           <img src={image.url} className='image-item' />
         }
+        { 
+          image.type === 'loading' ||
+          <a href={image.url} download className='image-downloader'><DownloadOutlined /></a>
+        }
       </SwiperSlide>
     )
   })
@@ -41,8 +45,9 @@ function Images({ images, zhMode }) {
       <div className="images-intro">
         <span>
           这里是赛博画师小叶子<br />
-          在下方输入<span className='image-intro-lang'>{zhMode ? '中文' : '英文'}</span>提示词并点击生成<br />
-          大部分模型输入自然语言即可
+          在下方输入<span className='images-intro-lang'>{zhMode ? '中文' : '英文'}</span>提示词并点击生成<br />
+          大部分模型输入自然语言即可<br />
+          本站源码开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
         </span>
       </div>
       <Swiper
@@ -50,6 +55,7 @@ function Images({ images, zhMode }) {
         grabCursor={true}
         modules={[EffectCards]}
         className="images-swiper"
+        style={{ display: images.length ? 'block' : 'none' }}
       >
         {slides}
       </Swiper>

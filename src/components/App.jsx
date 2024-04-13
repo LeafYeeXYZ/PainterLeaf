@@ -19,24 +19,29 @@ function App() {
 
   return (
     <main className="container">
-      <LangSwitcher
-        setZhMode={setZhMode}
-      />
+
       <Images 
         images={images} 
         zhMode={zhMode}
       />
+
       <Prompt 
         images={images} 
         setImages={setImages} 
         dialogAction={dialogAction}
         zhMode={zhMode}
-      />
+      >
+        <LangSwitcher 
+          setZhMode={setZhMode}
+        />
+      </Prompt>
+
       <Dialog 
         ref={dialogRef}
         dialogState={dialogState} 
         dialogAction={dialogAction}
       />
+
     </main>
   )
 }

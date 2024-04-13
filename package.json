@@ -21,6 +21,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.6",
     "antd": "^5.16.1",
     "localforage": "^1.10.0",
     "prop-types": "^15.8.1",
