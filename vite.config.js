@@ -5,6 +5,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    target: ['chrome89', 'firefox89', 'safari15', 'edge89']
+    target: ['chrome89', 'firefox89', 'safari15', 'edge89'],
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          antd: ['antd', '@ant-design/icons'],
+        },
+      },
+    },
   }
 })

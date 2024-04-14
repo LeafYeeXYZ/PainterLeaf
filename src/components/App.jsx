@@ -29,18 +29,17 @@ function App() {
   // 首次渲染时从 localforage 中获取已收藏图片列表
   useEffect(() => {
     localforage.getItem('staredImages')
-    .then(staredImages => {
-      if (staredImages) {
-        const initialImages = staredImages.map(image => {
-          const url = URL.createObjectURL(image.blob)
-          const hash = image.hash
-          return { url, type: 'image', star: 'stared', hash }
-        })
-        initialImages.reverse()
-        setImages(initialImages)
-      }
-    })
-    return () => setImages([])
+    .then(staredImages => { if (staredImages) {
+      // 将已收藏图片列表转换为图片信息列表
+      const initialImages = staredImages.map(image => {
+        const url = URL.createObjectURL(image.blob)
+        const hash = image.hash
+        return { url, type: 'image', star: 'stared', hash }
+      })
+      // 倒转并设置图片信息列表
+      initialImages.reverse()
+      setImages(initialImages)
+    }})
   }, [setImages])
 
   return (
