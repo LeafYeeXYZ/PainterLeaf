@@ -16,10 +16,6 @@
   --loading-back: #fffbfb;
 }
 
-*:focus {
-  outline: none;
-}
-
 a {
   color: var(--textcolor-highlight);
 }

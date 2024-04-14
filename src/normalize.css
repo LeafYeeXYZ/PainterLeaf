@@ -4,6 +4,10 @@
   box-sizing: border-box;
   /* 让盒子的宽高包含内边距和边框 */
 }
+*:focus {
+  outline: none;
+  /* 防止点击时出现蓝色边框 */
+}
 html {
   scroll-behavior: smooth;
   /* 滚动时平滑过渡 */
