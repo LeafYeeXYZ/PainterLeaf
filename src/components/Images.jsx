@@ -124,7 +124,8 @@ function Images({ images, setImages, zhMode, dialogAction }) {
           const url = URL.createObjectURL(image.blob)
           const hash = image.hash
           return { url, type: 'image', star: 'stared', hash }
-        }).reverse() 
+        })
+        initialImages.reverse()
         setImages(initialImages)
       }
     })
