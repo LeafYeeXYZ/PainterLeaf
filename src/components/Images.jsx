@@ -97,20 +97,18 @@ function Images({ images, setImages, zhMode, dialogAction }) {
           <img src={imgurl} className='image-loading image-item' /> :
           <img src={image.url} className='image-item' />
         }
-        <div className='image-funcs'>
         { 
           image.type === 'loading' ||
-          <a href={image.url} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
+          <div className='image-funcs'>
+            <div className='image-funcs-left'>
+              <a href={image.url} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
+            </div>
+            <div className='image-funcs-right'>
+              <a href={image.url} download className='image-downloader'><DownloadOutlined /></a>
+              <a href={image.url} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
+            </div>
+          </div>
         }
-        { 
-          image.type === 'loading' ||
-          <a href={image.url} download className='image-downloader'><DownloadOutlined /></a>
-        }
-        { 
-          image.type === 'loading' ||
-          <a href={image.url} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
-        }
-        </div>
       </SwiperSlide>
     )
   })

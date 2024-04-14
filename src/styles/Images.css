@@ -51,13 +51,22 @@
   top: 0;
   right: 0;
   width: 100%;
-  padding: 0.65rem 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  & .image-funcs-left {
+    padding: 0.65rem 0.6rem;
+    display: flex;
+    justify-content: flex-start;
+  }
+  & .image-funcs-right {
+    padding: 0.65rem 0.6rem;
+    display: flex;
+    justify-content: flex-end;
+  }
   
   & .image-downloader,
   & .image-deleter,
   & .image-marker {
-    vertical-align: middle;
-    float: right;
     margin-left: 0.6rem;
     padding: 0.5rem 1rem;
     border-radius: 3rem;
@@ -73,7 +82,6 @@
     }
   }
   & .image-marker {
-    float: left;
     margin-left: 0;
     transition: all 0.3s ease;
     &::after {
@@ -111,18 +119,10 @@
 }
 
 @media screen and (max-width: 512px) {
-  .image-funcs {
-    padding: 0.35rem 0.3rem;
-    transform: scale(0.85) translateX(7.5%);
+  .image-funcs-left {
+    transform: scale(0.85) translate(-7.5%, -7.5%);
   }
-  .image-downloader,
-  .image-deleter {
-    margin-left: 0.3rem;
-  }  
-  .image-marker {
-    transform: translateX(-106%);
-    &:hover {
-      transform: translateX(-64%);
-    }
+  .image-funcs-right {
+    transform: scale(0.85) translate(7.5%, -7.5%);
   }
 }
