@@ -5,6 +5,7 @@
   top: 0;
   border: none;
   background-color: rgba(15, 0, 0, 0.3);
+  z-index: 1000;
 
   & .dialog-container {
     width: 100%;
@@ -23,11 +24,11 @@
 
       & .dialog-title {
         display: block;
-        width: 300px;
+        width: 100%;
         height: 45px;
         line-height: 45px;
         text-align: left;
-        padding-left: 18px;
+        padding: 0 18px;
         font-family: Microsoft YaHei;
         font-weight: bold;
         color: var(--textcolor);
@@ -37,7 +38,7 @@
       & .dialog-content {
         content: var(--errorContent);
         display: block;
-        width: 264px;
+        width: 100%;
         height: calc(100% - 40px);
         text-align: left;
         padding: 0 18px;

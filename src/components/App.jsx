@@ -5,11 +5,12 @@ import Dialog from './Dialog.jsx'
 import LangSwitcher from './LangSwitcher.jsx'
 
 import { useState, useRef } from 'react'
+import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
 
 function App() {
   // 声明一个状态变量，用于保存图片的 URL 和类型
-  const [images, setImages] = useState([])
+  const [images, setImages] = useImmer([])
   // 声明一个引用，用于表示 dialog 元素
   const dialogRef = useRef(null)
   // 使用 useDialog 自定义 Hook
@@ -26,7 +27,6 @@ function App() {
       />
 
       <Prompt 
-        images={images} 
         setImages={setImages} 
         dialogAction={dialogAction}
         zhMode={zhMode}

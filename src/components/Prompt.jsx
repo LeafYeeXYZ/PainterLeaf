@@ -17,7 +17,7 @@ for (const model in models) {
   options.push(<option value={model} key={model}>{models[model]}</option>)
 }
 
-function Prompt({ children, images, setImages, dialogAction, zhMode }) {
+function Prompt({ children, setImages, dialogAction, zhMode }) {
   // 引用元素
   const submitRef = useRef(null)
   const promptRef = useRef(null)
@@ -34,13 +34,16 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
 
     try {
       // 如果用户没有输入提示词，不发送请求
-      if (!text) throw '请输入提示词'
+      if (!text) throw { message: '请输入提示词', deleteLoading: false }
       // 获取模型名称
       const model = modelRef.current.value
       // 如果没有选择模型，不发送请求
-      if (!model) throw '模型获取失败'
+      if (!model) throw { message: '请选择模型', deleteLoading: false }
       // 插入加载图片
-      setImages([...images, { url: '', type: 'loading' }])
+      setImages(draft => {
+        draft.unshift({ url: '', type: 'loading' })
+        return
+      })
       // 编码为 URL
       const encodedText = encodeURI(text)
       const encodedModel = encodeURI(model)
@@ -49,23 +52,34 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       // 解析响应体
       const blob = await res.blob()
       // 根据图片大小判断是否为错误信息
-      if (blob.size < 1024) throw '服务端返回空白图片, 可能是服务器错误或提示词不当'
+      if (blob.size < 1024) throw { message: '服务端返回空白图片, 可能是服务器错误或提示词不当', deleteLoading: true }
       // 移除加载图片
-      setImages(images.slice(0, -1))
+      setImages(draft => {
+        draft.shift()
+        return
+      })
       // 创建图片对象的 URL
       const url = URL.createObjectURL(blob)
       // 更新图片列表
-      setImages([...images, { url, type: 'image' }])
+      setImages(draft => {
+        draft.unshift({ url, type: 'image' })
+        return
+      })
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
       submitRef.current.textContent = '生成'
     } 
     catch (error) {
+      // 移除加载图片
+      if (error.deleteLoading) {
+        setImages(draft => {
+          draft.shift()
+          return
+        })
+      }
       // 打开对话框
       dialogAction({ type: 'open', title: '生成失败', content: error.message || error })
-      // 移除加载图片
-      setImages(images.slice(0, -1))
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
@@ -157,12 +171,6 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
 }
 
 Prompt.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
   setImages: PropTypes.func.isRequired,
   dialogAction: PropTypes.func.isRequired,
   zhMode: PropTypes.bool.isRequired,

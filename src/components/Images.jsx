@@ -21,8 +21,6 @@ if (!loadingImage) {
 }
 
 function Images({ images, zhMode }) {
-  // 将 images 倒置
-  images = images.slice().reverse()
   // 渲染图片列表
   const slides = images.map(image => {
     return (
