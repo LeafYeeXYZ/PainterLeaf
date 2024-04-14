@@ -2,6 +2,7 @@ import '../styles/Prompt.css'
 import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { SERVER } from '../config.json'
+import getHash from '../libs/getHash'
 
 // 获取模型列表
 let models
@@ -41,7 +42,7 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       if (!model) throw { message: '请选择模型', deleteLoading: false }
       // 插入加载图片
       setImages(draft => {
-        draft.unshift({ url: '', type: 'loading' })
+        draft.unshift({ url: '', type: 'loading', star: 'notStared', hash: '' })
         return
       })
       // 编码为 URL
@@ -60,9 +61,10 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       })
       // 创建图片对象的 URL
       const url = URL.createObjectURL(blob)
+      const hash = await getHash(url)
       // 更新图片列表
       setImages(draft => {
-        draft.unshift({ url, type: 'image' })
+        draft.unshift({ url, type: 'image', star: 'notStared', hash })
         return
       })
       // 启用按钮

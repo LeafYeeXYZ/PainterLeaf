@@ -23,7 +23,9 @@ function App() {
 
       <Images 
         images={images} 
-        zhMode={zhMode}
+        setImages={setImages}
+        zhMode={zhMode} 
+        dialogAction={dialogAction}
       />
 
       <Prompt 

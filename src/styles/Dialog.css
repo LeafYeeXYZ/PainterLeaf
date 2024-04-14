@@ -6,6 +6,10 @@
   border: none;
   background-color: rgba(15, 0, 0, 0.3);
   z-index: 1000;
+  &:focus {
+    outline: none;
+    border: none;
+  }
 
   & .dialog-container {
     width: 100%;

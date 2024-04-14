@@ -46,20 +46,49 @@
   }
 }
 
-.image-downloader {
+.image-funcs {
   position: absolute;
   top: 0;
   right: 0;
-  margin: 0.65rem 0.6rem;
-  padding: 0.5rem 1rem;
-  border-radius: 3rem;
-  font-size: 1rem;
-  font-weight: bold;
-  backdrop-filter: blur(10px);
-  color: var(--textcolor);
-  background: var(--backcolor);
-  transition: all 0.3s ease;
-  &::before {
+  width: 100%;
+  padding: 0.65rem 0.6rem;
+  
+  & .image-downloader,
+  & .image-deleter,
+  & .image-marker {
+    vertical-align: middle;
+    float: right;
+    margin-left: 0.6rem;
+    padding: 0.5rem 1rem;
+    border-radius: 3rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--textcolor);
+    background: var(--backcolor);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    &:hover::after,
+    &:hover::before {
+      width: 2rem;
+    }
+  }
+  & .image-marker {
+    float: left;
+    margin-left: 0;
+    transition: all 0.3s ease;
+    &::after {
+      content: '收藏';
+      display: inline-block;
+      width: 0;
+      height: 1rem;
+      font-weight: normal;
+      font-size: 0.8rem;
+      overflow: hidden;
+      transform: translateX(6px);
+      transition: all 0.2s ease;
+    }
+  }
+  & .image-downloader::before {
     content: '下载';
     display: inline-block;
     width: 0;
@@ -69,14 +98,31 @@
     overflow: hidden;
     transition: all 0.2s ease;
   }
-  &:hover::before {
-    width: 2rem;
+  & .image-deleter::before {
+    content: '删除';
+    display: inline-block;
+    width: 0;
+    height: 1rem;
+    font-weight: normal;
+    font-size: 0.8rem;
+    overflow: hidden;
+    transition: all 0.2s ease;
   }
 }
 
 @media screen and (max-width: 512px) {
-  .image-downloader {
-    transform: scale(0.85);
-    margin: 0.35rem 0.3rem;
+  .image-funcs {
+    padding: 0.35rem 0.3rem;
+    transform: scale(0.85) translateX(7.5%);
+  }
+  .image-downloader,
+  .image-deleter {
+    margin-left: 0.3rem;
   }  
+  .image-marker {
+    transform: translateX(-106%);
+    &:hover {
+      transform: translateX(-64%);
+    }
+  }
 }
