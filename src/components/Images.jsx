@@ -120,11 +120,12 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   useEffect(() => {
     localforage.getItem('staredImages').then(staredImages => {
       if (staredImages) {
-        setImages(staredImages.map(image => {
+        const initialImages = staredImages.map(image => {
           const url = URL.createObjectURL(image.blob)
           const hash = image.hash
           return { url, type: 'image', star: 'stared', hash }
-        }))
+        }).reverse() 
+        setImages(initialImages)
       }
     })
     return () => {
