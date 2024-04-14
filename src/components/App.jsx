@@ -1,22 +1,47 @@
 import '../styles/App.css'
+import '../styles/Widgets.css'
 import Images from './Images.jsx'
 import Prompt from './Prompt.jsx'
 import Dialog from './Dialog.jsx'
-import LangSwitcher from './LangSwitcher.jsx'
-
-import { useState, useRef } from 'react'
+import LangSwitcher from './Widgets/LangSwitcher.jsx'
+import localforage from 'localforage'
+import { useState, useRef, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
 
 function App() {
-  // 声明一个状态变量，用于保存图片的 URL 和类型
+  /**
+   * 声明一个状态变量，用于保存图片的 URL 和类型
+   * @type {Array<{
+   *  url: string,
+   *  type: 'image' | 'loading',
+   *  star: 'stared' | 'notStared',
+   *  hash: string
+   * }>}
+   */
   const [images, setImages] = useImmer([])
-  // 声明一个引用，用于表示 dialog 元素
+  /** 一个引用，用于表示 dialog 元素 */
   const dialogRef = useRef(null)
   // 使用 useDialog 自定义 Hook
   const { dialogState, dialogAction } = useDialog(dialogRef)
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
+  // 首次渲染时从 localforage 中获取已收藏图片列表
+  useEffect(() => {
+    localforage.getItem('staredImages')
+    .then(staredImages => {
+      if (staredImages) {
+        const initialImages = staredImages.map(image => {
+          const url = URL.createObjectURL(image.blob)
+          const hash = image.hash
+          return { url, type: 'image', star: 'stared', hash }
+        })
+        initialImages.reverse()
+        setImages(initialImages)
+      }
+    })
+    return () => setImages([])
+  }, [setImages])
 
   return (
     <main className="container">

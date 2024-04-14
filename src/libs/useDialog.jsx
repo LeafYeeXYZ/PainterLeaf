@@ -32,7 +32,15 @@ function reducer(state, action) {
  * 接受一个对话框的引用
  * 返回该对话框的状态和操作函数
  * @param {useRef} dialogRef 对话框的引用
- * @returns { dialogState, dialogAction } 返回对话框的状态和操作函数
+ * @typedef {Object} dialogState 对话框的状态
+ * @property {string} dialogState.title 对话框的标题
+ * @property {string} dialogState.content 对话框的内容
+ * @property {useRef} dialogState.ele 对话框的引用
+ * @typedef {Function} dialogAction 对话框的操作函数
+ * @property {'open' | 'close'} dialogAction.type 打开或关闭对话框
+ * @property {string} dialogAction.title 对话框的标题
+ * @property {string} dialogAction.content 对话框的内容
+ * @returns {Object} 返回对话框的状态和操作函数
  */
 export default function useDialog(dialogRef) {
   // 使用 useReducer

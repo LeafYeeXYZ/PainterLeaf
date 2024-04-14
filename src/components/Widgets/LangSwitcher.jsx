@@ -1,6 +1,5 @@
 import { Switch, ConfigProvider } from 'antd'
 import PropTypes from 'prop-types'
-import '../styles/LangSwitcher.css'
 
 function LangSwitcher({ setZhMode }) {
   const handleChange = checked => {

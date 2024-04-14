@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import localforage from 'localforage'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled } from '@ant-design/icons'
-import { useEffect } from 'react'
 import getHash from '../libs/getHash'
 
 // 尝试从 localforage 中获取 加载图片
@@ -115,27 +114,6 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       </SwiperSlide>
     )
   })
-
-  // 首次渲染时从 localforage 中获取已收藏图片列表
-  useEffect(() => {
-    localforage.getItem('staredImages').then(staredImages => {
-      if (staredImages) {
-        const initialImages = staredImages.map(image => {
-          const url = URL.createObjectURL(image.blob)
-          const hash = image.hash
-          return { url, type: 'image', star: 'stared', hash }
-        })
-        initialImages.reverse()
-        setImages(initialImages)
-      }
-    })
-    return () => {
-      setImages(draft => {
-        draft.shift()
-        return
-      })
-    }
-  }, [setImages])
 
   return (
     <div className="images-container">
