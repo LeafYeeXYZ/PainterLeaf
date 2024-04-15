@@ -17,7 +17,7 @@ import clearDB from '../libs/clearDB.js'
 // 获取已收藏图片列表
 const staredImages = await getStaredImages()
 // 如果存在非目标版本数据，确认后清空 IndexedDB
-const versionInfo = await clearDB(20240415)
+const versionInfo = await clearDB(2024041516)
 
 // 主组件
 function App() {
