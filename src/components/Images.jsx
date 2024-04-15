@@ -56,12 +56,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const star = images[index].star
       const prompt = images[index].prompt || '获取失败'
       // 获取图片 blob
-      let blob
-      try {
-        blob = await (await fetch(url)).blob()    
-      } catch (error) {
-        throw `获取图片失败; 链接: ${url}, 错误: ${error.message || error}, Blob: ${blob}`
-      }
+      const blob = await (await fetch(url)).blob()
       // 如果收藏, 则将图片信息存入 localforage
       if (star === 'notStared') {
         // 获取已收藏图片列表
@@ -128,8 +123,21 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     )
   })
 
+  // 渲染 Swiper
+  const swiper = (
+    <Swiper
+      effect={'cards'}
+      grabCursor={true}
+      modules={[EffectCards]}
+      className="images-swiper"
+    >
+      {slides}
+    </Swiper>
+  )
+
   return (
     <div className="images-container">
+
       <div className="images-intro">
         <span>
           这里是赛博画师小叶子<br />
@@ -138,17 +146,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
           本站开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
         </span>
       </div>
-      {
-        images.length === 0 ||
-        <Swiper
-          effect={'cards'}
-          grabCursor={true}
-          modules={[EffectCards]}
-          className="images-swiper"
-        >
-          {slides}
-        </Swiper>
-      }
+
+      { images.length === 0 || swiper }
+      
     </div>
   )
 }
