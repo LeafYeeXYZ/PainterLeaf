@@ -56,7 +56,12 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const star = images[index].star
       const prompt = images[index].prompt || '获取失败'
       // 获取图片 blob
-      const blob = await (await fetch(url)).blob()    
+      let blob
+      try {
+        blob = await (await fetch(url)).blob()    
+      } catch (error) {
+        throw `获取图片失败; 链接: ${url}, 错误: ${error.message || error}, Blob: ${blob}`
+      }
       // 如果收藏, 则将图片信息存入 localforage
       if (star === 'notStared') {
         // 获取已收藏图片列表
