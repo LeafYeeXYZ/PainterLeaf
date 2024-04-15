@@ -13,11 +13,14 @@ import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
 import clearDB from '../libs/clearDB.js'
+import checkBrowser from '../libs/checkBrowser.js'
 
 // 获取已收藏图片列表
 const staredImages = await getStaredImages()
 // 如果存在非目标版本数据，确认后清空 IndexedDB
 const versionInfo = await clearDB(2024041517)
+// 检测浏览器版本是否符合编译目标
+checkBrowser()
 
 // 主组件
 function App() {
