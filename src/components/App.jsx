@@ -7,7 +7,7 @@ import Prompt from './Prompt.jsx'
 import Dialog from './Dialog.jsx'
 import LangSwitcher from './Widgets/LangSwitcher.jsx'
 // Hook
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
@@ -32,10 +32,8 @@ function App() {
    * }>}
    */
   const [images, setImages] = useImmer([])
-  /** 一个引用，用于表示 dialog 元素 */
-  const dialogRef = useRef(null)
   // 使用 useDialog 自定义 Hook
-  const { dialogState, dialogAction } = useDialog(dialogRef)
+  const { dialogState, dialogAction, dialogRef } = useDialog()
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
   // 首次渲染时设置已收藏图片列表, 视情况弹出更新提示
