@@ -6,20 +6,11 @@ import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import getHash from '../libs/getHash'
-import { get, set, update } from 'idb-keyval'
+import getLoadingImage from '../libs/getLoadingImage'
+import { update } from 'idb-keyval'
 
-// 尝试从 IndexedDB 中获取加载图片
-// 如果不存在则向服务器请求
-let imgurl = ''
-const loadingImage = await get('loadingImage')
-if (!loadingImage) {
-  const res = await fetch('/loading.gif')
-  const blob = await res.blob()
-  imgurl = URL.createObjectURL(blob)
-  await set('loadingImage', blob)
-} else {
-  imgurl = URL.createObjectURL(loadingImage)
-}
+// 获取加载图片
+const loadingImage = await getLoadingImage()
 
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 删除按钮点击事件
@@ -102,7 +93,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       <SwiperSlide key={image.url} className='image-slide'>
         {
           image.type === 'loading' ? 
-          <img src={imgurl} className='image-loading image-item' /> :
+          <img src={loadingImage} className='image-loading image-item' /> :
           <img src={image.url} className='image-item' />
         }
         { 

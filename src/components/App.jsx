@@ -12,9 +12,12 @@ import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
+import clearDB from '../libs/clearDB.js'
 
 // 获取已收藏图片列表
 const staredImages = await getStaredImages()
+// 如果存在非目标版本数据，确认后清空 IndexedDB
+const versionInfo = await clearDB(20240415)
 
 // 主组件
 function App() {
@@ -35,8 +38,11 @@ function App() {
   const { dialogState, dialogAction } = useDialog(dialogRef)
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
-  // 首次渲染时设置已收藏图片列表
-  useEffect(() => setImages(staredImages), [setImages])
+  // 首次渲染时设置已收藏图片列表, 视情况弹出更新提示
+  useEffect(() => {
+    setImages(staredImages)
+    versionInfo && dialogAction(versionInfo)
+  }, [setImages, dialogAction])
 
   return (
     <main className="container">
