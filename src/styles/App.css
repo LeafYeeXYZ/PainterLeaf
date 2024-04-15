@@ -13,8 +13,9 @@
   --prompt-btn-width: 100%;
   --prompt-btn-gap: 0;
   
-  --images-height: calc(100vh - var(--prompt-height));
-  --image-size: min((100vh - var(--prompt-height))*0.9, 100vw*0.9);
+  --images-height: calc(100dvh - var(--prompt-height));
+  --image-margin: calc((var(--images-height) - var(--image-size))/2) calc((100dvw - var(--image-size))/2);
+  --image-size: min((100dvh - var(--prompt-height))*0.9, 100dvw*0.9);
 
   --text: #ff7171;
   --text-hover: #ff4f4f;

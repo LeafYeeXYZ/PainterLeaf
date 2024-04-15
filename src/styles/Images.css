@@ -24,7 +24,7 @@
     position: absolute;
     width: var(--image-size);
     height: var(--image-size);
-    margin: calc((var(--images-height) - var(--image-size))/2) calc((100vw - var(--image-size))/2);
+    margin: var(--image-margin);
     top: 0;
     left: 0;
     & .image-slide { border-radius: 20px; }
