@@ -65,6 +65,7 @@
   }
   
   & .image-downloader,
+  & .image-info,
   & .image-deleter,
   & .image-marker {
     margin-left: 0.6rem;
@@ -83,7 +84,6 @@
   }
   & .image-marker {
     margin-left: 0;
-    transition: all 0.3s ease;
     &::after {
       content: '收藏';
       display: inline-block;
@@ -116,6 +116,17 @@
     overflow: hidden;
     transition: all 0.2s ease;
   }
+  & .image-info::before {
+    content: '提示词';
+    display: inline-block;
+    width: 0;
+    height: 1rem;
+    font-weight: normal;
+    font-size: 0.8rem;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  & .image-info:hover::before { width: 3rem; }
 }
 
 @media screen and (max-width: 512px) {

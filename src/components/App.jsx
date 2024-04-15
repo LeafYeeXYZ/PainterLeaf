@@ -4,10 +4,12 @@ import Images from './Images.jsx'
 import Prompt from './Prompt.jsx'
 import Dialog from './Dialog.jsx'
 import LangSwitcher from './Widgets/LangSwitcher.jsx'
-import localforage from 'localforage'
 import { useState, useRef, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
+import getStaredImages from '../libs/getStaredImages.js'
+
+const staredImages = await getStaredImages()
 
 function App() {
   /**
@@ -16,7 +18,8 @@ function App() {
    *  url: string,
    *  type: 'image' | 'loading',
    *  star: 'stared' | 'notStared',
-   *  hash: string
+   *  hash: string,
+   *  prompt: string,
    * }>}
    */
   const [images, setImages] = useImmer([])
@@ -26,21 +29,8 @@ function App() {
   const { dialogState, dialogAction } = useDialog(dialogRef)
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
-  // 首次渲染时从 localforage 中获取已收藏图片列表
-  useEffect(() => {
-    localforage.getItem('staredImages')
-    .then(staredImages => { if (staredImages) {
-      // 将已收藏图片列表转换为图片信息列表
-      const initialImages = staredImages.map(image => {
-        const url = URL.createObjectURL(image.blob)
-        const hash = image.hash
-        return { url, type: 'image', star: 'stared', hash }
-      })
-      // 倒转并设置图片信息列表
-      initialImages.reverse()
-      setImages(initialImages)
-    }})
-  }, [setImages])
+  // 首次渲染时设置已收藏图片列表
+  useEffect(() => setImages(staredImages), [setImages])
 
   return (
     <main className="container">

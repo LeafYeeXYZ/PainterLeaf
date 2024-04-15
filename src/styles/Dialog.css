@@ -41,11 +41,16 @@
 
       & .dialog-content {
         content: var(--errorContent);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--textcolor) var(--imgback);
         display: block;
         width: 100%;
-        height: calc(100% - 40px);
+        height: calc(100% - 58px);
         text-align: left;
         padding: 0 18px;
+        margin-bottom: 18px;
         font-family: Microsoft YaHei;
         color: var(--textcolor);
         opacity: 0.9;

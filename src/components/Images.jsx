@@ -5,7 +5,7 @@ import { EffectCards } from 'swiper/modules'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import localforage from 'localforage'
-import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled } from '@ant-design/icons'
+import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import getHash from '../libs/getHash'
 
 // 尝试从 localforage 中获取 加载图片
@@ -54,6 +54,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       // 获取图片 index
       const index = images.findIndex(image => image.hash === hash)
       const star = images[index].star
+      const prompt = images[index].prompt || '获取失败'
       // 获取图片 blob
       const blob = await (await fetch(url)).blob()    
       // 如果收藏, 则将图片信息存入 localforage
@@ -61,7 +62,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         // 获取已收藏图片列表
         const staredImages = (await localforage.getItem('staredImages')) || []
         // 将图片信息存入 localforage
-        staredImages.push({ hash, blob })
+        staredImages.push({ hash, blob, prompt })
         await localforage.setItem('staredImages', staredImages)
       }
       // 如果取消收藏, 则从 localforage 中删除
@@ -100,13 +101,22 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         { 
           image.type === 'loading' ||
           <div className='image-funcs'>
+
             <div className='image-funcs-left'>
               <a href={image.url} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
             </div>
+
             <div className='image-funcs-right'>
+              <a href={image.url} className='image-info'
+                onClick={e => {
+                  e.preventDefault()
+                  dialogAction({ type: 'open', title: '本图提示词', content: image.prompt || '获取失败' })
+                }}              
+              ><InfoCircleOutlined /></a>
               <a href={image.url} download className='image-downloader'><DownloadOutlined /></a>
               <a href={image.url} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
             </div>
+
           </div>
         }
       </SwiperSlide>
@@ -144,6 +154,8 @@ Images.propTypes = {
       url: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       star: PropTypes.string.isRequired,
+      hash: PropTypes.string.isRequired,
+      prompt: PropTypes.string.isRequired,
     }),
   ).isRequired,
   setImages: PropTypes.func.isRequired,

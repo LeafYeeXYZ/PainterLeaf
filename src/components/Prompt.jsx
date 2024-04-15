@@ -42,7 +42,7 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       if (!model) throw { message: '请选择模型', deleteLoading: false }
       // 插入加载图片
       setImages(draft => {
-        draft.unshift({ url: '', type: 'loading', star: 'notStared', hash: '' })
+        draft.unshift({ url: '', type: 'loading', star: 'notStared', hash: '', prompt: '' })
         return
       })
       // 编码为 URL
@@ -64,7 +64,7 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       const hash = await getHash(url)
       // 更新图片列表
       setImages(draft => {
-        draft.unshift({ url, type: 'image', star: 'notStared', hash })
+        draft.unshift({ url, type: 'image', star: 'notStared', hash, prompt: text })
         return
       })
       // 启用按钮
