@@ -4,19 +4,19 @@ import 'swiper/css/effect-cards'
 import { EffectCards } from 'swiper/modules'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
-import localforage from 'localforage'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import getHash from '../libs/getHash'
+import { get, set, update } from 'idb-keyval'
 
-// 尝试从 localforage 中获取 加载图片
+// 尝试从 IndexedDB 中获取加载图片
 // 如果不存在则向服务器请求
 let imgurl = ''
-const loadingImage = await localforage.getItem('loadingImage')
+const loadingImage = await get('loadingImage')
 if (!loadingImage) {
   const res = await fetch('/loading.gif')
   const blob = await res.blob()
   imgurl = URL.createObjectURL(blob)
-  await localforage.setItem('loadingImage', blob)
+  await set('loadingImage', blob)
 } else {
   imgurl = URL.createObjectURL(loadingImage)
 }
@@ -65,20 +65,19 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const prompt = images[index].prompt || '获取失败'
       // 获取图片 blob
       const blob = await (await fetch(url)).blob()
-      // 如果收藏, 则将图片信息存入 localforage
+      // 如果收藏, 则将图片信息存入 IndexedDB
       if (star === 'notStared') {
-        // 获取已收藏图片列表
-        const staredImages = (await localforage.getItem('staredImages')) || []
-        // 将图片信息存入 localforage
-        staredImages.push({ hash, blob, prompt })
-        await localforage.setItem('staredImages', staredImages)
+        await update('staredImages', staredImages => {
+          staredImages.push({ hash, blob, prompt })
+          return staredImages
+        })
       }
       // 如果取消收藏, 则从 localforage 中删除
       else {
-        // 获取已收藏图片列表
-        const staredImages = await localforage.getItem('staredImages')
-        // 从 localforage 中删除
-        await localforage.setItem('staredImages', staredImages.filter(image => image.hash !== hash))
+        await update('staredImages', staredImages => {
+          const result = staredImages.filter(image => image.hash !== hash)
+          return result
+        })
       }
       // 启用按钮
       event.target.disabled = false

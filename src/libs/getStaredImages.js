@@ -1,12 +1,12 @@
-import localforage from 'localforage'
+import { get, set } from 'idb-keyval'
 
 /**
- * 从 localforage 中获取已收藏图片列表
+ * 从 IndexedDB 中获取已收藏图片列表
  * @returns {Promise<Array<{url: string, type: 'image', star: 'stared', hash: string, prompt: string}>>} 返回图片信息数组
  */
 export default async function getStaredImages() {
-  const staredImages = await localforage.getItem('staredImages')
-  if (staredImages) {
+  const staredImages = await get('staredImages')
+  if (staredImages && typeof staredImages === 'object') {
     // 将已收藏图片列表转换为图片信息列表
     const initialImages = staredImages.map(image => {
       const url = URL.createObjectURL(image.blob)
@@ -18,6 +18,7 @@ export default async function getStaredImages() {
     initialImages.reverse()
     return initialImages
   } else {
+    await set('staredImages', [])
     return []
   }
 }
