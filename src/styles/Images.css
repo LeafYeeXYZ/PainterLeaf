@@ -48,19 +48,19 @@
   top: 0;
   right: 0;
   width: 100%;
+  & .image-funcs-right,
   & .image-funcs-left {
     position: absolute;
     padding: 0.65rem 0.6rem;
     display: flex;
-    left: 0;
-    justify-content: flex-start;
   }
   & .image-funcs-right {
-    position: absolute;
-    padding: 0.65rem 0.6rem;
-    display: flex;
     right: 0;
     justify-content: flex-end;
+  }
+  & .image-funcs-left {
+    left: 0;
+    justify-content: flex-start;
   }
   
   & .image-downloader,

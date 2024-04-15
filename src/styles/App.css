@@ -13,8 +13,12 @@
   --prompt-btn-width: 100%;
   --prompt-btn-gap: 0;
   
+  /* 如果不支持 dvw 则使用 vw */
+  --images-height: calc(100vh - var(--prompt-height));
   --images-height: calc(100dvh - var(--prompt-height));
-  --image-margin: calc((var(--images-height) - var(--image-size))/2) calc((100dvw - var(--image-size))/2);
+  --image-margin: calc( (var(--images-height) - var(--image-size)) / 2 ) calc( (100vw - var(--image-size)) / 2 );
+  --image-margin: calc( (var(--images-height) - var(--image-size)) / 2 ) calc( (100dvw - var(--image-size)) / 2 );
+  --image-size: min((100vh - var(--prompt-height))*0.9, 100vw*0.9);
   --image-size: min((100dvh - var(--prompt-height))*0.9, 100dvw*0.9);
 
   --text: #ff7171;
@@ -30,6 +34,22 @@
     --prompt-height: 210px;
     --prompt-btn-width: calc(50% - 8px);
     --prompt-btn-gap: 10px;
+  }
+}
+
+@media screen and (max-height: 440px){
+  .container {
+    display: none;
+  }
+  html::before {
+    content: "设备屏幕高度过小";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fa255e;
   }
 }
 
