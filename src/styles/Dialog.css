@@ -22,7 +22,7 @@
     & .dialog-sub {
       width: 300px;
       height: 200px;
-      background-color: var(--imgback);
+      background-color: var(--back);
       border-radius: 20px;
       overflow: hidden;
 
@@ -35,16 +35,15 @@
         padding: 0 18px;
         font-family: Microsoft YaHei;
         font-weight: bold;
-        color: var(--textcolor);
+        color: var(--text);
         border-radius: 20px 20px 0 0;
       }
 
       & .dialog-content {
-        content: var(--errorContent);
         overflow-y: auto;
         overflow-x: hidden;
         scrollbar-width: thin;
-        scrollbar-color: var(--textcolor) var(--imgback);
+        scrollbar-color: var(--text) var(--back);
         display: block;
         width: 100%;
         height: calc(100% - 58px);
@@ -52,7 +51,7 @@
         padding: 0 18px;
         margin-bottom: 18px;
         font-family: Microsoft YaHei;
-        color: var(--textcolor);
+        color: var(--text);
         opacity: 0.9;
       }
     }
@@ -67,17 +66,17 @@
       transition: all 0.2s ease;
       font-family: Microsoft YaHei;
       font-weight: bold;
-      color: var(--textcolor);
-      background-color: var(--backcolor);
+      color: var(--text);
+      background-color: var(--back);
       &:hover {
         transform: scale(1.02);
-        background-color: var(--backcolor-hover);
-        color: var(--textcolor-hover);
+        background-color: var(--back-hover);
+        color: var(--text-hover);
       }
       &:active {
         transform: scale(0.98);
-        background-color: var(--backcolor-hover);
-        color: var(--textcolor-hover);
+        background-color: var(--back-hover);
+        color: var(--text-hover);
       }
     }
   }

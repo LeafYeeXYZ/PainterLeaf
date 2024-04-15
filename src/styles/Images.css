@@ -1,8 +1,8 @@
 .images-container {
   position: relative;
   width: 100%;
-  height: calc(100% - var(--form-height));
-  background-color: var(--imgback);
+  height: var(--images-height);
+  background-color: var(--back);
 
   & .images-intro {
     width: 100%;
@@ -13,24 +13,21 @@
     line-height: 40px;
     text-align: center;
     font-weight: bold;
-    color: var(--textcolor);
+    color: var(--text);
     opacity: 0.9;
-
     & .images-intro-lang {
-      color: var(--textcolor-highlight);
+      color: var(--text-highlight);
     }
   }
 
   & .images-swiper {
     position: absolute;
-    width: var(--imgsize);
-    height: var(--imgsize);
-    margin: calc((100vh - var(--form-height) - var(--imgsize))/2) calc((100vw - var(--imgsize))/2);
+    width: var(--image-size);
+    height: var(--image-size);
+    margin: calc((var(--images-height) - var(--image-size))/2) calc((100vw - var(--image-size))/2);
     top: 0;
-
-    & .swiper-slide {
-      border-radius: 20px;
-    }
+    left: 0;
+    & .image-slide { border-radius: 20px; }
     
     & .image-item {
       width: 100%;
@@ -41,7 +38,7 @@
 
     & .image-loading {
       padding: 15%;
-      background-color: var(--loading-back);
+      background-color: var(--back-lighter);
     }
   }
 }
@@ -75,8 +72,8 @@
     border-radius: 3rem;
     font-size: 1rem;
     font-weight: bold;
-    color: var(--textcolor);
-    background: var(--backcolor);
+    color: var(--text);
+    background: var(--back);
     transition: all 0.3s ease;
     cursor: pointer;
     &:hover::after,

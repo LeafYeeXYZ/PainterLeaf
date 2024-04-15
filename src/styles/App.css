@@ -3,26 +3,35 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  --form-height: 260px; /* 一个 button / select 为 50px */
-  --form-item-width: 100%;
-  --textcolor: #ff7171;
-  --textcolor-hover: #ff4f4f;
-  --textcolor-highlight: #fa255e;
-  --backcolor: #fff0f0;
-  --backcolor-hover: #ffcece;
-  --boradercolor: #a04141;
-  --imgback: #fff3f5;
-  --imgsize: min((100vh - var(--form-height))*0.9, 100vw*0.9);
-  --loading-back: #fffbfb;
-}
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-a {
-  color: var(--textcolor-highlight);
+  --prompt-height: 260px;
+  --prompt-btn-width: 100%;
+  --prompt-btn-gap: 0;
+  
+  --images-height: calc(100vh - var(--prompt-height));
+  --image-size: min((100vh - var(--prompt-height))*0.9, 100vw*0.9);
+
+  --text: #ff7171;
+  --text-hover: #ff4f4f;
+  --text-highlight: #fa255e;
+  --back: #fff0f0;
+  --back-hover: #ffcece;
+  --back-lighter: #fffdfd;
 }
 
 @media screen and (min-width: 768px){
   .container {
-    --form-height: 210px;
-    --form-item-width: calc(50% - 8px);
+    --prompt-height: 210px;
+    --prompt-btn-width: calc(50% - 8px);
+    --prompt-btn-gap: 10px;
   }
+}
+
+a {
+  color: var(--text-highlight);
 }
