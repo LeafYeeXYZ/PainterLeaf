@@ -64,7 +64,7 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       const hash = await getHash(url)
       // 更新图片列表
       setImages(draft => {
-        draft.unshift({ url, type: 'image', star: 'notStared', hash, prompt: text })
+        draft.unshift({ url, type: 'image', star: 'notStared', hash, prompt: `${text} (${models[model]})` })
         return
       })
       // 启用按钮
