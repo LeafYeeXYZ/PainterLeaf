@@ -51,16 +51,18 @@
   top: 0;
   right: 0;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   & .image-funcs-left {
+    position: absolute;
     padding: 0.65rem 0.6rem;
     display: flex;
+    left: 0;
     justify-content: flex-start;
   }
   & .image-funcs-right {
+    position: absolute;
     padding: 0.65rem 0.6rem;
     display: flex;
+    right: 0;
     justify-content: flex-end;
   }
   
@@ -131,9 +133,9 @@
 
 @media screen and (max-width: 512px) {
   .image-funcs-left {
-    transform: scale(0.85) translate(-7.5%, -7.5%);
+    transform: scale(0.8) translate(-10%, -10%);
   }
   .image-funcs-right {
-    transform: scale(0.85) translate(7.5%, -7.5%);
+    transform: scale(0.8) translate(10%, -10%);
   }
 }
