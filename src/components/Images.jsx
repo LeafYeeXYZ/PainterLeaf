@@ -28,8 +28,13 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     const url = event.target.href || event.target.parentElement.href || event.target.parentElement.parentElement.href || event.target.parentElement.parentElement.parentElement.href
     const hash = await getHash(url)
     const index = images.findIndex(image => image.hash === hash)
+    // 如果没有获取到 index, 则报错
+    if (index === -1) {
+      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
+      return
+    }
     // 如果已收藏，弹出提示框
-    if (images[index].star === 'stared') {
+    else if (images[index].star === 'stared') {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
       return
     }
@@ -53,6 +58,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const hash = await getHash(url)
       // 获取图片 index
       const index = images.findIndex(image => image.hash === hash)
+      // 如果没有获取到 index, 则报错
+      if (index === -1) throw '未找到图片'
+      // 获取图片信息
       const star = images[index].star
       const prompt = images[index].prompt || '获取失败'
       // 获取图片 blob
