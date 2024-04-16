@@ -11,8 +11,11 @@ export default function checkBrowser() {
     (safari && Number(safari[1]) < 15.4)
   ) {
     alert(`
-      您的浏览器版本过低，可能无法正常使用本应用
-      建议使用最新版本的 Chrome / Edge / Firefox / Safari 浏览器
+      您的浏览器版本过低
+      可能无法正常使用本应用
+      建议使用最新版本
+      Chrome/Edge/Firefox/Safari
+      等现代浏览器
     `)
   }
 }

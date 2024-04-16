@@ -5,21 +5,40 @@ import { EffectCards } from 'swiper/modules'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
-import getHash from '../libs/getHash'
 import getLoadingImage from '../libs/getLoadingImage'
 import { update } from 'idb-keyval'
+import { useState, useEffect } from 'react'
 
 // 获取加载图片
 const loadingImage = await getLoadingImage()
 
 function Images({ images, setImages, zhMode, dialogAction }) {
+  // 下载按钮点击事件
+  function handleDownload(event) {
+    event.preventDefault()
+    // 获取图片
+    const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
+    const index = images.findIndex(image => image.hash === hash)
+    if (index === -1) {
+      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
+      return
+    }
+    // 创建 a 标签
+    const a = document.createElement('a')
+    a.href = images[index].blob
+    // 把提示词删去 (xxx 后作为文件名
+    // 如 cute cat (xxx xxx) 只保留 cat
+    const reg = /\(([^)]*)\)/
+    a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
+    a.click()
+  }
+
   // 删除按钮点击事件
   async function handleDelete(event) {
     event.preventDefault()
-    const url = event.target.href || event.target.parentElement.href || event.target.parentElement.parentElement.href || event.target.parentElement.parentElement.parentElement.href
-    const hash = await getHash(url)
+    // 获取图片
+    const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
     const index = images.findIndex(image => image.hash === hash)
-    // 如果没有获取到 index, 则报错
     if (index === -1) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
       return
@@ -31,8 +50,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 如果没有收藏，直接删除
     else {
-      URL.revokeObjectURL(url)
-      setImages(images.filter(image => image.url !== url))
+      setImages(images.filter(image => image.hash !== hash))
     }
   }
 
@@ -43,19 +61,15 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     event.target.disabled = true
     event.target.style.cursor = 'not-allowed'
     try {
-      // 获取图片 URL
-      const url = event.target.href || event.target.parentElement.href || event.target.parentElement.parentElement.href || event.target.parentElement.parentElement.parentElement.href
       // 获取图片 hash
-      const hash = await getHash(url)
+      const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
       // 获取图片 index
       const index = images.findIndex(image => image.hash === hash)
-      // 如果没有获取到 index, 则报错
       if (index === -1) throw '未找到图片'
       // 获取图片信息
       const star = images[index].star
       const prompt = images[index].prompt || '获取失败'
-      // 获取图片 blob
-      const blob = await (await fetch(url)).blob()
+      const blob = images[index].blob
       // 如果收藏, 则将图片信息存入 IndexedDB
       if (star === 'notStared') {
         await update('staredImages', staredImages => {
@@ -90,29 +104,29 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   // 渲染图片列表
   const slides = images.map(image => {
     return (
-      <SwiperSlide key={image.url} className='image-slide'>
+      <SwiperSlide key={image.hash} className='image-slide'>
         {
           image.type === 'loading' ? 
           <img src={loadingImage} className='image-loading image-item' /> :
-          <img src={image.url} className='image-item' />
+          <Img blob={image.blob} className='image-item' />
         }
         { 
           image.type === 'loading' ||
           <div className='image-funcs'>
 
             <div className='image-funcs-left'>
-              <a href={image.url} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
+              <a data-hash={image.hash} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
             </div>
 
             <div className='image-funcs-right'>
-              <a href={image.url} className='image-info'
+              <a data-hash={image.hash} className='image-info'
                 onClick={e => {
                   e.preventDefault()
                   dialogAction({ type: 'open', title: '本图提示词', content: image.prompt || '获取失败' })
                 }}              
               ><InfoCircleOutlined /></a>
-              <a href={image.url} download className='image-downloader'><DownloadOutlined /></a>
-              <a href={image.url} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
+              <a data-hash={image.hash} className='image-downloader' onClick={handleDownload}><DownloadOutlined /></a>
+              <a data-hash={image.hash} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
             </div>
 
           </div>
@@ -154,7 +168,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
 Images.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      url: PropTypes.string.isRequired,
+      blob: PropTypes.instanceOf(Blob).isRequired,
       type: PropTypes.string.isRequired,
       star: PropTypes.string.isRequired,
       hash: PropTypes.string.isRequired,
@@ -164,6 +178,37 @@ Images.propTypes = {
   setImages: PropTypes.func.isRequired,
   zhMode: PropTypes.bool.isRequired,
   dialogAction: PropTypes.func.isRequired,
+}
+
+
+function Img ({ blob, className }) {
+  const [url, setUrl] = useState('')
+  /*
+  const onLoad = useEffectEvent(() => {
+    const objectURL = URL.createObjectURL(blob)
+    setUrl(objectURL)
+  })
+  const onUnload = useEffectEvent(() => {
+    URL.revokeObjectURL(url)
+  }
+  */
+  useEffect(() => {
+    /*
+    onLoad()
+    return onUnload
+    */
+    const objectURL = URL.createObjectURL(blob)
+    setUrl(objectURL)
+    return () => URL.revokeObjectURL(objectURL)
+  // 待 useEffectEvent 正式发布后，删除下面这行注释
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return <img src={url} className={className} />
+}
+
+Img.propTypes = {
+  blob: PropTypes.instanceOf(Blob).isRequired,
+  className: PropTypes.string,
 }
 
 export default Images

@@ -27,7 +27,7 @@ function App() {
   /**
    * 声明一个状态变量，用于保存图片的 URL 和类型
    * @type {Array<{
-   *  url: string,
+   *  blob: Blob | null,
    *  type: 'image' | 'loading',
    *  star: 'stared' | 'notStared',
    *  hash: string,

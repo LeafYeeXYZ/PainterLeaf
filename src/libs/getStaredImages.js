@@ -9,10 +9,10 @@ export default async function getStaredImages() {
   if (staredImages && typeof staredImages === 'object') {
     // 将已收藏图片列表转换为图片信息列表
     const initialImages = staredImages.map(image => {
-      const url = URL.createObjectURL(image.blob)
+      const blob = image.blob
       const hash = image.hash
       const prompt = image.prompt
-      return { url, type: 'image', star: 'stared', hash, prompt }
+      return { blob, type: 'image', star: 'stared', hash, prompt }
     })
     // 倒转并设置图片信息列表
     initialImages.reverse()
