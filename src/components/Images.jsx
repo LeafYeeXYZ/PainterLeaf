@@ -8,13 +8,22 @@ import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleO
 import { update } from 'idb-keyval'
 import { cloneDeep } from 'lodash-es'
 import Img from './Widgets/Img.jsx'
+import { useState } from 'react'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
+  // 用于主动刷新组件
+  const [refresher, refresh] = useState(1)
+
   // 下载按钮点击事件
   function handleDownload(event) {
     event.preventDefault()
+    // 获取正确的 <a> 元素 (可能是子元素)
+    let element = event.target
+    while (!element.dataset.hash) {
+      element = element.parentElement
+    }
     // 获取图片
-    const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
+    const hash = element.dataset.hash
     const index = images.findIndex(image => image.hash === hash)
     if (index === -1) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
@@ -29,10 +38,10 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 验证链接有效性
     new Promise((resolve, reject) => {
-      const img = new Image()
-      img.onload = () => resolve()
-      img.onerror = () => reject()
-      img.src = url
+      fetch(url).then(blob => {
+        if (blob.size < 4096) reject()
+        else resolve()
+      }).catch(() => reject())
     // 如果有效则下载
     }).then(() => {
       a.href = url
@@ -43,18 +52,25 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       a.click()
     // 如果无效, 则让 Img 组件重新创建 URL
     }).catch(() => {
-      // 删除 sessionStorage 中的 URL
-      sessionStorage.removeItem(hash)
+      // 删除 sessionStorage
+      sessionStorage.clear()
+      // 打开对话框
+      dialogAction({ type: 'open', title: '错误', content: '图片已过期, 已尝试重新加载, 请重试' })
       // 更新组件
-      setImages(cloneDeep(images))
+      refresh(refresher + 1)
     })
   }
 
   // 删除按钮点击事件
   async function handleDelete(event) {
     event.preventDefault()
+    // 获取正确的 <a> 元素 (可能是子元素)
+    let element = event.target
+    while (!element.dataset.hash) {
+      element = element.parentElement
+    }
     // 获取图片
-    const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
+    const hash = element.dataset.hash
     const index = images.findIndex(image => image.hash === hash)
     if (index === -1) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
@@ -76,12 +92,17 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   // 收藏按钮点击事件
   async function handleStar(event) {
     event.preventDefault()
-    // 禁用按钮
-    event.target.disabled = true
-    event.target.style.cursor = 'not-allowed'
+    // 获取正确的 <a> 元素 (可能是子元素)
+    let element = event.target
+    while (!element.dataset.hash) {
+      element = element.parentElement
+    }
     try {
+      // 禁用按钮
+      element.disabled = true
+      element.style.cursor = 'not-allowed'
       // 获取图片 hash
-      const hash = event.target.dataset.hash || event.target.parentElement.dataset.hash || event.target.parentElement.parentElement.dataset.hash || event.target.parentElement.parentElement.parentElement.dataset.hash
+      const hash = element.dataset.hash
       // 获取图片 index
       const index = images.findIndex(image => image.hash === hash)
       if (index === -1) throw '未找到图片'
@@ -94,7 +115,15 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         !prompt ||
         typeof star !== 'boolean' ||
         blob.size < 4096
-      ) throw '获取图片失败, 请重试或刷新页面'
+      ) {
+        // 删除 sessionStorage
+        sessionStorage.clear()
+        // 打开对话框
+        dialogAction({ type: 'open', title: '错误', content: '图片已过期, 已尝试重新加载, 请重试' })
+        // 更新组件
+        refresh(refresher + 1)
+        return
+      }
       // 如果收藏, 则将图片信息存入 IndexedDB
       if (!star) {
         await update('staredImages', staredImages => {
@@ -109,16 +138,16 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         })
       }
       // 启用按钮
-      event.target.disabled = false
-      event.target.style.cursor = 'pointer'
+      element.disabled = false
+      element.style.cursor = 'pointer'
       // 更新图片列表
       const modifiedImages = cloneDeep(images)
       modifiedImages[index].star = !star
       setImages(modifiedImages)
     } catch (error) {
       // 启用按钮
-      event.target.disabled = false
-      event.target.style.cursor = 'pointer'
+      element.disabled = false
+      element.style.cursor = 'pointer'
       // 打开对话框
       dialogAction({ type: 'open', title: '收藏失败', content: error.message || error })
     }
@@ -168,7 +197,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   )
 
   return (
-    <div className="images-container">
+    <div className="images-container" key={refresher}>
 
       <div className="images-intro">
         <span>
