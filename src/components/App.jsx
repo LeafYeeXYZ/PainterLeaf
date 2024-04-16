@@ -7,7 +7,7 @@ import Prompt from './Prompt.jsx'
 import Dialog from './Dialog.jsx'
 import LangSwitcher from './Widgets/LangSwitcher.jsx'
 // Hook
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
@@ -18,7 +18,7 @@ import { clear } from 'localforage'
 // 初始化缓存, 清空 localforage 数据库 -> Img.jsx
 await clear()
 // 如果存在非目标版本数据，确认后清空 idb-keyval <- clearDB.js
-const versionInfo = await clearDB(2024041621)
+const versionInfo = await clearDB(2024041622)
 // 获取已收藏图片列表 <- getStaredImages.js
 const staredImages = await getStaredImages()
 // 检查浏览器 <- checkBrowser.js
@@ -61,7 +61,9 @@ function App() {
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
   // 视情况弹出更新提示
-  versionInfo && dialogAction(versionInfo)
+  useEffect(() => {
+    versionInfo && dialogAction(versionInfo)
+  }, [dialogAction])
 
   return (
     <main className="container">
