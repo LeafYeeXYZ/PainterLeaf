@@ -25,20 +25,19 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
   // 点击生成按钮时的事件处理函数
   async function handleSubmit(event, prompt) {
     event.preventDefault()
-    // 禁用按钮
-    submitRef.current.disabled = true
-    // 设置按钮文本
-    submitRef.current.textContent = '生成中...'
-    // 获取用户输入的提示词
-    const text = prompt || promptRef.current.value
-
     try {
+      // 禁用按钮
+      submitRef.current.disabled = true
+      // 设置按钮文本
+      submitRef.current.textContent = '生成中...'
+      // 获取用户输入的提示词
+      const text = prompt || promptRef.current.value
       // 如果用户没有输入提示词，不发送请求
-      if (!text) throw { message: '请输入提示词', deleteLoading: false }
+      if (!text) throw '请输入提示词'
       // 获取模型名称
       const model = modelRef.current.value
       // 如果没有选择模型，不发送请求
-      if (!model) throw { message: '请选择模型', deleteLoading: false }
+      if (!model) throw '请选择模型'
       // 插入加载图片
       const modifiedImages = cloneDeep(images)
       modifiedImages.unshift(loadingImage)
@@ -55,8 +54,8 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       // 获取图片 Hash
       const hash = await getHash(blob)
       // 移除加载图片, 并更新图片列表
-      const updatedImages = cloneDeep(images)
-      updatedImages.shift()
+      const currentImages = cloneDeep(images)
+      const updatedImages = currentImages.filter(image => image.type !== 'loading')
       updatedImages.unshift({ blob, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
       setImages(updatedImages)
       // 启用按钮
@@ -65,14 +64,15 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       submitRef.current.textContent = '生成'
     } 
     catch (error) {
-      // 移除加载图片
+      // 移除加载图片, 打开对话框
       if (typeof error === 'object' && error.deleteLoading) {
-        const modifiedImages = cloneDeep(images)
-        modifiedImages.shift()
+        const currentImages = cloneDeep(images)
+        const modifiedImages = currentImages.filter(image => image.type !== 'loading')
         setImages(modifiedImages)
-      }
-      // 打开对话框
-      dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSumbit -> ${typeof error === 'object' ? error.message : error}` })
+        dialogAction({ type: 'open', title: '生成失败', content: error.message })
+      } else {
+        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error}` })
+      }      
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
@@ -118,7 +118,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
     }
     catch (error) {
       // 打开对话框
-      dialogAction({ type: 'open', title: '翻译失败', content: '请尝试使用英文模式' })
+      dialogAction({ type: 'open', title: '翻译失败', content: `Prompt -> handleSubmitZH -> ${error} (请尝试使用英文模式)` })
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
