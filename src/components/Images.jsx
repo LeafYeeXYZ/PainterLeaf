@@ -13,18 +13,23 @@ import { useState } from 'react'
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 用于主动刷新组件
   const [refresher, refresh] = useState(1)
-
-  // 下载按钮点击事件
-  function handleDownload(event) {
-    event.preventDefault()
+  // 根据 event 获取 { element, hash, index }
+  function get(event) {
     // 获取正确的 <a> 元素 (可能是子元素)
     let element = event.target
     while (!element.dataset.hash) {
       element = element.parentElement
     }
-    // 获取图片
+    // 获取 hash 和 index
     const hash = element.dataset.hash
     const index = images.findIndex(image => image.hash === hash)
+    return { element, hash, index }
+  }
+
+  // 下载按钮点击事件
+  function handleDownload(event) {
+    event.preventDefault()
+    const { hash, index } = get(event)
     if (index === -1) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
       return
@@ -64,14 +69,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   // 删除按钮点击事件
   async function handleDelete(event) {
     event.preventDefault()
-    // 获取正确的 <a> 元素 (可能是子元素)
-    let element = event.target
-    while (!element.dataset.hash) {
-      element = element.parentElement
-    }
-    // 获取图片
-    const hash = element.dataset.hash
-    const index = images.findIndex(image => image.hash === hash)
+    const { hash, index } = get(event)
     if (index === -1) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
       return
@@ -92,19 +90,11 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   // 收藏按钮点击事件
   async function handleStar(event) {
     event.preventDefault()
-    // 获取正确的 <a> 元素 (可能是子元素)
-    let element = event.target
-    while (!element.dataset.hash) {
-      element = element.parentElement
-    }
+    const { element, hash, index } = get(event)
     try {
       // 禁用按钮
       element.disabled = true
       element.style.cursor = 'not-allowed'
-      // 获取图片 hash
-      const hash = element.dataset.hash
-      // 获取图片 index
-      const index = images.findIndex(image => image.hash === hash)
       if (index === -1) throw '未找到图片'
       // 获取图片信息
       const star = images[index].star
@@ -157,7 +147,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   const slides = []
   for (const image of images) {
     slides.push(
-      <SwiperSlide key={image.hash} className='image-slide'>
+      <SwiperSlide key={`${image.hash}_${Date.now()}`} className='image-slide'>
         <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} hash={image.hash} />
         { 
           image.type === 'loading' ||

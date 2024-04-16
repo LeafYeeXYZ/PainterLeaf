@@ -1,29 +1,31 @@
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
 
 export default function Img ({ blob, className, hash }) {
   // 只有这个组件涉及到 createObjectURL 和 revokeObjectURL
-  const [objectURL, setObjectURL] = useState('')
-  useEffect(() => {
-    const cache = sessionStorage.getItem(hash)
-    if (cache) {
-      setObjectURL(cache)
-    } else {
-      const url = URL.createObjectURL(blob)
-      setObjectURL(url)
-      sessionStorage.setItem(hash, url)
-    }
-    return () => {
-      if (objectURL) {
-        URL.revokeObjectURL(objectURL)
+  const cache = sessionStorage.getItem(hash)
+  let src = ''
+  if (cache) {
+    fetch(cache)
+    .then(oldBlob => {
+      if (oldBlob.size < 4096) {
+        src = URL.createObjectURL(blob)
+        sessionStorage.setItem(hash, src)
+        return <img src={src} className={className} />
+      } else {
+        src = cache
+        return <img src={src} className={className} />
       }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  if (!objectURL) {
-    return <div className={className}></div>
+    })
+    .catch(() => {
+      src = URL.createObjectURL(blob)
+      sessionStorage.setItem(hash, src)
+      return <img src={src} className={className} />
+    })
+  } else {
+    src = URL.createObjectURL(blob)
+    sessionStorage.setItem(hash, src)
+    return <img src={src} className={className} />
   }
-  return <img src={objectURL} className={className} />
 }
 
 Img.propTypes = {
