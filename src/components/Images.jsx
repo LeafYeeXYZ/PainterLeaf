@@ -89,7 +89,12 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const star = images[index].star
       const prompt = images[index].prompt
       const blob = images[index].blob
-      if (!blob || !prompt || typeof star !== 'boolean') throw '获取图片失败, 请刷新页面'
+      if (
+        !blob ||
+        !prompt ||
+        typeof star !== 'boolean' ||
+        blob.size < 4096
+      ) throw '获取图片失败, 请重试或刷新页面'
       // 如果收藏, 则将图片信息存入 IndexedDB
       if (!star) {
         await update('staredImages', staredImages => {
@@ -100,8 +105,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       // 如果取消收藏, 则从 IndexedDB 中删除
       else {
         await update('staredImages', staredImages => {
-          const result = staredImages.filter(image => image.hash !== hash)
-          return result
+          return staredImages.filter(image => image.hash !== hash)
         })
       }
       // 启用按钮
