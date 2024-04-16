@@ -6,8 +6,32 @@ import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
-import { useEffect } from 'react'
-import { cloneDeep } from 'lodash'
+import { useEffect, useState } from 'react'
+import { cloneDeep } from 'lodash-es'
+
+function Img ({ blob, className }) {
+  const [objectURL, setObjectURL] = useState(null)
+  useEffect(() => {
+    // 创建 objectURL
+    setObjectURL(URL.createObjectURL(blob))
+    // 返回一个清理函数来销毁 objectURL
+    return () => {
+      if (objectURL) {
+        URL.revokeObjectURL(objectURL)
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blob]) // 当 blob 改变时重新运行 useEffect
+  if (!objectURL) {
+    return <div className={className}>加载中...</div>
+  }
+  return <img src={objectURL} className={className} />
+}
+
+Img.propTypes = {
+  blob: PropTypes.instanceOf(Blob).isRequired,
+  className: PropTypes.string,
+}
 
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 下载按钮点击事件
@@ -47,7 +71,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 如果没有收藏，直接删除
     else {
-      setImages(cloneDeep(images).filter(image => image.hash !== hash))
+      let modifiedImages = cloneDeep(images)
+      modifiedImages = modifiedImages.filter(image => image.hash !== hash)
+      setImages(modifiedImages)
     }
   }
 
@@ -74,7 +100,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
           return staredImages
         })
       }
-      // 如果取消收藏, 则从 localforage 中删除
+      // 如果取消收藏, 则从 IndexedDB 中删除
       else {
         await update('staredImages', staredImages => {
           const result = staredImages.filter(image => image.hash !== hash)
@@ -85,9 +111,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       event.target.disabled = false
       event.target.style.cursor = 'pointer'
       // 更新图片列表
-      const newImages = cloneDeep(images)
-      newImages[index].star = star === 'notStared' ? 'stared' : 'notStared'
-      setImages(newImages)
+      const modifiedImages = cloneDeep(images)
+      modifiedImages[index].star = star === 'notStared' ? 'stared' : 'notStared'
+      setImages(modifiedImages)
     } catch (error) {
       // 启用按钮
       event.target.disabled = false
@@ -98,8 +124,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   }
 
   // 渲染图片列表
-  const slides = images.map(image => {
-    return (
+  const slides = []
+  for (const image of images) {
+    slides.push(
       <SwiperSlide key={image.hash} className='image-slide'>
         <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
         { 
@@ -125,7 +152,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         }
       </SwiperSlide>
     )
-  })
+  }
 
   // 渲染 Swiper
   const swiper = (
@@ -151,39 +178,17 @@ function Images({ images, setImages, zhMode, dialogAction }) {
         </span>
       </div>
 
-      { images.length === 0 || swiper }
+      { slides && swiper }
       
     </div>
   )
 }
 
 Images.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      blob: PropTypes.instanceOf(Blob).isRequired,
-      type: PropTypes.string.isRequired,
-      star: PropTypes.string.isRequired,
-      hash: PropTypes.string.isRequired,
-      prompt: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+  images: PropTypes.array.isRequired,
   setImages: PropTypes.func.isRequired,
   zhMode: PropTypes.bool.isRequired,
   dialogAction: PropTypes.func.isRequired,
-}
-
-
-function Img ({ blob, className }) {
-  const objectURL = URL.createObjectURL(blob)
-  useEffect(() => {
-    return () => URL.revokeObjectURL(objectURL)
-  }, [objectURL])
-  return <img src={objectURL} className={className} />
-}
-
-Img.propTypes = {
-  blob: PropTypes.instanceOf(Blob).isRequired,
-  className: PropTypes.string,
 }
 
 export default Images

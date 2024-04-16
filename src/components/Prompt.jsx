@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { SERVER } from '../config.json'
 import getHash from '../libs/getHash'
 import getLoadingImage from '../libs/getLoadingImage'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 
 // 获取模型列表
 let models
@@ -45,7 +45,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       // 如果没有选择模型，不发送请求
       if (!model) throw { message: '请选择模型', deleteLoading: false }
       // 插入加载图片
-      setImages(cloneDeep(images).unshift(loadingImage))
+      const modifiedImages = cloneDeep(images)
+      modifiedImages.unshift(loadingImage)
+      setImages(modifiedImages)
       // 编码为 URL
       const encodedText = encodeURI(text)
       const encodedModel = encodeURI(model)
@@ -55,12 +57,13 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       const blob = await res.blob()
       // 根据图片大小判断是否为错误信息
       if (blob.size < 1024) throw { message: '服务端返回空白图片, 可能是服务器错误或提示词不当', deleteLoading: true }
-      // 移除加载图片
-      setImages(cloneDeep(images).shift())
       // 获取图片 Hash
       const hash = await getHash(blob)
-      // 更新图片列表
-      setImages(cloneDeep(images).unshift({ blob, type: 'image', star: 'notStared', hash, prompt: `${text} (${models[model]})` }))
+      // 移除加载图片, 并更新图片列表
+      const updatedImages = cloneDeep(images)
+      updatedImages.shift()
+      updatedImages.unshift({ blob, type: 'image', star: 'notStared', hash, prompt: `${text} (${models[model]})` })
+      setImages(updatedImages)
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
@@ -69,7 +72,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
     catch (error) {
       // 移除加载图片
       if (error.deleteLoading) {
-        setImages(cloneDeep(images).shift())
+        const modifiedImages = cloneDeep(images)
+        modifiedImages.shift()
+        setImages(modifiedImages)
       }
       // 打开对话框
       dialogAction({ type: 'open', title: '生成失败', content: error.message || error })
