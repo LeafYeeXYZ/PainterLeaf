@@ -46,12 +46,13 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 创建 a 标签
     const a = document.createElement('a')
-    a.href = images[index].blob
+    a.href = URL.createObjectURL(images[index].blob)
     // 把提示词删去 (xxx 后作为文件名
     // 如 cute cat (xxx xxx) 只保留 cat
     const reg = /\(([^)]*)\)/
     a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
     a.click()
+    URL.revokeObjectURL(a.href)
   }
 
   // 删除按钮点击事件
