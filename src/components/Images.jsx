@@ -7,139 +7,70 @@ import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
 import { cloneDeep } from 'lodash-es'
-import Img from './Widgets/Img.jsx'
-import { useState } from 'react'
+import Img from './Img.jsx'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
-  // 用于主动刷新组件
-  const [refresher, refresh] = useState(1)
-  // 根据 event 获取 { element, hash, index }
-  function get(event) {
-    // 获取正确的 <a> 元素 (可能是子元素)
-    let element = event.target
-    while (!element.dataset.hash) {
-      element = element.parentElement
-    }
-    // 获取 hash 和 index
-    const hash = element.dataset.hash
-    const index = images.findIndex(image => image.hash === hash)
-    return { element, hash, index }
-  }
-
-  // 下载按钮点击事件
-  function handleDownload(event) {
-    event.preventDefault()
-    const { hash, index } = get(event)
-    if (index === -1) {
-      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
-      return
-    }
-    // 创建 a 标签
-    const a = document.createElement('a')
-    const url = sessionStorage.getItem(hash)
-    if (!url) {
-      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
-      return
-    }
-    // 验证链接有效性
-    new Promise((resolve, reject) => {
-      fetch(url).then(blob => {
-        if (blob.size < 4096) reject()
-        else resolve()
-      }).catch(() => reject())
-    // 如果有效则下载
-    }).then(() => {
-      a.href = url
-      // 把提示词删去 (xxx 后作为文件名
-      // 如 cute cat (xxx xxx) 只保留 cat
-      const reg = /\(([^)]*)\)/
-      a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
-      a.click()
-    // 如果无效, 则让 Img 组件重新创建 URL
-    }).catch(() => {
-      // 删除 sessionStorage
-      sessionStorage.clear()
-      // 打开对话框
-      dialogAction({ type: 'open', title: '错误', content: '图片已过期, 已尝试重新加载, 请重试' })
-      // 更新组件
-      refresh(refresher + 1)
-    })
-  }
-
   // 删除按钮点击事件
-  async function handleDelete(event) {
-    event.preventDefault()
-    const { hash, index } = get(event)
-    if (index === -1) {
-      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
-      return
-    }
+  function handleDelete(image) {
     // 如果已收藏，弹出提示框
-    else if (images[index].star) {
+    if (image.star) {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
       return
     }
     // 如果没有收藏，直接删除
     else {
       let modifiedImages = cloneDeep(images)
-      modifiedImages = modifiedImages.filter(image => image.hash !== hash)
+      modifiedImages = modifiedImages.filter(item => item.hash !== image.hash)
       setImages(modifiedImages)
     }
   }
-
+  // 下载按钮点击事件
+  function handleDownload(image) {
+    const url = URL.createObjectURL(image.blob)
+    const a = document.createElement('a')
+    const reg = /\(([^)]*)\)/
+    a.href = url
+    a.download = `${image.prompt.replace(reg, '').trim()}.png`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
   // 收藏按钮点击事件
-  async function handleStar(event) {
-    event.preventDefault()
-    const { element, hash, index } = get(event)
+  async function handleStar(image, element) {
     try {
       // 禁用按钮
       element.disabled = true
       element.style.cursor = 'not-allowed'
-      if (index === -1) throw '未找到图片'
-      // 获取图片信息
-      const star = images[index].star
-      const prompt = images[index].prompt
-      const blob = images[index].blob
-      if (
-        !blob ||
-        !prompt ||
-        typeof star !== 'boolean' ||
-        blob.size < 4096
-      ) {
-        // 删除 sessionStorage
-        sessionStorage.clear()
-        // 打开对话框
-        dialogAction({ type: 'open', title: '错误', content: '图片已过期, 已尝试重新加载, 请重试' })
-        // 更新组件
-        refresh(refresher + 1)
-        return
-      }
-      // 如果收藏, 则将图片信息存入 IndexedDB
-      if (!star) {
+      // 如果取消收藏, 从 IndexedDB 中删除
+      if (image.star) {
         await update('staredImages', staredImages => {
-          staredImages.push({ hash, blob, prompt })
-          return staredImages
+          return staredImages.filter(item => item.hash !== image.hash)
         })
       }
-      // 如果取消收藏, 则从 IndexedDB 中删除
+      // 如果收藏, 则将图片信息存入 IndexedDB
       else {
         await update('staredImages', staredImages => {
-          return staredImages.filter(image => image.hash !== hash)
+          staredImages.push({ blob: image.blob, hash: image.hash, prompt: image.prompt })
+          return staredImages
         })
       }
       // 启用按钮
       element.disabled = false
       element.style.cursor = 'pointer'
       // 更新图片列表
-      const modifiedImages = cloneDeep(images)
-      modifiedImages[index].star = !star
+      let modifiedImages = cloneDeep(images)
+      modifiedImages = modifiedImages.map(item => {
+        if (item.hash === image.hash) {
+          item.star = !item.star
+        }
+        return item
+      })      
       setImages(modifiedImages)
     } catch (error) {
       // 启用按钮
       element.disabled = false
       element.style.cursor = 'pointer'
       // 打开对话框
-      dialogAction({ type: 'open', title: '收藏失败', content: error.message || error })
+      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.message || error}` })
     }
   }
 
@@ -147,25 +78,39 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   const slides = []
   for (const image of images) {
     slides.push(
-      <SwiperSlide key={`${image.hash}_${Date.now()}`} className='image-slide'>
+      <SwiperSlide key={image.hash} className='image-slide'>
         <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} hash={image.hash} />
         { 
-          image.type === 'loading' ||
+          image.type === 'image' &&
           <div className='image-funcs'>
 
             <div className='image-funcs-left'>
-              <a data-hash={image.hash} className='image-marker' onClick={handleStar}>{ image.star ? <StarFilled /> : <StarOutlined /> }</a>
+
+              <a id={`star_${image.hash}`} className='image-marker' onClick={e => {
+                e.preventDefault()
+                const element = document.getElementById(`star_${image.hash}`)
+                handleStar(image, element).catch(error => alert(`未捕获错误: Images -> handleStar -> ${error}`))
+              }}>{ image.star ? <StarFilled /> : <StarOutlined /> }</a>
+
             </div>
 
             <div className='image-funcs-right'>
-              <a data-hash={image.hash} className='image-info'
-                onClick={e => {
-                  e.preventDefault()
-                  dialogAction({ type: 'open', title: '本图提示词', content: image.prompt || '获取失败' })
-                }}              
-              ><InfoCircleOutlined /></a>
-              <a data-hash={image.hash} className='image-downloader' onClick={handleDownload}><DownloadOutlined /></a>
-              <a data-hash={image.hash} className='image-deleter' onClick={handleDelete}><DeleteOutlined /></a>
+
+              <a data-hash={image.hash} className='image-info' onClick={e => {
+                e.preventDefault()
+                dialogAction({ type: 'open', title: '本图提示词', content: image.prompt || '获取失败' })
+              }}><InfoCircleOutlined /></a>
+
+              <a className='image-downloader' onClick={e => {
+                e.preventDefault()
+                handleDownload(image)
+              }}><DownloadOutlined /></a>
+
+              <a data-hash={image.hash} className='image-deleter' onClick={e => {
+                e.preventDefault()
+                handleDelete(image)
+              }}><DeleteOutlined /></a>
+
             </div>
 
           </div>
@@ -187,7 +132,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   )
 
   return (
-    <div className="images-container" key={refresher}>
+    <div className="images-container">
 
       <div className="images-intro">
         <span>

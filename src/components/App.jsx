@@ -13,14 +13,15 @@ import useDialog from '../libs/useDialog.jsx'
 import getStaredImages from '../libs/getStaredImages.js'
 import clearDB from '../libs/clearDB.js'
 import checkBrowser from '../libs/checkBrowser.js'
+import { set } from 'idb-keyval'
 
-// 清除 sessionStorage
-sessionStorage.clear()
-// 如果存在非目标版本数据，确认后清空 IndexedDB
+// 初始化缓存 -> Img.jsx
+await set('cachedImages', {})
+// 如果存在非目标版本数据，确认后清空 IndexedDB <- clearDB.js
 const versionInfo = await clearDB(2024041522)
-// 获取已收藏图片列表
+// 获取已收藏图片列表 <- getStaredImages.js
 const staredImages = await getStaredImages()
-// 检查浏览器
+// 检查浏览器 <- checkBrowser.js
 checkBrowser()
 
 // 主组件
