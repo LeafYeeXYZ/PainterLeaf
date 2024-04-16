@@ -15,7 +15,7 @@
   "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 16666",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

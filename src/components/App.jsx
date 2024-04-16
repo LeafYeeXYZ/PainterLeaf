@@ -12,12 +12,11 @@ import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
 import clearDB from '../libs/clearDB.js'
-import checkBrowser from '../libs/checkBrowser.js'
 
+// 清除 sessionStorage
+sessionStorage.clear()
 // 如果存在非目标版本数据，确认后清空 IndexedDB
 const versionInfo = await clearDB(2024041522)
-// 检测浏览器版本是否符合编译目标
-checkBrowser()
 // 获取已收藏图片列表
 const staredImages = await getStaredImages()
 
@@ -28,7 +27,7 @@ function App() {
    * @type {Array<{
    *  blob: Blob,
    *  type: 'image' | 'loading',
-   *  star: 'stared' | 'notStared',
+   *  star: boolean,
    *  hash: string,
    *  prompt: string,
    * }>}

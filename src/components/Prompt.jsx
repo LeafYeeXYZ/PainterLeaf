@@ -7,13 +7,7 @@ import getLoadingImage from '../libs/getLoadingImage'
 import { cloneDeep } from 'lodash-es'
 
 // 获取模型列表
-let models
-try {
-  const data = await fetch(`${SERVER}/painter/models`)
-  models = await data.json()
-} catch (error) {
-  null
-}
+const models = await (await fetch(`${SERVER}/painter/models`).catch(() => null)).json().catch(() => null)
 // 生成模型选项
 const options = []
 for (const model in models) {
@@ -62,7 +56,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       // 移除加载图片, 并更新图片列表
       const updatedImages = cloneDeep(images)
       updatedImages.shift()
-      updatedImages.unshift({ blob, type: 'image', star: 'notStared', hash, prompt: `${text} (${models[model]})` })
+      updatedImages.unshift({ blob, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
       setImages(updatedImages)
       // 启用按钮
       submitRef.current.disabled = false

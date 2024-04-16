@@ -5,7 +5,7 @@ import { get, set } from 'idb-keyval'
  * @returns {Promise<{
  *  blob: Blob,
  *  type: 'loading',
- *  star: 'notStared',
+ *  star: false,
  *  hash: 'loading',
  *  prompt: 'loading'
  * }>} 加载图片对象
@@ -21,7 +21,7 @@ export default async function getLoadingImage() {
     return {
       blob,
       type: 'loading',
-      star: 'notStared',
+      star: false,
       hash: 'loading',
       prompt: 'loading'
     }
@@ -29,7 +29,7 @@ export default async function getLoadingImage() {
     return {
       blob: loadingImage,
       type: 'loading',
-      star: 'notStared',
+      star: false,
       hash: 'loading',
       prompt: 'loading'
     }

@@ -9,21 +9,27 @@ import { update } from 'idb-keyval'
 import { useEffect, useState } from 'react'
 import { cloneDeep } from 'lodash-es'
 
-function Img ({ blob, className }) {
-  const [objectURL, setObjectURL] = useState(null)
+function Img ({ blob, className, hash }) {
+  // 这下应该只有这个组件涉及到 createObjectURL 和 revokeObjectURL 了
+  const [objectURL, setObjectURL] = useState('')
   useEffect(() => {
-    // 创建 objectURL
-    setObjectURL(URL.createObjectURL(blob))
-    // 返回一个清理函数来销毁 objectURL
+    const cache = sessionStorage.getItem(hash)
+    if (cache) {
+      setObjectURL(cache)
+    } else {
+      const url = URL.createObjectURL(blob)
+      setObjectURL(url)
+      sessionStorage.setItem(hash, url)
+    }
     return () => {
       if (objectURL) {
         URL.revokeObjectURL(objectURL)
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blob]) // 当 blob 改变时重新运行 useEffect
+  }, [])
   if (!objectURL) {
-    return <div className={className}>加载中...</div>
+    return <div className={className}></div>
   }
   return <img src={objectURL} className={className} />
 }
@@ -31,6 +37,7 @@ function Img ({ blob, className }) {
 Img.propTypes = {
   blob: PropTypes.instanceOf(Blob).isRequired,
   className: PropTypes.string,
+  hash: PropTypes.string.isRequired,
 }
 
 function Images({ images, setImages, zhMode, dialogAction }) {
@@ -46,13 +53,17 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 创建 a 标签
     const a = document.createElement('a')
-    a.href = URL.createObjectURL(images[index].blob)
+    const url = sessionStorage.getItem(hash)
+    if (!url) {
+      dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
+      return
+    }
+    a.href = url
     // 把提示词删去 (xxx 后作为文件名
     // 如 cute cat (xxx xxx) 只保留 cat
     const reg = /\(([^)]*)\)/
     a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
     a.click()
-    URL.revokeObjectURL(a.href)
   }
 
   // 删除按钮点击事件
@@ -66,7 +77,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       return
     }
     // 如果已收藏，弹出提示框
-    else if (images[index].star === 'stared') {
+    else if (images[index].star) {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
       return
     }
@@ -95,7 +106,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       const prompt = images[index].prompt || '获取失败'
       const blob = images[index].blob
       // 如果收藏, 则将图片信息存入 IndexedDB
-      if (star === 'notStared') {
+      if (!star) {
         await update('staredImages', staredImages => {
           staredImages.push({ hash, blob, prompt })
           return staredImages
@@ -113,7 +124,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       event.target.style.cursor = 'pointer'
       // 更新图片列表
       const modifiedImages = cloneDeep(images)
-      modifiedImages[index].star = star === 'notStared' ? 'stared' : 'notStared'
+      modifiedImages[index].star = !star
       setImages(modifiedImages)
     } catch (error) {
       // 启用按钮
@@ -129,13 +140,13 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   for (const image of images) {
     slides.push(
       <SwiperSlide key={image.hash} className='image-slide'>
-        <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
+        <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} hash={image.hash} />
         { 
           image.type === 'loading' ||
           <div className='image-funcs'>
 
             <div className='image-funcs-left'>
-              <a data-hash={image.hash} className='image-marker' onClick={handleStar}>{ image.star === 'stared' ? <StarFilled /> : <StarOutlined /> }</a>
+              <a data-hash={image.hash} className='image-marker' onClick={handleStar}>{ image.star ? <StarFilled /> : <StarOutlined /> }</a>
             </div>
 
             <div className='image-funcs-right'>
