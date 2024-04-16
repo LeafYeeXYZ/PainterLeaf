@@ -5,12 +5,8 @@ import { EffectCards } from 'swiper/modules'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
-import getLoadingImage from '../libs/getLoadingImage'
 import { update } from 'idb-keyval'
-import { useState, useEffect } from 'react'
-
-// 获取加载图片
-const loadingImage = await getLoadingImage()
+import { useEffect } from 'react'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 下载按钮点击事件
@@ -105,11 +101,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   const slides = images.map(image => {
     return (
       <SwiperSlide key={image.hash} className='image-slide'>
-        {
-          image.type === 'loading' ? 
-          <img src={loadingImage} className='image-loading image-item' /> :
-          <Img blob={image.blob} className='image-item' />
-        }
+        <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
         { 
           image.type === 'loading' ||
           <div className='image-funcs'>
@@ -182,28 +174,11 @@ Images.propTypes = {
 
 
 function Img ({ blob, className }) {
-  const [url, setUrl] = useState('')
-  /*
-  const onLoad = useEffectEvent(() => {
-    const objectURL = URL.createObjectURL(blob)
-    setUrl(objectURL)
-  })
-  const onUnload = useEffectEvent(() => {
-    URL.revokeObjectURL(url)
-  }
-  */
+  const objectURL = URL.createObjectURL(blob)
   useEffect(() => {
-    /*
-    onLoad()
-    return onUnload
-    */
-    const objectURL = URL.createObjectURL(blob)
-    setUrl(objectURL)
     return () => URL.revokeObjectURL(objectURL)
-  // 待 useEffectEvent 正式发布后，删除下面这行注释
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  return <img src={url} className={className} />
+  }, [objectURL])
+  return <img src={objectURL} className={className} />
 }
 
 Img.propTypes = {

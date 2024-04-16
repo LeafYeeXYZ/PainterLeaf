@@ -2,7 +2,13 @@ import { get, set } from 'idb-keyval'
 
 /**
  * 获取加载图片
- * @returns {Promise<string>} 加载图片的 URL
+ * @returns {Promise<{
+ *  blob: Blob,
+ *  type: 'loading',
+ *  star: 'notStared',
+ *  hash: 'loading',
+ *  prompt: 'loading'
+ * }>} 加载图片对象
  */
 export default async function getLoadingImage() {
   // 首先尝试从 IndexedDB 中获取加载图片
@@ -11,11 +17,21 @@ export default async function getLoadingImage() {
   if (!loadingImage || typeof loadingImage !== 'object') {
     const res = await fetch('/loading.gif')
     const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
     await set('loadingImage', blob)
-    return url
+    return {
+      blob,
+      type: 'loading',
+      star: 'notStared',
+      hash: 'loading',
+      prompt: 'loading'
+    }
   } else {
-    const url = URL.createObjectURL(loadingImage)
-    return url
+    return {
+      blob: loadingImage,
+      type: 'loading',
+      star: 'notStared',
+      hash: 'loading',
+      prompt: 'loading'
+    }
   }
 }

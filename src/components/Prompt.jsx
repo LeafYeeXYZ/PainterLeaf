@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { SERVER } from '../config.json'
 import getHash from '../libs/getHash'
+import getLoadingImage from '../libs/getLoadingImage'
 
 // 获取模型列表
 let models
@@ -17,6 +18,8 @@ const options = []
 for (const model in models) {
   options.push(<option value={model} key={model}>{models[model]}</option>)
 }
+// 获取加载图片
+const loadingImage = await getLoadingImage()
 
 function Prompt({ children, setImages, dialogAction, zhMode }) {
   // 引用元素
@@ -42,7 +45,7 @@ function Prompt({ children, setImages, dialogAction, zhMode }) {
       if (!model) throw { message: '请选择模型', deleteLoading: false }
       // 插入加载图片
       setImages(draft => {
-        draft.unshift({ blob: null, type: 'loading', star: 'notStared', hash: '', prompt: '' })
+        draft.unshift(loadingImage)
         return
       })
       // 编码为 URL
