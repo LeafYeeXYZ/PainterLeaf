@@ -12,6 +12,7 @@ import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
 import clearDB from '../libs/clearDB.js'
+import checkBrowser from '../libs/checkBrowser.js'
 
 // 清除 sessionStorage
 sessionStorage.clear()
@@ -19,6 +20,8 @@ sessionStorage.clear()
 const versionInfo = await clearDB(2024041522)
 // 获取已收藏图片列表
 const staredImages = await getStaredImages()
+// 检查浏览器
+checkBrowser()
 
 // 主组件
 function App() {
