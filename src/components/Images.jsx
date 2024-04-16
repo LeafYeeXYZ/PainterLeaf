@@ -7,6 +7,7 @@ import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
 import { useEffect } from 'react'
+import { cloneDeep } from 'lodash'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 下载按钮点击事件
@@ -46,7 +47,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
     }
     // 如果没有收藏，直接删除
     else {
-      setImages(images.filter(image => image.hash !== hash))
+      setImages(cloneDeep(images).filter(image => image.hash !== hash))
     }
   }
 
@@ -84,10 +85,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       event.target.disabled = false
       event.target.style.cursor = 'pointer'
       // 更新图片列表
-      setImages(draft => {
-        draft[index].star = star === 'notStared' ? 'stared' : 'notStared'
-        return
-      })
+      const newImages = cloneDeep(images)
+      newImages[index].star = star === 'notStared' ? 'stared' : 'notStared'
+      setImages(newImages)
     } catch (error) {
       // 启用按钮
       event.target.disabled = false

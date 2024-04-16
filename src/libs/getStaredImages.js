@@ -2,7 +2,7 @@ import { get, set } from 'idb-keyval'
 
 /**
  * 从 IndexedDB 中获取已收藏图片列表
- * @returns {Promise<Array<{url: string, type: 'image', star: 'stared', hash: string, prompt: string}>>} 返回图片信息数组
+ * @returns {Promise<Array<{blob: Blob, type: 'image', star: 'stared', hash: string, prompt: string}>>} 返回图片信息数组
  */
 export default async function getStaredImages() {
   const staredImages = await get('staredImages')

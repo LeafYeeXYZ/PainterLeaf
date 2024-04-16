@@ -8,7 +8,6 @@ import Dialog from './Dialog.jsx'
 import LangSwitcher from './Widgets/LangSwitcher.jsx'
 // Hook
 import { useState, useEffect } from 'react'
-import { useImmer } from 'use-immer'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
 import getStaredImages from '../libs/getStaredImages.js'
@@ -34,7 +33,7 @@ function App() {
    *  prompt: string,
    * }>}
    */
-  const [images, setImages] = useImmer([])
+  const [images, setImages] = useState([])
   // 使用 useDialog 自定义 Hook
   const { dialogState, dialogAction, dialogRef } = useDialog()
   // 声明一个状态变量，用于记录中文提示词模式
@@ -43,7 +42,7 @@ function App() {
   useEffect(() => {
     setImages(staredImages)
     versionInfo && dialogAction(versionInfo)
-  }, [setImages, dialogAction])
+  }, [dialogAction])
 
   return (
     <main className="container">
@@ -56,6 +55,7 @@ function App() {
       />
 
       <Prompt 
+        images={images}
         setImages={setImages} 
         dialogAction={dialogAction}
         zhMode={zhMode}
