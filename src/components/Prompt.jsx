@@ -66,13 +66,13 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
     } 
     catch (error) {
       // 移除加载图片
-      if (error.deleteLoading) {
+      if (typeof error === 'object' && error.deleteLoading) {
         const modifiedImages = cloneDeep(images)
         modifiedImages.shift()
         setImages(modifiedImages)
       }
       // 打开对话框
-      dialogAction({ type: 'open', title: '生成失败', content: error.message || error })
+      dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSumbit -> ${typeof error === 'object' ? error.message : error}` })
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本

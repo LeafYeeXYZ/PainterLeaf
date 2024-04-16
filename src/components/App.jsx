@@ -13,12 +13,12 @@ import useDialog from '../libs/useDialog.jsx'
 import getStaredImages from '../libs/getStaredImages.js'
 import clearDB from '../libs/clearDB.js'
 import checkBrowser from '../libs/checkBrowser.js'
-import { set } from 'idb-keyval'
+import { clear } from 'localforage'
 
-// 初始化缓存 -> Img.jsx
-await set('cachedImages', {})
-// 如果存在非目标版本数据，确认后清空 IndexedDB <- clearDB.js
-const versionInfo = await clearDB(2024041522)
+// 初始化缓存, 清空 localforage 数据库 -> Img.jsx
+await clear()
+// 如果存在非目标版本数据，确认后清空 idb-keyval <- clearDB.js
+const versionInfo = await clearDB(2024041621)
 // 获取已收藏图片列表 <- getStaredImages.js
 const staredImages = await getStaredImages()
 // 检查浏览器 <- checkBrowser.js
@@ -26,6 +26,25 @@ checkBrowser()
 
 // 主组件
 function App() {
+  /**
+   * 已收藏图片列表
+   * @var {staredImages of idb-keyval}
+   * @type {Array<{
+   *  blob: Blob,
+   *  hash: string,
+   *  prompt: string,
+   * }>}
+   */
+  /**
+   * 加载图片
+   * @var {loadingImage of idb-keyval}
+   * @type {Blob}
+   */
+  /**
+   * 暂时存储的图片
+   * @var {:hash of localforage}
+   * @type {Blob}
+   */
   /**
    * 声明一个状态变量，用于保存图片的 URL 和类型
    * @type {Array<{
