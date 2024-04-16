@@ -7,7 +7,8 @@ import getLoadingImage from '../libs/getLoadingImage'
 import { cloneDeep } from 'lodash-es'
 
 // 获取模型列表
-const models = await (await fetch(`${SERVER}/painter/models`).catch(() => null)).json().catch(() => null)
+const data = await fetch(`${SERVER}/painter/models`).catch(() => null)
+const models = (data && await data.json().catch(() => null)) || {}
 // 生成模型选项
 const options = []
 for (const model in models) {
