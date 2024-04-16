@@ -6,39 +6,8 @@ import PropTypes from 'prop-types'
 import '../styles/Images.css'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
-import { useEffect, useState } from 'react'
 import { cloneDeep } from 'lodash-es'
-
-function Img ({ blob, className, hash }) {
-  // 这下应该只有这个组件涉及到 createObjectURL 和 revokeObjectURL 了
-  const [objectURL, setObjectURL] = useState('')
-  useEffect(() => {
-    const cache = sessionStorage.getItem(hash)
-    if (cache) {
-      setObjectURL(cache)
-    } else {
-      const url = URL.createObjectURL(blob)
-      setObjectURL(url)
-      sessionStorage.setItem(hash, url)
-    }
-    return () => {
-      if (objectURL) {
-        URL.revokeObjectURL(objectURL)
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  if (!objectURL) {
-    return <div className={className}></div>
-  }
-  return <img src={objectURL} className={className} />
-}
-
-Img.propTypes = {
-  blob: PropTypes.instanceOf(Blob).isRequired,
-  className: PropTypes.string,
-  hash: PropTypes.string.isRequired,
-}
+import Img from './Widgets/Img.jsx'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
   // 下载按钮点击事件
@@ -58,12 +27,27 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       dialogAction({ type: 'open', title: '错误', content: '未找到图片' })
       return
     }
-    a.href = url
-    // 把提示词删去 (xxx 后作为文件名
-    // 如 cute cat (xxx xxx) 只保留 cat
-    const reg = /\(([^)]*)\)/
-    a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
-    a.click()
+    // 验证链接有效性
+    new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => resolve()
+      img.onerror = () => reject()
+      img.src = url
+    // 如果有效则下载
+    }).then(() => {
+      a.href = url
+      // 把提示词删去 (xxx 后作为文件名
+      // 如 cute cat (xxx xxx) 只保留 cat
+      const reg = /\(([^)]*)\)/
+      a.download = `${images[index].prompt.replace(reg, '').trim()}.png`
+      a.click()
+    // 如果无效, 则让 Img 组件重新创建 URL
+    }).catch(() => {
+      // 删除 sessionStorage 中的 URL
+      sessionStorage.removeItem(hash)
+      // 更新组件
+      setImages(cloneDeep(images))
+    })
   }
 
   // 删除按钮点击事件
@@ -103,8 +87,9 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       if (index === -1) throw '未找到图片'
       // 获取图片信息
       const star = images[index].star
-      const prompt = images[index].prompt || '获取失败'
+      const prompt = images[index].prompt
       const blob = images[index].blob
+      if (!blob || !prompt || typeof star !== 'boolean') throw '获取图片失败, 请刷新页面'
       // 如果收藏, 则将图片信息存入 IndexedDB
       if (!star) {
         await update('staredImages', staredImages => {
