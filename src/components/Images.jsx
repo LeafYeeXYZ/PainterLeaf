@@ -68,8 +68,16 @@ function Images({ images, setImages, zhMode, dialogAction }) {
               if (loading) {
                 dialogAction({ type: 'open', title: '错误', content: '请等待当前图片生成完成' })
               } else {
+                // 创建一个隐藏的 .image-loading 元素, 以避免在收藏时进行其他操作
+                const loading = document.createElement('div')
+                loading.className = 'image-loading'
+                loading.style.display = 'none'
+                document.body.appendChild(loading)
+                // 处理收藏
                 const element = document.getElementById(image.hash)
-                handleStar(image, element).catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
+                handleStar(image, element)
+                  .then(() => document.body.removeChild(loading))
+                  .catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
               }
             }}>{ image.star ? <StarFilled /> : <StarOutlined /> }</button>
 
