@@ -12,12 +12,13 @@
     height: 100px;
     resize: none;
     padding: 10px 15px;
-    border: 1px solid var(--text-hover);
+    border: 1px solid var(--border-textarea);
     border-radius: 20px;
     transition: all 0.2s ease;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: var(--text);
+    background-color: var(--back-textarea);
     scrollbar-width: none;
     &:focus {
       transform: scale(1.01);

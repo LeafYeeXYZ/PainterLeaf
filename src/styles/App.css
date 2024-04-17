@@ -1,14 +1,4 @@
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
+:root {
   --prompt-height: 260px;
   --prompt-btn-width: 100%;
   --prompt-btn-gap: 0;
@@ -20,18 +10,33 @@
   --text: #ff7171;
   --text-hover: #ff4f4f;
   --text-highlight: #fa255e;
+  --border-textarea: #ff4f4f;
   --back: #fff0f0;
+  --back-textarea: #fffafa;
   --back-hover: #ffcece;
   --back-lighter: #fffdfd;
 }
-
+.dark {
+  --text: #ff6171;
+  --text-hover: #ff4f4f;
+  --text-highlight: #fa255e;
+  --border-textarea: #000000;
+  --back: #000000;
+  --back-textarea: #101010;
+  --back-hover: #000000;
+  --back-lighter: #1f1a1a;
+  & .lang-switcher {
+    filter: brightness(0.5) grayscale(0.35);
+  }
+}
 @media screen and (min-width: 768px){
-  .container {
+  :root {
     --prompt-height: 210px;
     --prompt-btn-width: calc(50% - 8px);
     --prompt-btn-gap: 10px;
   }
 }
+
 
 @media screen and (max-height: 440px){
   .container {
@@ -48,7 +53,17 @@
     color: #fa255e;
   }
 }
-
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 a {
   color: var(--text-highlight);
 }
