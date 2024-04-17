@@ -3,6 +3,9 @@
 # 赛博画师小叶子
 一个 `AI` 图片生成工具, 支持中英双语 (中文将自动调用 `AI` 翻译), 采用前后端分离设计, 前端基于 `React` 框架, 可部署在 `Cloudflare Pages`, `Vercel` 等静态网站托管服务上, 后端基于 `Hono`, 部署在 `Cloudflare Workers`, 见[这个项目](https://github.com/LeafYeeXYZ/MyAPIs)
 
+|![](./readme/IMG_7860.png)|![](./readme/IMG_7861.png)|![](./readme/IMG_7862.png)|![](./readme/IMG_7863.png)|
+|:---:|:---:|:---:|:---:|
+
 ## 使用方法
 ### 修改配置
 ```javascript
