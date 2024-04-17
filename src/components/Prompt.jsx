@@ -5,6 +5,7 @@ import { SERVER } from '../config.json'
 import getHash from '../libs/getHash'
 import getLoadingImage from '../libs/getLoadingImage'
 import { cloneDeep } from 'lodash-es'
+import { blobToBase64 } from '../libs/base64_blob.js'
 
 // 获取模型列表
 const data = await fetch(`${SERVER}/painter/models`).catch(() => null)
@@ -53,10 +54,12 @@ function Prompt({ children, images, setImages, dialogAction, zhMode }) {
       if (blob.size < 1024) throw { message: '服务端返回空白图片, 可能是服务器错误或提示词不当', deleteLoading: true }
       // 获取图片 Hash
       const hash = await getHash(blob)
+      // 转换为 base64
+      const base64 = await blobToBase64(blob)
       // 移除加载图片, 并更新图片列表
       const currentImages = cloneDeep(images)
       const updatedImages = currentImages.filter(image => image.type !== 'loading')
-      updatedImages.unshift({ blob, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
+      updatedImages.unshift({ base64, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
       setImages(updatedImages)
       // 启用按钮
       submitRef.current.disabled = false

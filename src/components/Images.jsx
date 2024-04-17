@@ -2,140 +2,112 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/effect-cards'
 import { EffectCards } from 'swiper/modules'
+import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
+import { update } from 'idb-keyval'
+import { cloneDeep } from 'lodash-es'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
-import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
-import { update, get } from 'idb-keyval'
-import { cloneDeep } from 'lodash-es'
-import Img from './Img.jsx'
-import { getItem } from 'localforage'
 
 function Images({ images, setImages, zhMode, dialogAction }) {
-  // 从不同渠道获取 Blob
-  async function getBlob(image) {
-    // localforage -> staredImages -> image.blob
-    const blob = await getItem(image.hash)
-    if (blob && blob.size > 4096) {
-      return blob
-    }
-    const staredImages = await get('staredImages')
-    const value = staredImages.find(item => item.hash === image.hash)
-    if (value && value.blob.size > 4096) {
-      return value.blob
-    }
-    return image.blob
-  }
-  // 删除按钮点击事件
-  async function handleDelete(image) {
-    // 如果已收藏，弹出提示框
-    if (image.star) {
-      dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
-      return
-    }
-    // 如果没有收藏，直接删除
-    else {
-      let modifiedImages = cloneDeep(images)
-      modifiedImages = modifiedImages.filter(item => item.hash !== image.hash)
-      setImages(modifiedImages)
-    }
-  }
-  // 下载按钮点击事件
-  async function handleDownload(image) {
-    const blob = await getBlob(image)
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    const reg = /\(([^)]*)\)/
-    a.href = url
-    a.download = `${image.prompt.replace(reg, '').trim()}.png`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
   // 收藏按钮点击事件
   async function handleStar(image, element) {
     try {
       // 禁用按钮
       element.disabled = true
-      element.style.cursor = 'not-allowed'
-      // 如果取消收藏, 从 IndexedDB 中删除
+      element.style.cursor = 'progress'
       if (image.star) {
+        // 如果取消收藏, 从 IndexedDB 中删除
         await update('staredImages', staredImages => {
-          return staredImages.filter(item => item.hash !== image.hash)
+          const modifiedImages = staredImages.filter(item => item.hash !== image.hash)
+          return modifiedImages
         })
-      }
-      // 如果收藏, 则将图片信息存入 IndexedDB
-      else {
-        const blob = await getBlob(image)
+      } else {
+        // 如果收藏, 则将图片信息存入 IndexedDB
         await update('staredImages', staredImages => {
-          staredImages.push({ blob, hash: image.hash, prompt: image.prompt })
+          staredImages.push({ 
+            base64: image.base64,
+            hash: image.hash,
+            prompt: image.prompt,
+            star: true,
+            type: 'image',
+          })
           return staredImages
         })
       }
-      // 启用按钮
-      element.disabled = false
-      element.style.cursor = 'pointer'
+      await new Promise(resolve => setTimeout(resolve, 2000))
       // 更新图片列表
-      let modifiedImages = cloneDeep(images)
-      modifiedImages = modifiedImages.map(item => {
+      const modifiedImages = cloneDeep(images)
+      modifiedImages.forEach(item => {
         if (item.hash === image.hash) {
           item.star = !item.star
         }
-        return item
-      })      
+      })
       setImages(modifiedImages)
     } catch (error) {
+      // 打开对话框
+      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error}` })
+    } finally {
       // 启用按钮
       element.disabled = false
       element.style.cursor = 'pointer'
-      // 打开对话框
-      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error}` })
     }
   }
 
   // 渲染图片列表
-  const slides = []
-  for (const image of images) {
-    slides.push(
-      <SwiperSlide key={image.hash} className='image-slide'>
-        <Img blob={image.blob} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} hash={image.hash} />
-        { 
-          image.type === 'image' &&
-          <div className='image-funcs'>
+  const slides = images.map(image => 
+    <SwiperSlide className='image-slide' key={image.hash}>
+      <img src={image.base64} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
+      { 
+        image.type === 'image' &&
+        <div className='image-funcs'>
 
-            <div className='image-funcs-left'>
+          <div className='image-funcs-left'>
 
-              <a id={`star_${image.hash}`} className='image-marker' onClick={e => {
-                e.preventDefault()
-                const element = document.getElementById(`star_${image.hash}`)
-                handleStar(image, element).catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
-              }}>{ image.star ? <StarFilled /> : <StarOutlined /> }</a>
-
-            </div>
-
-            <div className='image-funcs-right'>
-
-              <a data-hash={image.hash} className='image-info' onClick={e => {
-                e.preventDefault()
-                dialogAction({ type: 'open', title: '本图提示词', content: image.prompt })
-              }}><InfoCircleOutlined /></a>
-
-              <a className='image-downloader' onClick={e => {
-                e.preventDefault()
-                handleDownload(image).catch(error => alert(`未捕获: Images -> handleDownload -> ${error}`))
-              }}><DownloadOutlined /></a>
-
-              <a data-hash={image.hash} className='image-deleter' onClick={e => {
-                e.preventDefault()
-                handleDelete(image).catch(error => alert(`未捕获: Images -> handleDelete -> ${error}`))
-              }}><DeleteOutlined /></a>
-
-            </div>
+            <button id={image.hash} className='image-marker' onClick={e => {
+              e.preventDefault()
+              const element = document.getElementById(image.hash)
+              handleStar(image, element).catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
+            }}>{ image.star ? <StarFilled /> : <StarOutlined /> }</button>
 
           </div>
-        }
-      </SwiperSlide>
-    )
-  }
 
+          <div className='image-funcs-right'>
+
+            <button
+              className='image-info' 
+              onClick={e => {
+                e.preventDefault()
+                dialogAction({ type: 'open', title: '本图提示词', content: image.prompt })
+            }}><InfoCircleOutlined /></button>
+
+            <a 
+              className='image-downloader' 
+              href={image.base64} 
+              download={`${image.prompt.replace(/\(([^)]*)\)/, '').trim()}.png`}
+            ><DownloadOutlined /></a>
+
+            <button
+              className='image-deleter' 
+              onClick={e => {
+                e.preventDefault()
+                const loading = document.querySelector('.image-loading')
+                if (loading) {
+                  dialogAction({ type: 'open', title: '错误', content: '请等待当前图片生成完成' })
+                } else if (image.star) {
+                  dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
+                } else {
+                  let modifiedImages = cloneDeep(images)
+                  modifiedImages = modifiedImages.filter(item => item.hash !== image.hash)
+                  setImages(modifiedImages)
+                }
+            }}><DeleteOutlined /></button>
+
+          </div>
+
+        </div>
+      }
+    </SwiperSlide>
+  )
   // 渲染 Swiper
   const swiper = (
     <Swiper
@@ -147,7 +119,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
       {slides}
     </Swiper>
   )
-
+  // 返回 JSX
   return (
     <div className="images-container">
 

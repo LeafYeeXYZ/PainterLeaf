@@ -10,19 +10,21 @@ import LangSwitcher from './Widgets/LangSwitcher.jsx'
 import { useState, useEffect } from 'react'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
-import getStaredImages from '../libs/getStaredImages.js'
-import clearDB from '../libs/clearDB.js'
-import checkBrowser from '../libs/checkBrowser.js'
-import { clear } from 'localforage'
+import check from '../libs/check.js'
+import { get, set } from 'idb-keyval'
 
-// 初始化缓存, 清空 localforage 数据库 -> Img.jsx
-await clear()
 // 如果存在非目标版本数据，确认后清空 idb-keyval <- clearDB.js
-const versionInfo = await clearDB(2024041622)
-// 获取已收藏图片列表 <- getStaredImages.js
-const staredImages = await getStaredImages()
-// 检查浏览器 <- checkBrowser.js
-checkBrowser()
+const versionInfo = await check(2024041710)
+// 获取已收藏图片列表
+// 如果不存在已收藏图片列表，则初始化
+const staredImages = await get('staredImages')
+let initialImages = []
+if (!staredImages) {
+  await set('staredImages', [])
+} else {
+  staredImages.reverse()
+  initialImages = staredImages
+}
 
 // 主组件
 function App() {
@@ -30,32 +32,30 @@ function App() {
    * 已收藏图片列表
    * @var {staredImages of idb-keyval}
    * @type {Array<{
-   *  blob: Blob,
+   *  base64: string,
+   *  type: 'image',
+   *  star: true,
    *  hash: string,
    *  prompt: string,
-   * }>}
+   * }[]>}
    */
   /**
-   * 加载图片
+   * 加载图片  
+   * 通过 getLoadingImage 获取为 images[0]
    * @var {loadingImage of idb-keyval}
-   * @type {Blob}
-   */
-  /**
-   * 暂时存储的图片
-   * @var {:hash of localforage}
    * @type {Blob}
    */
   /**
    * 声明一个状态变量，用于保存图片的 URL 和类型
    * @type {Array<{
-   *  blob: Blob,
+   *  base64: string,
    *  type: 'image' | 'loading',
    *  star: boolean,
    *  hash: string,
    *  prompt: string,
-   * }>}
+   * }[]>}
    */
-  const [images, setImages] = useState(staredImages)
+  const [images, setImages] = useState(initialImages)
   // 使用 useDialog 自定义 Hook
   const { dialogState, dialogAction, dialogRef } = useDialog()
   // 声明一个状态变量，用于记录中文提示词模式

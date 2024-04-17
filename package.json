@@ -24,7 +24,6 @@
     "@ant-design/icons": "^5.3.6",
     "antd": "^5.16.1",
     "idb-keyval": "^6.2.1",
-    "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

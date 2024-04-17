@@ -1,9 +1,10 @@
 import { get, set } from 'idb-keyval'
+import { blobToBase64 } from './base64_blob'
 
 /**
  * 获取加载图片
  * @returns {Promise<{
- *  blob: Blob,
+ *  base64: string,
  *  type: 'loading',
  *  star: false,
  *  hash: 'loading',
@@ -18,16 +19,18 @@ export default async function getLoadingImage() {
     const res = await fetch('/loading.gif')
     const blob = await res.blob()
     await set('loadingImage', blob)
+    const base64 = await blobToBase64(blob)
     return {
-      blob,
+      base64,
       type: 'loading',
       star: false,
       hash: 'loading',
       prompt: 'loading'
     }
   } else {
+    const base64 = await blobToBase64(loadingImage)
     return {
-      blob: loadingImage,
+      base64,
       type: 'loading',
       star: false,
       hash: 'loading',
