@@ -8,28 +8,23 @@ import { cloneDeep } from 'lodash-es'
 import PropTypes from 'prop-types'
 import '../styles/Images.css'
 
-function Images({ images, setImages, zhMode, dialogAction }) {
+function Images({ images, setImages, zhMode, dialogAction, status }) {
   // 操作进行前检测函数
   function callback(e, image, func) {
     e.preventDefault()
-    const loading = document.querySelector('.image-loading')
-    if (loading) {
-      dialogAction({ type: 'open', title: '错误', content: '请等待当前图片生成或下载完成' })
+    if (status.current) {
+      dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
     } else {
-      // 创建一个隐藏的 .image-loading 元素, 以避免在收藏时进行其他操作
-      const loading = document.createElement('div')
-      loading.className = 'image-loading'
-      loading.style.display = 'none'
-      document.body.appendChild(loading)
       // 处理操作
       func(image)
-        .then(() => document.body.removeChild(loading))
+        .then(() => status.current = '')
         .catch(error => alert(`未捕获: Images -> ${func.name} -> ${error}`))
     }
   }
 
   // 收藏按钮点击事件
   async function handleStar(image) {
+    status.current = '收藏'
     try {
       if (image.star) {
         // 如果取消收藏, 从 IndexedDB 中删除
@@ -65,10 +60,12 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   }
   // 提示词按钮点击事件
   async function handleInfo(image) {
+    status.current = '提示词'
     dialogAction({ type: 'open', title: '本图提示词', content: image.prompt })
   }
   // 删除按钮点击事件
   async function handleDelete(image) {
+    status.current = '删除'
     if (image.star) {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
     } else {
@@ -79,6 +76,7 @@ function Images({ images, setImages, zhMode, dialogAction }) {
   }
   // 下载按钮点击事件
   async function handleDownload(image) {
+    status.current = '下载'
     const filename = `${image.prompt.replace(/\(([^)]*)\)/, '').trim()}.png`
     const a = document.createElement('a')
     a.href = image.base64
@@ -161,6 +159,7 @@ Images.propTypes = {
   setImages: PropTypes.func.isRequired,
   zhMode: PropTypes.bool.isRequired,
   dialogAction: PropTypes.func.isRequired,
+  status: PropTypes.object.isRequired,
 }
 
 export default Images

@@ -7,7 +7,7 @@ import Prompt from './Prompt.jsx'
 import Dialog from './Dialog.jsx'
 import LangSwitcher from './Widgets/LangSwitcher.jsx'
 // Hook
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import useDialog from '../libs/useDialog.jsx'
 // 其他
 import check from '../libs/check.js'
@@ -60,6 +60,9 @@ function App() {
   const { dialogState, dialogAction, dialogRef } = useDialog()
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
+  // 声明一个 ref, 用于记录是否有正在进行的操作
+  const status = useRef('')
+  // 初始化操作
   useEffect(() => {
     // 视情况弹出更新提示
     versionInfo && dialogAction(versionInfo)
@@ -77,6 +80,7 @@ function App() {
         setImages={setImages}
         zhMode={zhMode} 
         dialogAction={dialogAction}
+        status={status}
       />
 
       <Prompt 
@@ -84,6 +88,7 @@ function App() {
         setImages={setImages} 
         dialogAction={dialogAction}
         zhMode={zhMode}
+        status={status}
       >
         <LangSwitcher 
           setZhMode={setZhMode}
