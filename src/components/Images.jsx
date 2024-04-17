@@ -34,7 +34,6 @@ function Images({ images, setImages, zhMode, dialogAction }) {
           return staredImages
         })
       }
-      await new Promise(resolve => setTimeout(resolve, 2000))
       // 更新图片列表
       const modifiedImages = cloneDeep(images)
       modifiedImages.forEach(item => {
