@@ -24,7 +24,7 @@
   --back: #000000;
   --back-textarea: #101010;
   --back-hover: #000000;
-  --back-lighter: #1f1a1a;
+  --back-lighter: #1a1515;
   & .lang-switcher {
     filter: brightness(0.5) grayscale(0.35);
   }
