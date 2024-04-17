@@ -88,6 +88,13 @@ function Images({ images, setImages, zhMode, dialogAction }) {
               className='image-downloader' 
               href={image.base64} 
               download={`${image.prompt.replace(/\(([^)]*)\)/, '').trim()}.png`}
+              onClick={e => {
+                const loading = document.querySelector('.image-loading')
+                if (loading) {
+                  e.preventDefault()
+                  dialogAction({ type: 'open', title: '错误', content: '请等待当前图片生成完成' })
+                }
+              }}
             ><DownloadOutlined /></a>
 
             <button
