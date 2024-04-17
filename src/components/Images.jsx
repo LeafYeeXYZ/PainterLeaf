@@ -65,8 +65,13 @@ function Images({ images, setImages, zhMode, dialogAction }) {
 
             <button id={image.hash} className='image-marker' onClick={e => {
               e.preventDefault()
-              const element = document.getElementById(image.hash)
-              handleStar(image, element).catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
+              const loading = document.querySelector('.image-loading')
+              if (loading) {
+                dialogAction({ type: 'open', title: '错误', content: '请等待当前图片生成完成' })
+              } else {
+                const element = document.getElementById(image.hash)
+                handleStar(image, element).catch(error => alert(`未捕获: Images -> handleStar -> ${error}`))
+              }
             }}>{ image.star ? <StarFilled /> : <StarOutlined /> }</button>
 
           </div>
