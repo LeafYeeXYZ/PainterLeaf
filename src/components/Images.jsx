@@ -77,7 +77,21 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
   // 下载按钮点击事件
   async function handleDownload(image) {
     status.current = '下载'
-    const filename = `${image.prompt.replace(/\(([^)]*)\)/, '').trim()}.png`
+    let imagename = image.prompt.replace(/\(([^)]*)\)/, '').trim()
+    // 把空格替换为下划线
+    imagename = imagename.replace(/\s/g, '_')
+    // 只保留字母、数字、下划线
+    imagename = imagename.replace(/[^\w]/g, '')
+    // 如果太长, 截取前 20 个字符
+    if (imagename.length > 20) {
+      imagename = imagename.slice(0, 20)
+    }
+    // 如果最后一个字符是下划线, 去掉
+    if (imagename.slice(-1) === '_') {
+      imagename = imagename.slice(0, -1)
+    }
+
+    const filename = `${imagename}.png`
     const a = document.createElement('a')
     a.href = image.base64
     a.download = filename
