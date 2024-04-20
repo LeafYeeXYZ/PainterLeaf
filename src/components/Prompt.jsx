@@ -60,6 +60,8 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
       if (blob.size < 1024) throw { title: '生成失败', message: '服务端返回空白图片, 可能是服务器错误或提示词不当', deleteLoading: true, self: true }
       // 获取图片 Hash
       const hash = await getHash(blob)
+      // 如果 hash 重复, 不添加图片
+      if (images.some(image => image.hash === hash)) throw { title: '生成失败', message: '服务端返回相同的图片, 请修改提示词或换一个模型', deleteLoading: true, self: true }
       // 转换为 base64
       const base64 = await blobToBase64(blob)
       // 移除加载图片, 并更新图片列表
