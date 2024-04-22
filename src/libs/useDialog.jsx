@@ -23,7 +23,7 @@ function reducer(state, action) {
       return { title: '', content: '', ele: state.ele }
     }
     default: {
-      throw new Error(`Unsupported action type: ${action.type}`)
+      throw new TypeError(`Unsupported action type: ${action.type}`)
     }
   }
 }

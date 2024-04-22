@@ -55,7 +55,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
       setImages(modifiedImages)
     } catch (error) {
       // 打开对话框
-      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error}` })
+      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.name}: ${error.message}` })
     }
   }
   // 提示词按钮点击事件

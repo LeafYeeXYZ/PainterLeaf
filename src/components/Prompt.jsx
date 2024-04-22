@@ -79,7 +79,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
         }
         dialogAction({ type: 'open', title: '生成失败', content: error.message })
       } else {
-        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error}` })
+        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
       }      
     } finally {
       // 启用按钮
@@ -134,7 +134,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
       textEN = data.result.translated_text
     } catch (error) {
       // 打开对话框
-      dialogAction({ type: 'open', title: '翻译失败', content: `${error} (请尝试使用英文模式)` })
+      dialogAction({ type: 'open', title: '翻译失败', content: `${error.name}: ${error.message} (请尝试使用英文模式)` })
       // 启用按钮
       submitRef.current.disabled = false
       // 设置按钮文本
