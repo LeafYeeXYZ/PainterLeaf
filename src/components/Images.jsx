@@ -162,7 +162,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
         </span>
       </div>
 
-      { slides && swiper }
+      { images.length && swiper }
       
     </div>
   )
