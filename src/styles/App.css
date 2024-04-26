@@ -15,8 +15,6 @@
   --back-textarea: #fffafa;
   --back-hover: #ffcece;
   --back-lighter: #fffdfd;
-
-  background-color: var(--back);
 }
 .dark {
   --text: #ff6171;
@@ -72,4 +70,8 @@ a {
 button {
   border: none;
   outline: none;
+}
+html,
+body {
+  background-color: var(--back);
 }
