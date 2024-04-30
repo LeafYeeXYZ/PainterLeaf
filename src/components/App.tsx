@@ -40,7 +40,6 @@ export function App() {
    * @var {Image[]} staredImages 已收藏图片列表
    * @var {Blob} loadingImage 加载图片
    */
-
   // 图片列表
   const [images, setImages] = useState(initialImages)
   // 使用 useDialog 自定义 Hook
@@ -65,8 +64,8 @@ export function App() {
       <Images 
         images={images} 
         setImages={setImages}
-        zhMode={zhMode} 
         dialogAction={dialogAction}
+        zhMode={zhMode} 
         status={status}
       />
 

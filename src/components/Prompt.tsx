@@ -28,6 +28,20 @@ interface PromptProps {
   children: JSX.Element
 }
 
+class ErrorInfo {
+  title: string
+  message: string
+  deleteLoading: boolean
+  self: boolean
+
+  constructor(title: string, message: string, deleteLoading: boolean) {
+    this.title = title
+    this.message = message
+    this.deleteLoading = deleteLoading
+    this.self = true
+  }
+}
+
 function Prompt({ children, images, setImages, dialogAction, zhMode, status }: PromptProps) {
   // 引用元素
   const submitRef: React.MutableRefObject<HTMLButtonElement | null> = useRef(null)
@@ -51,11 +65,11 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       // 获取用户输入的提示词
       const text = prompt || promptRef.current.value
       // 如果用户没有输入提示词，不发送请求
-      if (!text) throw { title: '提示', message: '请输入提示词', deleteLoading: false, self: true }
+      if (!text) throw new ErrorInfo('提示', '请输入提示词', false)
       // 获取模型名称
       const model = modelRef.current.value
       // 如果没有选择模型，不发送请求
-      if (!model) throw { title: '提示', message: '请选择模型', deleteLoading: false, self: true }
+      if (!model) throw new ErrorInfo('提示', '请选择模型', false)
       // 插入加载图片
       const modifiedImages = cloneDeep(images)
       modifiedImages.unshift(loadingImage)
@@ -68,11 +82,11 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       // 解析响应体
       const blob = await res.blob()
       // 根据图片大小判断是否为错误信息
-      if (blob.size < 1024) throw { title: '生成失败', message: '服务端返回空白图片, 可能是服务器错误或提示词不当', deleteLoading: true, self: true }
+      if (blob.size < 1024) throw new ErrorInfo('生成失败', '服务端返回空白图片, 可能是服务器错误或提示词不当', true)
       // 获取图片 Hash
       const hash = await getHash(blob)
       // 如果 hash 重复, 不添加图片
-      if (images.some(image => image.hash === hash)) throw { title: '生成失败', message: '服务端返回相同的图片, 请修改提示词或换一个模型', deleteLoading: true, self: true }
+      if (images.some(image => image.hash === hash)) throw new ErrorInfo('生成失败', '服务端返回相同的图片, 请修改提示词或换一个模型', true)
       // 转换为 base64
       const base64 = await blobToBase64(blob)
       // 移除加载图片, 并更新图片列表
@@ -81,19 +95,16 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       updatedImages.unshift({ base64, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
       setImages(updatedImages)
     } catch (error) {
-      if (!error) throw new Error('未知错误: Prompt -> handleSubmit')
       // 移除加载图片, 打开对话框
-      if (typeof error === 'object') {
-        if ('self' in error && error.self && 'title' in error && 'message' in error && 'deleteLoading' in error) {
-          if ('deleteLoading' in error && error.deleteLoading) {
-            const currentImages = cloneDeep(images)
-            const modifiedImages = currentImages.filter(image => image.type !== 'loading')
-            setImages(modifiedImages)
-          }
-          dialogAction({ type: 'open', title: '生成失败', content: error.message as string })
-        } else if (error instanceof Error) {
-          dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
+      if (error instanceof ErrorInfo) {
+        if (error.deleteLoading) {
+          const currentImages = cloneDeep(images)
+          const modifiedImages = currentImages.filter(image => image.type !== 'loading')
+          setImages(modifiedImages)
         }
+        dialogAction({ type: 'open', title: error.title, content: error.message })
+      } else if (error instanceof Error) {
+        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
       }
     } finally {
       // 启用按钮
