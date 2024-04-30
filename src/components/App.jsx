@@ -16,8 +16,8 @@ import { get, set } from 'idb-keyval'
 // 如果存在非目标版本数据，确认后清空 idb-keyval <- clearDB.js
 const versionInfo = await check(2024041710)
 // 获取已收藏图片列表
-// 如果不存在已收藏图片列表，则初始化
 const staredImages = await get('staredImages')
+/** @type {import('../types').Image[]} */
 let initialImages = []
 if (!staredImages) {
   await set('staredImages', [])
@@ -29,31 +29,13 @@ if (!staredImages) {
 // 主组件
 function App() {
   /**
-   * 已收藏图片列表
-   * @var {staredImages of idb-keyval}
-   * @type {Array<{
-   *  base64: string,
-   *  type: 'image',
-   *  star: true,
-   *  hash: string,
-   *  prompt: string,
-   * }[]>}
-   */
-  /**
-   * 加载图片  
-   * 通过 getLoadingImage 获取为 images[0]
-   * @var {loadingImage of idb-keyval}
-   * @type {Blob}
+   * idb-keyval 数据库中的数据
+   * @var {import('../types.ts').Image[]} staredImages 已收藏图片列表
+   * @var {Blob} loadingImage 加载图片
    */
   /**
    * 声明一个状态变量，用于保存图片的 URL 和类型
-   * @type {Array<{
-   *  base64: string,
-   *  type: 'image' | 'loading',
-   *  star: boolean,
-   *  hash: string,
-   *  prompt: string,
-   * }[]>}
+   * @type {[import('../types.ts').Image[], Function]}
    */
   const [images, setImages] = useState(initialImages)
   // 使用 useDialog 自定义 Hook

@@ -10,10 +10,13 @@ export type DialogAction = (action: {
   title: string
   content: string
 }) => void
-/** useDialog 的返回值 */
-export type UseDialog = {
-  dialogState: DialogState
-  dialogAction: DialogAction
-  dialogRef: React.MutableRefObject<null>
+
+/** 图片对象 */
+export type Image = {
+  base64: string
+  type: 'image' | 'loading'
+  star: boolean
+  hash: string
+  prompt: string
 }
 

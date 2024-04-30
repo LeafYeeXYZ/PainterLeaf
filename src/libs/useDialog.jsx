@@ -24,7 +24,11 @@ function reducer(state, action) {
 
 /**
  * 创建一个对话框的 Hook
- * @returns {import('../types.ts').UseDialog}
+ * @returns {{
+ *   dialogState: import('../types.ts').DialogState,
+ *   dialogAction: import('../types.ts').DialogAction,
+ *   dialogRef: import('react').MutableRefObject<null>
+ * }} 对话框的状态和操作
  */
 export default function useDialog() {
   // 创建一个对话框的引用
