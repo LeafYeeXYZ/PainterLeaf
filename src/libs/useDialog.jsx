@@ -2,15 +2,9 @@ import { useReducer, useRef } from 'react'
 
 /**
  * 定义 reducer 函数
- * @param {Object} state 状态对象
- * @param {Object} state.title 记录对话框标题
- * @param {Object} state.content 记录对话框内容
- * @param {Object} state.ele 记录对话框元素的引用
- * @param {Object} action 动作对象
- * @param {'open' | 'close'} action.type 动作类型
- * @param {string} action.title 要设置的对话框标题
- * @param {string} action.content 要设置的对话框内容
- * @returns {Object} 返回新的状态对象
+ * @param {import('../types.ts').DialogState} state 对话框的状态
+ * @param {import('../types.ts').DialogAction} action 操作类型
+ * @returns {import('../types.ts').DialogState} 更新后的对话框状态
  */
 function reducer(state, action) {
   switch (action.type) {
@@ -29,9 +23,8 @@ function reducer(state, action) {
 }
 
 /**
- * 接受一个对话框的引用
- * 返回该对话框的状态和操作函数
- * @returns {Object} 返回对话框的状态、操作函数和引用
+ * 创建一个对话框的 Hook
+ * @returns {import('../types.ts').UseDialog}
  */
 export default function useDialog() {
   // 创建一个对话框的引用
