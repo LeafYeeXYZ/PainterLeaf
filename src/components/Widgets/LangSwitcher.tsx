@@ -1,8 +1,11 @@
 import { Switch, ConfigProvider } from 'antd'
-import PropTypes from 'prop-types'
 
-function LangSwitcher({ setZhMode }) {
-  const handleChange = checked => {
+interface LangSwitcherProps {
+  setZhMode: (zhMode: boolean) => void
+}
+
+function LangSwitcher({ setZhMode }: LangSwitcherProps) {
+  const handleChange: (checked: boolean) => void = checked => {
     setZhMode(!checked)
   } 
 
@@ -31,10 +34,6 @@ function LangSwitcher({ setZhMode }) {
       />
     </ConfigProvider>
   )
-}
-
-LangSwitcher.propTypes = {
-  setZhMode: PropTypes.func.isRequired,
 }
 
 export default LangSwitcher

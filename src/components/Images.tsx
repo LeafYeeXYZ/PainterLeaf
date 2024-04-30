@@ -5,12 +5,21 @@ import { EffectCards } from 'swiper/modules'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
 import { cloneDeep } from 'lodash-es'
-import PropTypes from 'prop-types'
 import '../styles/Images.css'
+import { Image } from './App.tsx'
+import { DialogAction } from '../libs/useDialog.tsx'
 
-function Images({ images, setImages, zhMode, dialogAction, status }) {
+interface ImageProps {
+  images: Image[]
+  setImages: (images: Image[]) => void
+  zhMode: boolean
+  dialogAction: React.Dispatch<DialogAction>
+  status: React.MutableRefObject<string>
+}
+
+function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps) {
   // 操作进行前检测函数
-  function callback(e, image, func) {
+  function callback(e: React.MouseEvent, image: Image, func: (image: Image) => Promise<void>) {
     e.preventDefault()
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
@@ -23,13 +32,13 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
   }
 
   // 收藏按钮点击事件
-  async function handleStar(image) {
+  async function handleStar(image: Image) {
     status.current = '收藏'
     try {
       if (image.star) {
         // 如果取消收藏, 从 IndexedDB 中删除
         await update('staredImages', staredImages => {
-          const modifiedImages = staredImages.filter(item => item.hash !== image.hash)
+          const modifiedImages = staredImages.filter((item: Image) => item.hash !== image.hash)
           return modifiedImages
         })
       } else {
@@ -54,17 +63,16 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
       })
       setImages(modifiedImages)
     } catch (error) {
-      // 打开对话框
-      dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.name}: ${error.message}` })
+      error instanceof Error && dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.name}: ${error.message}` })
     }
   }
   // 提示词按钮点击事件
-  async function handleInfo(image) {
+  async function handleInfo(image: Image) {
     status.current = '提示词'
     dialogAction({ type: 'open', title: '本图提示词', content: image.prompt })
   }
   // 删除按钮点击事件
-  async function handleDelete(image) {
+  async function handleDelete(image: Image) {
     status.current = '删除'
     if (image.star) {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
@@ -75,7 +83,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
     }
   }
   // 下载按钮点击事件
-  async function handleDownload(image) {
+  async function handleDownload(image: Image) {
     status.current = '下载'
     const filename = `${Date.now().toString()}.png`
     const a = document.createElement('a')
@@ -152,14 +160,6 @@ function Images({ images, setImages, zhMode, dialogAction, status }) {
       
     </div>
   )
-}
-
-Images.propTypes = {
-  images: PropTypes.array.isRequired,
-  setImages: PropTypes.func.isRequired,
-  zhMode: PropTypes.bool.isRequired,
-  dialogAction: PropTypes.func.isRequired,
-  status: PropTypes.object.isRequired,
 }
 
 export default Images

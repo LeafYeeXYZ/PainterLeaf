@@ -1,17 +1,9 @@
 import { get, set } from 'idb-keyval'
-import { blobToBase64 } from './base64_blob'
+import { blobToBase64 } from './base64_blob.ts'
+import { Image } from '../components/App.tsx'
 
-/**
- * 获取加载图片
- * @returns {Promise<{
- *  base64: string,
- *  type: 'loading',
- *  star: false,
- *  hash: 'loading',
- *  prompt: 'loading'
- * }>} 加载图片对象
- */
-export default async function getLoadingImage() {
+/** 获取加载图片 */
+export default async function getLoadingImage(): Promise<Image> {
   // 首先尝试从 IndexedDB 中获取加载图片
   const loadingImage = await get('loadingImage')
   // 如果不存在则向服务器请求

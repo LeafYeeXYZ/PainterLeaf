@@ -1,4 +1,5 @@
-import { clear } from "idb-keyval"
+import { clear } from 'idb-keyval'
+import { DialogAction } from './useDialog.tsx'
 
 /**
  * 检查浏览器版本是否符合要求  
@@ -29,17 +30,15 @@ function checkBrowser() {
 /**
  * 1. 如果 IndexedDB 版本号小于目标版本号则清空 IndexedDB  
  * 2. 检查浏览器版本是否符合要求, 如果不符合要求，弹出提示框
- * @param {number} targetVersion 网页兼容日期
- * @returns {Promise<undefined | {type: string, title: string, content: string}>} 返回提示框信息
  */
-export default async function clearDB(targetVersion) {
+export default async function clearDB(targetVersion: string): Promise<undefined | DialogAction> {
   // 检查浏览器版本是否符合要求
   checkBrowser()
 
   // 获取当前版本号
-  const thisVersion = Number(localStorage.getItem('dbVersion')) || 0
+  const thisVersion = localStorage.getItem('dbVersion') || 'noVersion'
   // 如果当前版本号不同于目标版本号则清空 IndexedDB
-  if (thisVersion !== targetVersion && thisVersion !== 0) {
+  if (thisVersion !== targetVersion && thisVersion !== 'noVersion') {
     const dbStatu = localStorage.getItem('dbStatu')
     if (dbStatu === 'readyToClear') {
       await clear()
@@ -50,7 +49,7 @@ export default async function clearDB(targetVersion) {
       localStorage.setItem('dbStatu', 'readyToClear')
       return { type: 'open', title: '提示', content: '网站数据需要更新, 请保存重要图片，并刷新网页' }
     }
-  } else if (thisVersion === 0) {
+  } else if (thisVersion === 'noVersion') {
     localStorage.setItem('dbVersion', targetVersion)
   }
   return

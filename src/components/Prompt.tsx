@@ -1,31 +1,42 @@
 import '../styles/Prompt.css'
-import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { SERVER } from '../config.json'
-import getHash from '../libs/getHash'
-import getLoadingImage from '../libs/getLoadingImage'
+import getHash from '../libs/getHash.ts'
+import getLoadingImage from '../libs/getLoadingImage.ts'
 import { cloneDeep } from 'lodash-es'
-import { blobToBase64 } from '../libs/base64_blob.js'
+import { blobToBase64 } from '../libs/base64_blob.ts'
+import { DialogAction } from '../libs/useDialog.tsx'
+import { Image } from './App.tsx'
 
 // 获取模型列表
 const data = await fetch(`${SERVER}/painter/models`).catch(() => null)
 const models = (data && await data.json().catch(() => null)) || {}
 // 生成模型选项
-const options = []
+const options: JSX.Element[] = []
 for (const model in models) {
   options.push(<option value={model} key={model}>{models[model]}</option>)
 }
 // 获取加载图片
 const loadingImage = await getLoadingImage()
 
-function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
+interface PromptProps {
+  images: Image[]
+  setImages: (images: Image[]) => void
+  dialogAction: React.Dispatch<DialogAction>
+  zhMode: boolean
+  status: React.MutableRefObject<string>
+  children: JSX.Element
+}
+
+function Prompt({ children, images, setImages, dialogAction, zhMode, status }: PromptProps) {
   // 引用元素
-  const submitRef = useRef(null)
-  const promptRef = useRef(null)
-  const modelRef = useRef(null)
+  const submitRef: React.MutableRefObject<HTMLButtonElement | null> = useRef(null)
+  const promptRef: React.MutableRefObject<HTMLTextAreaElement | null> = useRef(null)
+  const modelRef: React.MutableRefObject<HTMLSelectElement | null> = useRef(null)
   // 点击生成按钮时的事件处理函数
-  async function handleSubmit(event, prompt) {
+  async function handleSubmit(event: React.MouseEvent, prompt?: string) {
     event.preventDefault()
+    if (!submitRef.current || !promptRef.current || !modelRef.current) return
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
       return
@@ -70,17 +81,20 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
       updatedImages.unshift({ base64, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
       setImages(updatedImages)
     } catch (error) {
+      if (!error) throw new Error('未知错误: Prompt -> handleSubmit')
       // 移除加载图片, 打开对话框
-      if (typeof error === 'object' && error.self) {
-        if (error.deleteLoading) {
-          const currentImages = cloneDeep(images)
-          const modifiedImages = currentImages.filter(image => image.type !== 'loading')
-          setImages(modifiedImages)
+      if (typeof error === 'object') {
+        if ('self' in error && error.self && 'title' in error && 'message' in error && 'deleteLoading' in error) {
+          if ('deleteLoading' in error && error.deleteLoading) {
+            const currentImages = cloneDeep(images)
+            const modifiedImages = currentImages.filter(image => image.type !== 'loading')
+            setImages(modifiedImages)
+          }
+          dialogAction({ type: 'open', title: '生成失败', content: error.message as string })
+        } else if (error instanceof Error) {
+          dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
         }
-        dialogAction({ type: 'open', title: '生成失败', content: error.message })
-      } else {
-        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
-      }      
+      }
     } finally {
       // 启用按钮
       submitRef.current.disabled = false
@@ -91,8 +105,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
     }
   }
   // 中文模式的事件处理函数
-  async function handleSubmitZH(event) {
+  async function handleSubmitZH(event: React.MouseEvent) {
     event.preventDefault()
+    if (!submitRef.current || !promptRef.current) return
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
       return
@@ -133,6 +148,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
       const data = await res.json()
       textEN = data.result.translated_text
     } catch (error) {
+      if (!(error instanceof Error)) throw new Error('未知错误: Prompt -> handleSubmitZH')
       // 打开对话框
       dialogAction({ type: 'open', title: '翻译失败', content: `${error.name}: ${error.message} (请尝试使用英文模式)` })
       // 启用按钮
@@ -156,8 +172,8 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
 
       <textarea
         name="prompt" 
-        cols="30" 
-        rows="10" 
+        cols={30}
+        rows={10} 
         placeholder="请描述你想生成的图像"
         className='prompt-textarea'
         ref={promptRef}
@@ -180,15 +196,6 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }) {
 
     </form>
   )
-}
-
-Prompt.propTypes = {
-  images: PropTypes.array.isRequired,
-  setImages: PropTypes.func.isRequired,
-  dialogAction: PropTypes.func.isRequired,
-  zhMode: PropTypes.bool.isRequired,
-  status: PropTypes.object.isRequired,
-  children: PropTypes.element,
 }
 
 export default Prompt

@@ -2,23 +2,30 @@
 import '../styles/App.css'
 import '../styles/Widgets.css'
 // 组件
-import Images from './Images.jsx'
-import Prompt from './Prompt.jsx'
-import Dialog from './Dialog.jsx'
-import LangSwitcher from './Widgets/LangSwitcher.jsx'
+import Images from './Images.tsx'
+import Prompt from './Prompt.tsx'
+import Dialog from './Dialog.tsx'
+import LangSwitcher from './Widgets/LangSwitcher.tsx'
 // Hook
 import { useState, useEffect, useRef } from 'react'
-import useDialog from '../libs/useDialog.jsx'
+import { useDialog } from '../libs/useDialog.tsx'
 // 其他
-import check from '../libs/check.js'
+import check from '../libs/check.ts'
 import { get, set } from 'idb-keyval'
+// 类型
+export type Image = {
+  base64: string
+  type: 'image' | 'loading'
+  star: boolean
+  hash: string
+  prompt: string
+}
 
 // 如果存在非目标版本数据，确认后清空 idb-keyval <- clearDB.js
-const versionInfo = await check(2024041710)
+const versionInfo = await check('2024041710')
 // 获取已收藏图片列表
-const staredImages = await get('staredImages')
-/** @type {import('../types').Image[]} */
-let initialImages = []
+const staredImages: Image[] | undefined = await get('staredImages')
+let initialImages: Image[] = []
 if (!staredImages) {
   await set('staredImages', [])
 } else {
@@ -27,16 +34,14 @@ if (!staredImages) {
 }
 
 // 主组件
-function App() {
+export function App() {
   /**
    * idb-keyval 数据库中的数据
-   * @var {import('../types.ts').Image[]} staredImages 已收藏图片列表
+   * @var {Image[]} staredImages 已收藏图片列表
    * @var {Blob} loadingImage 加载图片
    */
-  /**
-   * 声明一个状态变量，用于保存图片的 URL 和类型
-   * @type {[import('../types.ts').Image[], Function]}
-   */
+
+  // 图片列表
   const [images, setImages] = useState(initialImages)
   // 使用 useDialog 自定义 Hook
   const { dialogState, dialogAction, dialogRef } = useDialog()
@@ -86,5 +91,3 @@ function App() {
     </main>
   )
 }
-
-export default App
