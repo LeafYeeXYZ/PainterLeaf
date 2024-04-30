@@ -44,13 +44,12 @@ class ErrorInfo {
 
 function Prompt({ children, images, setImages, dialogAction, zhMode, status }: PromptProps) {
   // 引用元素
-  const submitRef: React.MutableRefObject<HTMLButtonElement | null> = useRef(null)
-  const promptRef: React.MutableRefObject<HTMLTextAreaElement | null> = useRef(null)
-  const modelRef: React.MutableRefObject<HTMLSelectElement | null> = useRef(null)
+  const submitRef = useRef<HTMLButtonElement>(null)
+  const promptRef = useRef<HTMLTextAreaElement>(null)
+  const modelRef = useRef<HTMLSelectElement>(null)
   // 点击生成按钮时的事件处理函数
   async function handleSubmit(event: React.MouseEvent, prompt?: string) {
     event.preventDefault()
-    if (!submitRef.current || !promptRef.current || !modelRef.current) return
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
       return
@@ -59,15 +58,15 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
     }
     try {
       // 禁用按钮
-      submitRef.current.disabled = true
+      submitRef.current!.disabled = true
       // 设置按钮文本
-      submitRef.current.textContent = '生成中...'
+      submitRef.current!.textContent = '生成中...'
       // 获取用户输入的提示词
-      const text = prompt || promptRef.current.value
+      const text = prompt || promptRef.current!.value
       // 如果用户没有输入提示词，不发送请求
       if (!text) throw new ErrorInfo('提示', '请输入提示词', false)
       // 获取模型名称
-      const model = modelRef.current.value
+      const model = modelRef.current!.value
       // 如果没有选择模型，不发送请求
       if (!model) throw new ErrorInfo('提示', '请选择模型', false)
       // 插入加载图片
@@ -108,9 +107,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       }
     } finally {
       // 启用按钮
-      submitRef.current.disabled = false
+      submitRef.current!.disabled = false
       // 设置按钮文本
-      submitRef.current.textContent = '生成'
+      submitRef.current!.textContent = '生成'
       // 重置状态
       status.current = ''
     }
@@ -118,7 +117,6 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
   // 中文模式的事件处理函数
   async function handleSubmitZH(event: React.MouseEvent) {
     event.preventDefault()
-    if (!submitRef.current || !promptRef.current) return
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
       return
@@ -126,19 +124,19 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       status.current = '翻译提示词'
     }
     // 禁用按钮
-    submitRef.current.disabled = true
+    submitRef.current!.disabled = true
     // 设置按钮文本
-    submitRef.current.textContent = '翻译中...'
+    submitRef.current!.textContent = '翻译中...'
     // 获取用户输入的提示词
-    const textZH = promptRef.current.value
+    const textZH = promptRef.current!.value
     // 如果没有输入提示词，不发送请求
     if (!textZH) {
       // 打开对话框
       dialogAction({ type: 'open', title: '生成失败', content: '请输入提示词' })
       // 启用按钮
-      submitRef.current.disabled = false
+      submitRef.current!.disabled = false
       // 设置按钮文本
-      submitRef.current.textContent = '生成'
+      submitRef.current!.textContent = '生成'
       // 退出
       return
     }
@@ -163,9 +161,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       // 打开对话框
       dialogAction({ type: 'open', title: '翻译失败', content: `${error.name}: ${error.message} (请尝试使用英文模式)` })
       // 启用按钮
-      submitRef.current.disabled = false
+      submitRef.current!.disabled = false
       // 设置按钮文本
-      submitRef.current.textContent = '生成'
+      submitRef.current!.textContent = '生成'
       // 退出
       return
     } finally {

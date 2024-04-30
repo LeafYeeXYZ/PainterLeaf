@@ -33,13 +33,13 @@ function reducer(state: DialogState, action: DialogAction): DialogState {
 type UseDialogReturns = {
   dialogState: DialogState
   dialogAction: React.Dispatch<DialogAction>
-  dialogRef: React.MutableRefObject<null>
+  dialogRef: React.RefObject<HTMLDialogElement>
 }
 
 /** 创建一个对话框的 Hook */
 export function useDialog(): UseDialogReturns {
   // 创建一个对话框的引用
-  const dialogRef = useRef(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
   // 使用 useReducer
   const [dialogState, dialogAction] = useReducer(reducer, { title: '', content: '', ele: dialogRef })
   // 返回操作函数
