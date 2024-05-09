@@ -20,11 +20,6 @@
       opacity: 0;
       width: 0;
       position: absolute;
-      &:disabled ~ .image-selector-filename,
-      &:disabled ~ .image-selector-label {
-        filter: grayscale(0.9);
-        cursor: not-allowed;
-      }
     }
 
     & .image-selector-label {
@@ -65,8 +60,11 @@
       text-overflow: ellipsis;
     }
   }
-
-
 }
 
+.image-selector:disabled ~ .image-selector-filename,
+.image-selector:disabled ~ .image-selector-label {
+  filter: grayscale(0.9);
+  cursor: not-allowed;
+}
 
