@@ -13,6 +13,7 @@
   --border-textarea: #ff4f4f;
   --back: #fff0f0;
   --back-textarea: #fffafa;
+  --back-filearea: #ffd5d5;
   --back-hover: #ffcece;
   --back-lighter: #fffdfd;
 }
@@ -23,8 +24,10 @@
   --border-textarea: #000000;
   --back: #000000;
   --back-textarea: #101010;
+  --back-filearea: #151515;
   --back-hover: #000000;
   --back-lighter: #151515;
+  & .mode-switcher,
   & .lang-switcher {
     filter: brightness(0.5) grayscale(0.35);
   }

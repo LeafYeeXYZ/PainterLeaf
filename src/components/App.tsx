@@ -6,6 +6,8 @@ import Images from './Images.tsx'
 import Prompt from './Prompt.tsx'
 import Dialog from './Dialog.tsx'
 import LangSwitcher from './Widgets/LangSwitcher.tsx'
+import ModeSwitcher from './Widgets/ModeSwitcher.tsx'
+import ImageSelector from './Widgets/ImageSelector.tsx'
 // Hook
 import { useState, useEffect, useRef } from 'react'
 import { useDialog } from '../libs/useDialog.tsx'
@@ -46,8 +48,12 @@ export function App() {
   const { dialogState, dialogAction, dialogRef } = useDialog()
   // 声明一个状态变量，用于记录中文提示词模式
   const [zhMode, setZhMode] = useState(false)
+  // 声明一个状态变量，用于记录文生图/图生图模式
+  const [mode, setMode] = useState<'textToImage' | 'imageToImage'>('textToImage')
   // 声明一个 ref, 用于记录是否有正在进行的操作
   const status = useRef('')
+  // 声明一个 ref, 用于记录图片选择器
+  const imageSelectorRef = useRef<HTMLInputElement>(null)
   // 初始化操作
   useEffect(() => {
     // 视情况弹出更新提示
@@ -75,10 +81,21 @@ export function App() {
         dialogAction={dialogAction}
         zhMode={zhMode}
         status={status}
+        mode={mode}
+        fileRef={imageSelectorRef}
       >
-        <LangSwitcher 
-          setZhMode={setZhMode}
-        />
+        <div className="widgets">
+          <LangSwitcher 
+            setZhMode={setZhMode}
+          />
+          <ModeSwitcher 
+            setMode={setMode}
+          />   
+          <ImageSelector 
+            ref={imageSelectorRef}
+            mode={mode}
+          />
+        </div>
       </Prompt>
 
       <Dialog 

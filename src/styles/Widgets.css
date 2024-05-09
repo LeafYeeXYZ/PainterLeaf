@@ -1,16 +1,72 @@
-.lang-switcher {
+.widgets {
   position: absolute;
-  top: 100px;
-  right: 11%;
-  z-index: 10;
-}
-@media screen and (max-width: 768px) {
-  .lang-switcher {
-    right: 11.5%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  top: 116px;
+  gap: 8px;
+  padding: 0 4px; 
+
+  & .lang-switcher,
+  & .mode-switcher {
+    width: 100px;
   }
-}
-@media screen and (max-width: 512px) {
-  .lang-switcher {
-    right: 12%;
+  & .image-selector-container {
+    position: relative;
+    width: calc(80dvw - 225px);
+    height: 22px;
+
+    & .image-selector {
+      opacity: 0;
+      width: 0;
+      position: absolute;
+      &:disabled ~ .image-selector-filename,
+      &:disabled ~ .image-selector-label {
+        filter: grayscale(0.9);
+        cursor: not-allowed;
+      }
+    }
+
+    & .image-selector-label {
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0 10px;
+      color: var(--text);
+      font-weight: bold;
+      font-size: 0.7rem;
+      line-height: 20px;
+      border: 1px solid var(--text);
+      border-radius: 20px;
+      background-color: var(--back-filearea);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      &:hover {
+        background-color: var(--back-hover);
+        color: var(--text-hover);
+      }
+    }
+
+    & .image-selector-filename {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-right: 8px;
+      font-weight: bold;
+      font-size: 0.7rem;
+      line-height: 22px;
+      color: var(--text);
+      opacity: 0.9;
+      width: calc(100% - 70px);
+      height: 100%;
+      /* 省略号 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
+
+
 }
+
+

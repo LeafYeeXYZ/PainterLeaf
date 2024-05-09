@@ -9,12 +9,24 @@ import { DialogAction } from '../libs/useDialog.tsx'
 import { Image } from './App.tsx'
 
 // 获取模型列表
+type Models = {
+  [key: string]: { 
+    description: string, 
+    type: 'textToImage' | 'imageToImage' | 'both' 
+    lang: '自然语言' | 'SD提示词'
+  }
+}
+const desc = new Map([
+  ['textToImage', '文生图'],
+  ['imageToImage', '图生图'],
+  ['both', '文生图/图生图'],
+])
 const data = await fetch(`${SERVER}/painter/models`).catch(() => null)
-const models = (data && await data.json().catch(() => null)) || {}
+const models: Models = (data && await data.json().catch(() => null)) || {}
 // 生成模型选项
 const options: JSX.Element[] = []
 for (const model in models) {
-  options.push(<option value={model} key={model}>{models[model]}</option>)
+  options.push(<option value={model} key={model} data-type={models[model].type}>{models[model].description} {`(${models[model].lang}/${desc.get(models[model].type)})`}</option>)
 }
 // 获取加载图片
 const loadingImage = await getLoadingImage()
@@ -26,6 +38,8 @@ interface PromptProps {
   zhMode: boolean
   status: React.MutableRefObject<string>
   children: JSX.Element
+  mode: 'textToImage' | 'imageToImage'
+  fileRef: React.RefObject<HTMLInputElement>
 }
 
 class ErrorInfo {
@@ -42,13 +56,13 @@ class ErrorInfo {
   }
 }
 
-function Prompt({ children, images, setImages, dialogAction, zhMode, status }: PromptProps) {
+function Prompt({ children, images, setImages, dialogAction, zhMode, status, mode, fileRef }: PromptProps) {
   // 引用元素
   const submitRef = useRef<HTMLButtonElement>(null)
   const promptRef = useRef<HTMLTextAreaElement>(null)
   const modelRef = useRef<HTMLSelectElement>(null)
   // 点击生成按钮时的事件处理函数
-  async function handleSubmit(event: React.MouseEvent, prompt?: string) {
+  async function handleSubmit(event: React.MouseEvent, mode: 'textToImage' | 'imageToImage', prompt?: string) {
     event.preventDefault()
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
@@ -65,19 +79,43 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       const text = prompt || promptRef.current!.value
       // 如果用户没有输入提示词，不发送请求
       if (!text) throw new ErrorInfo('提示', '请输入提示词', false)
+      // 如果是图生图模式，检查是否选择了图片
+      if (mode === 'imageToImage') {
+        if (!fileRef.current!.files || !fileRef.current!.files[0]) throw new ErrorInfo('提示', '当前为图生图模式, 请选择图片', false)
+      }
       // 获取模型名称
       const model = modelRef.current!.value
       // 如果没有选择模型，不发送请求
       if (!model) throw new ErrorInfo('提示', '请选择模型', false)
+      // 如果模型不支持当前模式，不发送请求
+      if (models[model].type !== mode && models[model].type !== 'both') throw new ErrorInfo('提示', '当前模型不支持当前模式', false)
+
       // 插入加载图片
       const modifiedImages = cloneDeep(images)
       modifiedImages.unshift(loadingImage)
       setImages(modifiedImages)
-      // 编码为 URL
-      const encodedText = encodeURI(text)
-      const encodedModel = encodeURI(model)
       // 发送请求
-      const res = await fetch(`${SERVER}/painter/generate?prompt=${encodedText}&model=${encodedModel}`)
+      let res: Response
+      if (mode === 'imageToImage') {
+        // 图片数组
+        const data = Array.from(new Uint8Array(await fileRef.current!.files![0].arrayBuffer()))
+        res = await fetch(`${SERVER}/painter/generate`, {
+          method: 'POST',
+          body: JSON.stringify({
+            image: data,
+            prompt: text,
+            model: model,            
+          }),
+        })
+      } else {
+        res = await fetch(`${SERVER}/painter/generate`, {
+          method: 'POST',
+          body: JSON.stringify({
+            prompt: text,
+            model: model,
+          }),
+        })
+      }
       // 解析响应体
       const blob = await res.blob()
       // 根据图片大小判断是否为错误信息
@@ -91,7 +129,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       // 移除加载图片, 并更新图片列表
       const currentImages = cloneDeep(images)
       const updatedImages = currentImages.filter(image => image.type !== 'loading')
-      updatedImages.unshift({ base64, type: 'image', star: false, hash, prompt: `${text} (${models[model]})` })
+      updatedImages.unshift({ base64, type: 'image', star: false, hash, prompt: `${text} (${models[model].description})` })
       setImages(updatedImages)
     } catch (error) {
       // 移除加载图片, 打开对话框
@@ -114,8 +152,9 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       status.current = ''
     }
   }
+
   // 中文模式的事件处理函数
-  async function handleSubmitZH(event: React.MouseEvent) {
+  async function handleSubmitZH(event: React.MouseEvent, mode: 'textToImage' | 'imageToImage') {
     event.preventDefault()
     if (status.current) {
       dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
@@ -171,7 +210,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       status.current = ''
     }
     // 调用英文模式的事件处理函数
-    handleSubmit(event, textEN)
+    handleSubmit(event, mode, textEN)
   }
 
   return (
@@ -200,7 +239,7 @@ function Prompt({ children, images, setImages, dialogAction, zhMode, status }: P
       <button 
         className='prompt-submit'
         ref={submitRef}
-        onClick={zhMode ? handleSubmitZH : handleSubmit}
+        onClick={zhMode ? (event) => handleSubmitZH(event, mode) : (event) => handleSubmit(event, mode)}
       >生成</button>
 
     </form>
