@@ -8,6 +8,7 @@ import Dialog from './Dialog.tsx'
 import LangSwitcher from './Widgets/LangSwitcher.tsx'
 import ModeSwitcher from './Widgets/ModeSwitcher.tsx'
 import ImageSelector from './Widgets/ImageSelector.tsx'
+import PromptGenerator from './Widgets/PromptGenerator.tsx'
 // Hook
 import { useState, useEffect, useRef } from 'react'
 import { useDialog } from '../libs/useDialog.tsx'
@@ -51,6 +52,8 @@ export function App() {
   const status = useRef('')
   // 图片选择器
   const imageSelectorRef = useRef<HTMLInputElement>(null)
+  // 提示词输入区
+  const promptRef = useRef<HTMLTextAreaElement>(null)
   // 初始化操作
   useEffect(() => {
     // 视情况弹出更新提示
@@ -80,6 +83,7 @@ export function App() {
         geneMode={geneMode}
         fileRef={imageSelectorRef}
         setLoadingImage={setLoadingImage}
+        promptRef={promptRef}
       >
         <div className="widgets">
           <LangSwitcher 
@@ -100,6 +104,12 @@ export function App() {
         ref={dialogRef}
         dialogState={dialogState} 
         dialogAction={dialogAction}
+      />
+
+      <PromptGenerator 
+        status={status}
+        dialogAction={dialogAction}
+        promptRef={promptRef}
       />
 
     </main>

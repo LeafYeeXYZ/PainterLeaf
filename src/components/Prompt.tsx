@@ -41,6 +41,7 @@ interface PromptProps {
   geneMode: 'textToImage' | 'imageToImage'
   fileRef: React.RefObject<HTMLInputElement>
   setLoadingImage: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>
+  promptRef: React.RefObject<HTMLTextAreaElement>
 }
 
 class ErrorInfo {
@@ -52,11 +53,10 @@ class ErrorInfo {
   }
 }
 
-function Prompt({ children, currentImages, setCurrentImages, dialogAction, langMode, status, geneMode, fileRef, setLoadingImage }: PromptProps) {
+function Prompt({ children, currentImages, setCurrentImages, dialogAction, langMode, status, geneMode, fileRef, setLoadingImage, promptRef }: PromptProps) {
 
   // 引用元素
   const submitRef = useRef<HTMLButtonElement>(null)
-  const promptRef = useRef<HTMLTextAreaElement>(null)
   const modelRef = useRef<HTMLSelectElement>(null)
 
   // 翻译函数

@@ -25,11 +25,11 @@ function ImageSelector({ ref, geneMode, dialogAction }: ImageSelectorProps) {
           if (!event.target.files) return
           const file = event.target.files[0]
           // 限制图片大小
-          if (file.size > 10 * 1024 * 1024) {
+          if (file.size > 5 * 1024 * 1024) {
             dialogAction({
               type: 'open',
               title: '图片过大',
-              content: '请选择小于 10MB 的图片',
+              content: '请选择小于 5MB 的图片',
             })
             event.target.value = ''
             return

@@ -68,3 +68,37 @@
   cursor: not-allowed;
 }
 
+
+.prompt-generator-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 161px;
+  right: calc(10% + 7px);
+  width: 108px;
+  height: 21px;
+
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--text);
+  background-color: var(--back-filearea);
+  border: 1px solid var(--text);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* 文字省略号 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  opacity: 0.3;
+  &:hover {
+    opacity: 0.9!important;
+  }
+}
+@media screen and (min-width: 768px) {
+  .prompt-generator-container {
+    bottom: 111px;
+  }
+}

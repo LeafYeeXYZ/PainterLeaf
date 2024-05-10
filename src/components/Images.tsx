@@ -131,8 +131,7 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
       <div className="images-intro">
         <span>
           这里是赛博画师小叶子<br />
-          在下方输入<span className='images-intro-lang'>{langMode === 'zh' ? '中文' : '英文'}</span>提示词并点击生成<br />
-          大部分模型输入自然语言即可<br />
+          请输入<span className='images-intro-lang'>{langMode === 'zh' ? '中文' : '英文'}</span>提示词并点击生成<br />
           本站开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
         </span>
       </div>
