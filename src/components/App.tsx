@@ -28,6 +28,7 @@ const versionInfo = await check('2024041710')
 // 获取已收藏图片列表
 const initialImages: Image[] = (await get('staredImages')) ?? []
 if (!initialImages) await set('staredImages', [])
+else initialImages.reverse()
 
 // 主组件
 export function App() {
@@ -37,7 +38,7 @@ export function App() {
    * @var {Blob} loadingImage 加载图片
    */
   // 图片列表
-  const [currentImages, setCurrentImages] = useState<Image[]>(initialImages.reverse())
+  const [currentImages, setCurrentImages] = useState<Image[]>(initialImages)
   // 加载图片
   const [loadingImage, setLoadingImage] = useState<React.JSX.Element | null>(null)
   // useDialog
