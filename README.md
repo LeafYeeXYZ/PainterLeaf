@@ -1,7 +1,12 @@
 **[中文](README_ZH.md) | English**
 
 # PainterLeaf
-An `AI` image generation tool that supports Chinese and English (Chinese will automatically call the `AI` translation), adopts a front-end and back-end separation design, the front-end is based on the `React` framework, and can be deployed on static website hosting services such as `Cloudflare Pages` and `Vercel`, and the back-end is based on `Hono`, deployed on `Cloudflare Workers`, see [this project](https://github.com/LeafYeeXYZ/MyAPIs)
+- Text-to-image, supports multiple models
+- Image-to-text, convert local images to prompts
+- Also supports image-to-image
+- Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
+- Front-end and back-end separation, front-end based on `React`, back-end based on `Hono`, see [this project](https://github.com/LeafYeeXYZ/MyAPIs)
+- `API` provided by `CloudflareAI` and `HuggingFace`
 
 |![](./readme/light.png)|![](./readme/dark.png)|
 |:---:|:---:|
