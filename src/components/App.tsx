@@ -91,6 +91,7 @@ export function App() {
           <ImageSelector 
             ref={imageSelectorRef}
             geneMode={geneMode}
+            dialogAction={dialogAction}
           />
         </div>
       </Prompt>
