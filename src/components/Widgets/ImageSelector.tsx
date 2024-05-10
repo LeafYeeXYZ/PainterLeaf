@@ -2,10 +2,10 @@ import { useRef } from "react"
 
 interface ImageSelectorProps {
   ref: React.RefObject<HTMLInputElement>
-  mode: 'textToImage' | 'imageToImage'
+  geneMode: 'textToImage' | 'imageToImage'
 }
 
-function ImageSelector({ ref, mode }: ImageSelectorProps) {
+function ImageSelector({ ref, geneMode }: ImageSelectorProps) {
 
   const filename = useRef<HTMLDivElement>(null)
 
@@ -18,7 +18,7 @@ function ImageSelector({ ref, mode }: ImageSelectorProps) {
         className='image-selector'
         id="image-selector"
         name="image-selector"
-        disabled={mode === 'textToImage'}
+        disabled={geneMode === 'textToImage'}
         onChange={event => {
           const file = event.target.files![0]
           filename.current!.textContent = file.name

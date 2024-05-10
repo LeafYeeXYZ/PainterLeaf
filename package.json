@@ -24,13 +24,11 @@
     "@ant-design/icons": "^5.3.7",
     "antd": "^5.17.0",
     "idb-keyval": "^6.2.1",
-    "lodash-es": "^4.17.21",
-    "react": "19.0.0-beta-6946ebe620-20240508",
-    "react-dom": "19.0.0-beta-6946ebe620-20240508",
+    "react": "19.0.0-beta-04b058868c-20240508",
+    "react-dom": "19.0.0-beta-04b058868c-20240508",
     "swiper": "^11.1.1"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
@@ -39,7 +37,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.6",
+    "eslint-plugin-react-refresh": "^0.4.7",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
   }

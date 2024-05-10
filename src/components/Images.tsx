@@ -4,20 +4,20 @@ import 'swiper/css/effect-cards'
 import { EffectCards } from 'swiper/modules'
 import { DownloadOutlined, DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 import { update } from 'idb-keyval'
-import { cloneDeep } from 'lodash-es'
 import '../styles/Images.css'
 import { Image } from './App.tsx'
 import { DialogAction } from '../libs/useDialog.tsx'
 
 interface ImageProps {
-  images: Image[]
-  setImages: (images: Image[]) => void
-  zhMode: boolean
+  currentImages: Image[]
+  setCurrentImages: React.Dispatch<React.SetStateAction<Image[]>>
+  langMode: 'zh' | 'en'
   dialogAction: React.Dispatch<DialogAction>
   status: React.MutableRefObject<string>
+  loadingImage: React.JSX.Element | null
 }
 
-function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps) {
+function Images({ currentImages, setCurrentImages, langMode, dialogAction, status, loadingImage }: ImageProps) {
   // 操作进行前检测函数
   function callback(e: React.MouseEvent, image: Image, func: (image: Image) => Promise<void>) {
     e.preventDefault()
@@ -55,13 +55,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps)
         })
       }
       // 更新图片列表
-      const modifiedImages = cloneDeep(images)
-      modifiedImages.forEach(item => {
-        if (item.hash === image.hash) {
-          item.star = !item.star
-        }
-      })
-      setImages(modifiedImages)
+      setCurrentImages(prev => prev.map(item => item.hash === image.hash ? { ...item, star: !item.star } : item))
     } catch (error) {
       error instanceof Error && dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.name}: ${error.message}` })
     }
@@ -77,9 +71,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps)
     if (image.star) {
       dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
     } else {
-      let modifiedImages = cloneDeep(images)
-      modifiedImages = modifiedImages.filter(item => item.hash !== image.hash)
-      setImages(modifiedImages)
+      setCurrentImages(prev => prev.filter(item => item.hash !== image.hash))
     }
   }
   // 下载按钮点击事件
@@ -93,7 +85,7 @@ function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps)
   }
 
   // 渲染图片列表
-  const slides = images.map(image => 
+  const slides = currentImages.map(image => 
     <SwiperSlide className='image-slide' key={image.hash}>
       <img src={image.base64} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
       { 
@@ -132,31 +124,30 @@ function Images({ images, setImages, zhMode, dialogAction, status }: ImageProps)
       }
     </SwiperSlide>
   )
-  // 渲染 Swiper
-  const swiper = (
-    <Swiper
-      effect={'cards'}
-      grabCursor={true}
-      modules={[EffectCards]}
-      className="images-swiper"
-    >
-      {slides}
-    </Swiper>
-  )
-  // 返回 JSX
+
   return (
     <div className="images-container">
 
       <div className="images-intro">
         <span>
           这里是赛博画师小叶子<br />
-          在下方输入<span className='images-intro-lang'>{zhMode ? '中文' : '英文'}</span>提示词并点击生成<br />
+          在下方输入<span className='images-intro-lang'>{langMode === 'zh' ? '中文' : '英文'}</span>提示词并点击生成<br />
           大部分模型输入自然语言即可<br />
           本站开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
         </span>
       </div>
 
-      { images.length && swiper }
+      { (currentImages.length || loadingImage) && (
+        <Swiper
+          effect={'cards'}
+          grabCursor={true}
+          modules={[EffectCards]}
+          className="images-swiper"
+        >
+          {loadingImage}
+          {slides}
+        </Swiper>
+      ) }
       
     </div>
   )

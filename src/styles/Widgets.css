@@ -7,13 +7,9 @@
   gap: 8px;
   padding: 0 4px; 
 
-  & .lang-switcher,
-  & .mode-switcher {
-    width: 100px;
-  }
   & .image-selector-container {
     position: relative;
-    width: calc(80dvw - 225px);
+    width: calc(80dvw - 190px);
     height: 22px;
 
     & .image-selector {
@@ -36,6 +32,10 @@
       background-color: var(--back-filearea);
       cursor: pointer;
       transition: all 0.2s ease;
+      /* 省略号 */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &:hover {
         background-color: var(--back-hover);
         color: var(--text-hover);

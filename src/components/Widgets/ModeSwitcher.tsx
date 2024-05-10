@@ -1,13 +1,11 @@
 import { Switch, ConfigProvider } from 'antd'
+import React from 'react'
 
 interface ModeSwitcherProps {
-  setMode: (mode: 'textToImage' | 'imageToImage') => void
+  setGeneMode: React.Dispatch<React.SetStateAction<'textToImage' | 'imageToImage'>>
 }
 
-function ModeSwitcher({ setMode }: ModeSwitcherProps) {
-  const handleChange: (checked: boolean) => void = checked => {
-    setMode(checked ? 'textToImage' : 'imageToImage')
-  } 
+function ModeSwitcher({ setGeneMode }: ModeSwitcherProps) {
 
   return (
     <ConfigProvider
@@ -27,10 +25,10 @@ function ModeSwitcher({ setMode }: ModeSwitcherProps) {
     >
       <Switch
         className='mode-switcher' 
-        checkedChildren='文生图模式'
-        unCheckedChildren='图生图模式'
+        checkedChildren='文生图'
+        unCheckedChildren='图生图'
         defaultChecked 
-        onChange={handleChange}
+        onChange={checked => setGeneMode(checked ? 'textToImage' : 'imageToImage')}
       />
     </ConfigProvider>
   )
