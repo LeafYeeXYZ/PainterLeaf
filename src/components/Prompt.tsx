@@ -1,5 +1,5 @@
 import '../styles/Prompt.css'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { SERVER } from '../config.json'
 import getHash from '../libs/getHash.ts'
 import getLoadingImage from '../libs/getLoadingImage.tsx'
@@ -7,6 +7,7 @@ import { blobToBase64 } from '../libs/base64_blob.ts'
 import { DialogAction } from '../libs/useDialog.tsx'
 import { Image } from './App.tsx'
 import { flushSync } from 'react-dom'
+import { LoadingOutlined } from '@ant-design/icons'
 
 // 获取模型列表
 type Models = {
@@ -58,6 +59,10 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
   // 引用元素
   const submitRef = useRef<HTMLButtonElement>(null)
   const modelRef = useRef<HTMLSelectElement>(null)
+  // 按钮文本
+  const initialContent = <span>生成</span>
+  const loadingContent = <span>生成中 <LoadingOutlined /></span>
+  const [buttonContent, setButtonContent] = useState<React.JSX.Element>(initialContent)
 
   // 翻译函数
   async function translate(text: string): Promise<string> {
@@ -93,7 +98,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
       // 禁用按钮
       submitRef.current!.disabled = true
       // 设置按钮文本
-      submitRef.current!.textContent = '生成中...'
+      flushSync(() => setButtonContent(loadingContent))
       // 获取用户输入的提示词
       let text = promptRef.current!.value
       // 如果用户没有输入提示词，不发送请求
@@ -159,7 +164,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
     } finally {
       // 启用按钮
       submitRef.current!.disabled = false
-      submitRef.current!.textContent = '生成'
+      setButtonContent(initialContent)
       // 移除加载图片
       setLoadingImage(null)
       // 重置状态
@@ -194,7 +199,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
         className='prompt-submit'
         ref={submitRef}
         onClick={event => handleSubmit(event, geneMode, langMode, currentImages)}
-      >生成</button>
+      >{buttonContent}</button>
 
     </form>
   )
