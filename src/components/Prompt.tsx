@@ -143,9 +143,20 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
         })
       }
       // 解析响应体
+      const contentType = res.headers.get('content-type') ?? ''
+      // 判断是否为错误信息
+      if (contentType.startsWith('application/json')) {
+        const json = await res.json()
+        throw new ErrorInfo('生成失败', `服务端返回错误信息: ${JSON.stringify(json)}`)
+      }
+      if (!contentType.startsWith('image')) {
+        throw new ErrorInfo('生成失败', `服务端返回未知的响应类型, 状态码: ${res.status} ${res.statusText}`)
+      }
+      // 获取图片 Blob
       const blob = await res.blob()
-      // 根据图片大小判断是否为错误信息
-      if (blob.size < 1024) throw new ErrorInfo('生成失败', '服务端返回空白图片, 可能是服务器错误或提示词不当')
+      if (blob.size < 1024) {
+        throw new ErrorInfo('生成失败', '服务端返回空白图片, 可能是服务器错误或提示词不当')
+      }
       // 获取图片 Hash
       const hash = await getHash(blob)
       // 如果 hash 重复, 不添加图片

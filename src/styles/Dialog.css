@@ -48,6 +48,7 @@
         width: 100%;
         height: calc(100% - 58px);
         text-align: left;
+        word-wrap: break-word;
         padding: 0 18px;
         margin-bottom: 18px;
         font-family: Microsoft YaHei;

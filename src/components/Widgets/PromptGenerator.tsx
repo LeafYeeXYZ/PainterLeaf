@@ -47,9 +47,9 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
           image: Array.from(uint8array),
         }),
       })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       // 处理返回数据
       const data = await res.json()      
+      if (!res.ok) throw new Error(JSON.stringify(data))
       const prompt = data.result.description as string
       // 设置提示词
       promptRef.current!.value = prompt
