@@ -11,6 +11,10 @@
 |![](./readme/light.png)|![](./readme/dark.png)|
 |:---:|:---:|
 
+## Example
+|![](./readme/example1.png)|![](./readme/example2.png)|![](./readme/example3.png)|![](./readme/example4.png)|
+|:---:|:---:|:---:|:---:|
+
 ## Usage
 ### Modify src/config.json
 ```javascript

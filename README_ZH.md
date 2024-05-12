@@ -11,6 +11,10 @@
 |![](./readme/light.png)|![](./readme/dark.png)|
 |:---:|:---:|
 
+## 示例
+|![](./readme/example1.png)|![](./readme/example2.png)|![](./readme/example3.png)|![](./readme/example4.png)|
+|:---:|:---:|:---:|:---:|
+
 ## 使用方法
 ### 修改配置
 ```javascript
