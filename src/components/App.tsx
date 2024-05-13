@@ -59,7 +59,7 @@ export function App() {
     // 视情况弹出更新提示
     versionInfo && dialogAction(versionInfo)
     // 根据用户设备暗色模式偏好设置主题
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.body.classList.add('dark')
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark')
   }, [dialogAction])
 
   return (

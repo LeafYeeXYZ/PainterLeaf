@@ -1,4 +1,4 @@
-:root {
+html {
   --prompt-height: 260px;
   --prompt-btn-width: 100%;
   --prompt-btn-gap: 0;
@@ -74,7 +74,6 @@ button {
   border: none;
   outline: none;
 }
-html,
-body {
+html, body {
   background-color: var(--back);
 }
