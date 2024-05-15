@@ -126,7 +126,7 @@ export const EN = {
     sdPrompt: 'SD Prompt',
   },
   // LangSwitcher
-  zhPrompt: 'Chinese Prompt', enPrompt: 'English Prompt',
+  zhPrompt: 'ChinesePrompt', enPrompt: 'EnglishPrompt',
   // ModeSwitcher
   textToImage: 'Text2Img', imageToImage: 'Img2Img',
   // ImageSelector
