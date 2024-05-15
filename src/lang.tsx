@@ -132,7 +132,7 @@ export const EN = {
   // ImageSelector
   chooseImage: 'ChooseImage', imageTooBig: 'Image Too Big', imageTooBigInfo: (size: number) => `Please select an image smaller than ${size}MB`,
   // PromptGenerator
-  initText: 'Gen Prompt From Img', loadText: 'Generating Prompt', 
+  initText: 'GenPromptFromImg', loadText: 'GeneratingPrompt', 
   generatePrompt: 'Generate Prompt', genPromptFail: 'Failed to Generate Prompt:',
 }
 

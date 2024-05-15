@@ -80,7 +80,7 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
       className='prompt-generator-container'
       htmlFor='prompt-generator-input'
       ref={lebalRef}
-      style={{ width: t.lang.includes('zh') ? '6.7rem' : '8.5rem' }}
+      style={{ width: t.lang.includes('zh') ? '6.8rem' : '8.5rem' }}
     >
       <input
         type="file"
