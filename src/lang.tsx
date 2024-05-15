@@ -130,9 +130,9 @@ export const EN = {
   // ModeSwitcher
   textToImage: 'Text2Img', imageToImage: 'Img2Img',
   // ImageSelector
-  chooseImage: 'Choose Image', imageTooBig: 'Image Too Big', imageTooBigInfo: (size: number) => `Please select an image smaller than ${size}MB`,
+  chooseImage: 'ChooseImage', imageTooBig: 'Image Too Big', imageTooBigInfo: (size: number) => `Please select an image smaller than ${size}MB`,
   // PromptGenerator
-  initText: 'Gen Prompt from Img', loadText: 'Generating Prompt', 
+  initText: 'Gen Prompt From Img', loadText: 'Generating Prompt', 
   generatePrompt: 'Generate Prompt', genPromptFail: 'Failed to Generate Prompt:',
 }
 
