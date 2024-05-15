@@ -43,17 +43,21 @@ html {
 
 @media screen and (max-height: 440px){
   .container {
-    display: none!important;
+    opacity: 0!important;
   }
   body::before {
-    content: "设备屏幕高度过小";
+    content: "⇱▨⇲";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 100dvh;
     font-size: 2rem;
     font-weight: bold;
     color: var(--text-highlight);
+    z-index: 999999;
   }
 }
 .container {

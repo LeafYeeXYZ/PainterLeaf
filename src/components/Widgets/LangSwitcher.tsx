@@ -1,10 +1,14 @@
 import { Switch, ConfigProvider } from 'antd'
+import { useContext } from 'react'
+import { LangContext } from '../../lang'
 
 interface LangSwitcherProps {
   setLangMode: React.Dispatch<React.SetStateAction<'zh' | 'en'>>
 }
 
 function LangSwitcher({ setLangMode }: LangSwitcherProps) {
+
+  const t = useContext(LangContext)
 
   return (
     <ConfigProvider
@@ -24,8 +28,8 @@ function LangSwitcher({ setLangMode }: LangSwitcherProps) {
     >
       <Switch
         className='lang-switcher' 
-        checkedChildren='英文提示词'
-        unCheckedChildren='中文提示词'
+        checkedChildren={t.enPrompt}
+        unCheckedChildren={t.zhPrompt}
         defaultChecked 
         onChange={checked => setLangMode(checked ? 'en' : 'zh')}
       />

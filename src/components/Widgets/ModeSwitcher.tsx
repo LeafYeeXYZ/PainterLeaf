@@ -1,11 +1,14 @@
 import { Switch, ConfigProvider } from 'antd'
-import React from 'react'
+import { useContext } from 'react'
+import { LangContext } from '../../lang'
 
 interface ModeSwitcherProps {
   setGeneMode: React.Dispatch<React.SetStateAction<'textToImage' | 'imageToImage'>>
 }
 
 function ModeSwitcher({ setGeneMode }: ModeSwitcherProps) {
+
+  const t = useContext(LangContext)
 
   return (
     <ConfigProvider
@@ -25,8 +28,8 @@ function ModeSwitcher({ setGeneMode }: ModeSwitcherProps) {
     >
       <Switch
         className='mode-switcher' 
-        checkedChildren='文生图'
-        unCheckedChildren='图生图'
+        checkedChildren={t.textToImage}
+        unCheckedChildren={t.imageToImage}
         defaultChecked 
         onChange={checked => setGeneMode(checked ? 'textToImage' : 'imageToImage')}
       />

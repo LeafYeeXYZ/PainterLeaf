@@ -1,7 +1,13 @@
 import '../styles/Dialog.css'
 import { DialogState, DialogAction } from '../libs/useDialog.tsx'
+import { useContext } from 'react'
+import { LangContext } from '../lang.tsx'
 
 function Dialog({ dialogState, dialogAction, ref}: { dialogState: DialogState, dialogAction: React.Dispatch<DialogAction>, ref: React.MutableRefObject<HTMLDialogElement | null> }) {
+
+  // 语言包
+  const t = useContext(LangContext)
+
   // 关闭对话框
   function closeDialog() {
     dialogAction({ type: 'close', title: '', content: '' })
@@ -15,7 +21,7 @@ function Dialog({ dialogState, dialogAction, ref}: { dialogState: DialogState, d
           <div className="dialog-content">{dialogState.content}</div>
         </div>
         <button className="dialog-button" onClick={closeDialog}>
-          确定
+          {t.confirm}
         </button>
       </div>
     </dialog>

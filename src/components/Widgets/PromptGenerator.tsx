@@ -1,8 +1,9 @@
 import type { DialogAction } from '../../libs/useDialog'
 import { SERVER } from '../../config.json'
-import { useRef, useState } from 'react'
+import { useRef, useState, useContext } from 'react'
 import { LoadingOutlined } from '@ant-design/icons'
 import { flushSync } from 'react-dom'
+import { LangContext } from '../../lang'
 
 interface PromptGeneratorProps {
   status: React.MutableRefObject<string>
@@ -12,8 +13,10 @@ interface PromptGeneratorProps {
 
 export default function PromptGenerator({ status, dialogAction, promptRef }: PromptGeneratorProps) {
 
-  const initText: React.JSX.Element = <span>用图片生成提示词</span>
-  const loadText = <span>生成提示词中 <LoadingOutlined /></span>
+  const t = useContext(LangContext)
+
+  const initText: React.JSX.Element = <span>{t.initText}</span>
+  const loadText = <span>{t.loadText} <LoadingOutlined /></span>
   const textRef = useRef<HTMLParagraphElement>(null)
   const [text, setText] = useState<React.JSX.Element>(initText)
   const lebalRef = useRef<HTMLLabelElement>(null)
@@ -22,7 +25,7 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
     if (!e.target.files) return
     try {
       // 设置状态
-      status.current = '生成提示词'
+      status.current = t.generatePrompt
       e.target.disabled = true
       lebalRef.current!.style.cursor = 'not-allowed'
       lebalRef.current!.style.filter = 'grayscale(0.9)'
@@ -33,8 +36,8 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
       if (file.size > 2 * 1024 * 1024) {
         dialogAction({
           type: 'open',
-          title: '图片过大',
-          content: '请选择小于 2MB 的图片',
+          title: t.imageTooBig,
+          content: t.imageTooBigInfo(2),
         })
         return
       }
@@ -57,8 +60,8 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
       if (error instanceof Error) {
         dialogAction({
           type: 'open',
-          title: '错误',
-          content: `提示词生成失败：${error.name} - ${error.message}`
+          title: t.error,
+          content: `${t.genPromptFail} ${error.name} - ${error.message}`
         })
       }
     } finally {

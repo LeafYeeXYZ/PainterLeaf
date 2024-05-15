@@ -1,5 +1,6 @@
 import '../styles/Prompt.css'
-import { useRef, useState } from 'react'
+import { useRef, useState, useContext } from 'react'
+import { LangContext } from '../lang.tsx'
 import { SERVER } from '../config.json'
 import getHash from '../libs/getHash.ts'
 import getLoadingImage from '../libs/getLoadingImage.tsx'
@@ -14,21 +15,12 @@ type Models = {
   [key: string]: { 
     description: string, 
     type: 'textToImage' | 'imageToImage' | 'both' 
-    lang: '自然语言' | 'SD提示词'
+    lang: 'natural' | 'sdPrompt'
   }
 }
-const desc = new Map([
-  ['textToImage', '文生图'],
-  ['imageToImage', '图生图'],
-  ['both', '文生图/图生图'],
-])
 const data = await fetch(`${SERVER}/painter/models`).catch(() => null)
 const models: Models = (data && await data.json().catch(() => null)) || {}
-// 生成模型选项
-const options: JSX.Element[] = []
-for (const model in models) {
-  options.push(<option value={model} key={model} data-type={models[model].type}>{models[model].description} {`(${models[model].lang}/${desc.get(models[model].type)})`}</option>)
-}
+
 // 获取加载图片
 const loadingImage = await getLoadingImage()
 
@@ -56,12 +48,21 @@ class ErrorInfo {
 
 function Prompt({ children, currentImages, setCurrentImages, dialogAction, langMode, status, geneMode, fileRef, setLoadingImage, promptRef }: PromptProps) {
 
+  // 語言
+  const t = useContext(LangContext)
+
+  // 生成模型选项
+  const options: JSX.Element[] = []
+  for (const model in models) {
+    options.push(<option value={model} key={model} data-type={models[model].type}>{models[model].description} {`(${t.modelLangs[models[model].lang]}/${t.modelTypes[models[model].type]})`}</option>)
+  }
+
   // 引用元素
   const submitRef = useRef<HTMLButtonElement>(null)
   const modelRef = useRef<HTMLSelectElement>(null)
   // 按钮文本
-  const initialContent = <span>生成</span>
-  const loadingContent = <span>生成中 <LoadingOutlined /></span>
+  const initialContent = <span>{t.submitInit}</span>
+  const loadingContent = <span>{t.submitLoad} <LoadingOutlined /></span>
   const [buttonContent, setButtonContent] = useState<React.JSX.Element>(initialContent)
 
   // 翻译函数
@@ -81,7 +82,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
       const data = await res.json()
       return data.result.translated_text as string
     } catch (error) {
-      throw new ErrorInfo('翻译失败', '翻译失败, 请检查网络连接或尝试中文模式')
+      throw new ErrorInfo(t.translateFalseTitle, t.translateFalseMessage)
     }
   }
 
@@ -89,10 +90,10 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
   async function handleSubmit(event: React.MouseEvent, geneMode: 'textToImage' | 'imageToImage', langMode: 'zh' | 'en', images: Image[]) {
     event.preventDefault()
     if (status.current) {
-      dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
+      dialogAction({ type: 'open', title: t.info, content: t.wait.replace('${status.current}', status.current) })
       return
     } else {
-      status.current = '生成图片'
+      status.current = t.generate
     }
     try {
       // 禁用按钮
@@ -102,17 +103,17 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
       // 获取用户输入的提示词
       let text = promptRef.current!.value
       // 如果用户没有输入提示词，不发送请求
-      if (!text) throw new ErrorInfo('提示', '请输入提示词')
+      if (!text) throw new ErrorInfo(t.info, t.noPrompt)
       // 如果是图生图模式，检查是否选择了图片
       if (geneMode === 'imageToImage') {
-        if (!fileRef.current!.files || !fileRef.current!.files[0]) throw new ErrorInfo('提示', '当前为图生图模式, 请选择图片')
+        if (!fileRef.current!.files || !fileRef.current!.files[0]) throw new ErrorInfo(t.info, t.noImage)
       }
       // 获取模型名称
       const model = modelRef.current!.value
       // 如果没有选择模型，不发送请求
-      if (!model) throw new ErrorInfo('提示', '请选择模型')
+      if (!model) throw new ErrorInfo(t.info, t.noModel)
       // 如果模型不支持当前模式，不发送请求
-      if (models[model].type !== geneMode && models[model].type !== 'both') throw new ErrorInfo('提示', '当前模型不支持当前模式')
+      if (models[model].type !== geneMode && models[model].type !== 'both') throw new ErrorInfo(t.info, t.unsupportedModel)
 
       // 插入加载图片
       flushSync(() => setLoadingImage(loadingImage))
@@ -147,20 +148,20 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
       // 判断是否为错误信息
       if (contentType.startsWith('application/json')) {
         const json = await res.json()
-        throw new ErrorInfo('生成失败', `服务端返回错误信息: ${JSON.stringify(json)}`)
+        throw new ErrorInfo(t.genFail, `${t.serverError} ${JSON.stringify(json)}; Model: ${model}`)
       }
       if (!contentType.startsWith('image')) {
-        throw new ErrorInfo('生成失败', `服务端返回未知的响应类型, 状态码: ${res.status} ${res.statusText}`)
+        throw new ErrorInfo(t.genFail, `${t.unknownResStatusError} ${res.status} ${res.statusText}`)
       }
       // 获取图片 Blob
       const blob = await res.blob()
       if (blob.size < 1024) {
-        throw new ErrorInfo('生成失败', '服务端返回空白图片, 可能是服务器错误或提示词不当')
+        throw new ErrorInfo(t.genFail, t.noImageError)
       }
       // 获取图片 Hash
       const hash = await getHash(blob)
       // 如果 hash 重复, 不添加图片
-      if (images.some(image => image.hash === hash)) throw new ErrorInfo('生成失败', '服务端返回相同的图片, 请修改提示词或换一个模型')
+      if (images.some(image => image.hash === hash)) throw new ErrorInfo(t.genFail, t.sameImageError)
       // 转换为 base64
       const base64 = await blobToBase64(blob)
       // 更新图片列表
@@ -170,7 +171,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
       if (error instanceof ErrorInfo) {
         dialogAction({ type: 'open', title: error.title, content: error.message })
       } else if (error instanceof Error) {
-        dialogAction({ type: 'open', title: '生成失败', content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
+        dialogAction({ type: 'open', title: t.genFail, content: `Prompt -> handleSubmit -> ${error.name}: ${error.message}` })
       }
     } finally {
       // 启用按钮
@@ -192,7 +193,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
         name="prompt" 
         cols={30}
         rows={10} 
-        placeholder="请描述你想生成的图像"
+        placeholder={t.promptPlaceholder}
         className='prompt-textarea'
         ref={promptRef}
       ></textarea>

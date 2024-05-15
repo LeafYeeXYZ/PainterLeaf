@@ -1,4 +1,4 @@
-**中文 | [English](README.md)**
+**简体中文 | [正體中文](README_ZH_TW.md) | [English](README.md)**
 
 # 赛博画师小叶子
 - 文生图, 支持多种模型
@@ -7,15 +7,19 @@
 - 提示词支持中英双语 (中文将自动调用 `AI` 翻译)
 - 前后端分离, 前端基于 `React`, 后端基于 `Hono`, 见[这个项目](https://github.com/LeafYeeXYZ/MyAPIs)
 - 使用 `CloudflareAI` 和 `HuggingFace` 提供的 `API`
+- 国际化支持, 目前支持 `简体中文`, `繁体中文`, `英文`
 
 |![](./readme/light.png)|![](./readme/dark.png)|
 |:---:|:---:|
 
 ## 示例
-|![](./readme/example1.png)|![](./readme/example2.png)|![](./readme/example3.png)|![](./readme/example4.png)|
-|:---:|:---:|:---:|:---:|
+|![](./readme/example2.png)|![](./readme/example3.png)|![](./readme/example4.png)|
+|:---:|:---:|:---:|
 
 ## 使用方法
+### 部署服务器
+见[这个项目](https://github.com/LeafYeeXYZ/MyAPIs)
+
 ### 修改配置
 ```javascript
 // 修改 src/config.json

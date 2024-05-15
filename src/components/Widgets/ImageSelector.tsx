@@ -1,5 +1,6 @@
-import { useRef } from "react"
+import { useRef, useContext, useState, useEffect } from "react"
 import type { DialogAction } from "../../libs/useDialog"
+import { LangContext } from "../../lang"
 
 interface ImageSelectorProps {
   ref: React.RefObject<HTMLInputElement>
@@ -10,9 +11,32 @@ interface ImageSelectorProps {
 function ImageSelector({ ref, geneMode, dialogAction }: ImageSelectorProps) {
 
   const filename = useRef<HTMLDivElement>(null)
+  const t = useContext(LangContext)
 
-  return (
-    <div className='image-selector-container'>
+  // 計算寬度: 100% - 提示詞長度 - 文生圖/圖生圖長度
+  const [width, setWidth] = useState<string>('fit-content')
+  useEffect(() => {
+    const callback = () => {
+      const langWidth = document.querySelector('.lang-switcher')!.clientWidth ?? 0
+      const modeWidth = document.querySelector('.mode-switcher')!.clientWidth ?? 0
+      setWidth(`calc(100% - ${langWidth.toString()}px - ${modeWidth.toString()}px - 18px)`)
+    }
+    callback()
+    // 防抖处理
+    let timer: number
+    const newCallback = () => {
+      clearTimeout(timer)
+      timer = setTimeout(callback, 200)
+    }
+    window.addEventListener('resize', newCallback)
+    return () => window.removeEventListener('resize', newCallback)
+  }, [])
+
+  return (   
+    <div 
+      className='image-selector-container'
+      style={{ width }}
+    >
       <input 
         ref={ref}
         type='file'
@@ -28,8 +52,8 @@ function ImageSelector({ ref, geneMode, dialogAction }: ImageSelectorProps) {
           if (file.size > 5 * 1024 * 1024) {
             dialogAction({
               type: 'open',
-              title: '图片过大',
-              content: '请选择小于 5MB 的图片',
+              title: t.imageTooBig,
+              content: t.imageTooBigInfo(5),
             })
             event.target.value = ''
             return
@@ -41,7 +65,7 @@ function ImageSelector({ ref, geneMode, dialogAction }: ImageSelectorProps) {
         htmlFor="image-selector"
         className='image-selector-label'
       >
-        选择图片
+        {t.chooseImage}
       </label>
       <p 
         className='image-selector-filename'

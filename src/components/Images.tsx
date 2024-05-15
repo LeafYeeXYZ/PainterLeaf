@@ -7,6 +7,8 @@ import { update } from 'idb-keyval'
 import '../styles/Images.css'
 import { Image } from './App.tsx'
 import { DialogAction } from '../libs/useDialog.tsx'
+import { useContext } from 'react'
+import { LangContext } from '../lang'
 
 interface ImageProps {
   currentImages: Image[]
@@ -18,22 +20,26 @@ interface ImageProps {
 }
 
 function Images({ currentImages, setCurrentImages, langMode, dialogAction, status, loadingImage }: ImageProps) {
+
+  // 语言包
+  const t = useContext(LangContext)
+
   // 操作进行前检测函数
   function callback(e: React.MouseEvent, image: Image, func: (image: Image) => Promise<void>) {
     e.preventDefault()
     if (status.current) {
-      dialogAction({ type: 'open', title: '提示', content: `请等待${status.current}完成` })
+      dialogAction({ type: 'open', title: t.info, content: t.wait.replace('${status.current}', status.current) })
     } else {
       // 处理操作
       func(image)
         .then(() => status.current = '')
-        .catch(error => alert(`未捕获: Images -> ${func.name} -> ${error}`))
+        .catch(error => alert(`Not Catched Error: Images -> ${func.name} -> ${error}`))
     }
   }
 
   // 收藏按钮点击事件
   async function handleStar(image: Image) {
-    status.current = '收藏'
+    status.current = t.star
     try {
       if (image.star) {
         // 如果取消收藏, 从 IndexedDB 中删除
@@ -57,26 +63,26 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
       // 更新图片列表
       setCurrentImages(prev => prev.map(item => item.hash === image.hash ? { ...item, star: !item.star } : item))
     } catch (error) {
-      error instanceof Error && dialogAction({ type: 'open', title: '收藏失败', content: `Images -> handleStar -> ${error.name}: ${error.message}` })
+      error instanceof Error && dialogAction({ type: 'open', title: t.starFail, content: `Images -> handleStar -> ${error.name}: ${error.message}` })
     }
   }
   // 提示词按钮点击事件
   async function handleInfo(image: Image) {
-    status.current = '提示词'
-    dialogAction({ type: 'open', title: '本图提示词', content: image.prompt })
+    status.current = t.prompt
+    dialogAction({ type: 'open', title: t.promptInfo, content: image.prompt })
   }
   // 删除按钮点击事件
   async function handleDelete(image: Image) {
-    status.current = '删除'
+    status.current = t.delete
     if (image.star) {
-      dialogAction({ type: 'open', title: '错误', content: '请先取消收藏再删除' })
+      dialogAction({ type: 'open', title: t.error, content: t.deleteInfo })
     } else {
       setCurrentImages(prev => prev.filter(item => item.hash !== image.hash))
     }
   }
   // 下载按钮点击事件
   async function handleDownload(image: Image) {
-    status.current = '下载'
+    status.current = t.download
     const filename = `${Date.now().toString()}.png`
     const a = document.createElement('a')
     a.href = image.base64
@@ -90,14 +96,26 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
       <img src={image.base64} className={image.type === 'loading' ? 'image-loading image-item' : 'image-item'} />
       { 
         image.type === 'image' &&
-        <div className='image-funcs'>
+        <div 
+          className='image-funcs'
+          style={{
+            '--text-star': `"${t.star}"`,
+            '--text-star-width': `${t.star.length}${t.lang === 'en' ? 'ch' : 'rem'}`,
+            '--text-prompt': `"${t.prompt}"`,
+            '--text-prompt-width': `${t.prompt.length}${t.lang === 'en' ? 'ch' : 'rem'}`,
+            '--text-download': `"${t.download}"`,
+            '--text-download-width': `${t.download.length}${t.lang === 'en' ? 'ch' : 'rem'}`,
+            '--text-delete': `"${t.delete}"`,
+            '--text-delete-width': `${t.delete.length}${t.lang === 'en' ? 'ch' : 'rem'}`,
+          } as React.CSSProperties}
+        >
 
           <div className='image-funcs-left'>
 
             <button 
               className='image-marker' 
               onClick={e => callback(e, image, handleStar)}
-            >{ image.star ? <StarFilled /> : <StarOutlined /> }</button>
+            >{image.star ? <StarFilled /> : <StarOutlined />}</button>
 
           </div>
 
@@ -129,11 +147,7 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
     <div className="images-container">
 
       <div className="images-intro">
-        <span>
-          这里是赛博画师小叶子<br />
-          请输入<span className='images-intro-lang'>{langMode === 'zh' ? '中文' : '英文'}</span>提示词并点击生成<br />
-          本站开源于 <a href='https://github.com/LeafYeeXYZ/PainterLeaf' target='_blank'>GitHub ↗</a>
-        </span>
+        {t.siteIntro(t.lang === 'en' ? (langMode === 'zh' ? 'Chinese' : 'English') : (langMode === 'zh' ? '中文' : '英文'))}
       </div>
 
       { (currentImages.length || loadingImage) && (

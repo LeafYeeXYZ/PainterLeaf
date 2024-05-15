@@ -76,18 +76,19 @@
     background: var(--back);
     transition: all 0.3s ease;
     cursor: pointer;
-    &:hover::after,
-    &:hover::before {
-      width: 2rem;
-    }
   }
+  & .image-info:hover::before { width: var(--text-prompt-width); margin-right: 0.3rem; }
+  & .image-marker:hover::after { width: var(--text-star-width); }
+  & .image-downloader:hover::before { width: var(--text-download-width); margin-right: 0.3rem; }
+  & .image-deleter:hover::before { width: var(--text-delete-width); margin-right: 0.3rem; }
   & .image-marker {
     margin-left: 0;
     &::after {
-      content: '收藏';
+      content: var(--text-star);
       display: inline-block;
       width: 0;
       height: 1rem;
+      line-height: 1.2rem;
       font-weight: normal;
       font-size: 0.8rem;
       overflow: hidden;
@@ -96,36 +97,38 @@
     }
   }
   & .image-downloader::before {
-    content: '下载';
+    content: var(--text-download);
     display: inline-block;
     width: 0;
     height: 1rem;
+    line-height: 1.2rem;
     font-weight: normal;
     font-size: 0.8rem;
     overflow: hidden;
     transition: all 0.2s ease;
   }
   & .image-deleter::before {
-    content: '删除';
+    content: var(--text-delete);
     display: inline-block;
     width: 0;
     height: 1rem;
+    line-height: 1.2rem;
     font-weight: normal;
     font-size: 0.8rem;
     overflow: hidden;
     transition: all 0.2s ease;
   }
   & .image-info::before {
-    content: '提示词';
+    content: var(--text-prompt);
     display: inline-block;
     width: 0;
     height: 1rem;
+    line-height: 1.2rem;
     font-weight: normal;
     font-size: 0.8rem;
     overflow: hidden;
     transition: all 0.2s ease;
   }
-  & .image-info:hover::before { width: 3rem; }
 }
 
 @media screen and (max-width: 512px) {
