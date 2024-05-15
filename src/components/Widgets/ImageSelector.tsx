@@ -3,7 +3,7 @@ import type { DialogAction } from "../../libs/useDialog"
 import { LangContext } from "../../lang"
 
 interface ImageSelectorProps {
-  ref: React.RefObject<HTMLInputElement>
+  ref: React.RefObject<HTMLInputElement | null>
   geneMode: 'textToImage' | 'imageToImage'
   dialogAction: React.Dispatch<DialogAction>
 }

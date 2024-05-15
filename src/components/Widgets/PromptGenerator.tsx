@@ -6,9 +6,9 @@ import { flushSync } from 'react-dom'
 import { LangContext } from '../../lang'
 
 interface PromptGeneratorProps {
-  status: React.MutableRefObject<string>
+  status: React.RefObject<string>
   dialogAction: React.Dispatch<DialogAction>
-  promptRef: React.RefObject<HTMLTextAreaElement>
+  promptRef: React.RefObject<HTMLTextAreaElement | null>
 }
 
 export default function PromptGenerator({ status, dialogAction, promptRef }: PromptGeneratorProps) {

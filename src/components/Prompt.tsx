@@ -32,9 +32,9 @@ interface PromptProps {
   status: React.MutableRefObject<string>
   children: JSX.Element
   geneMode: 'textToImage' | 'imageToImage'
-  fileRef: React.RefObject<HTMLInputElement>
+  fileRef: React.RefObject<HTMLInputElement | null>
   setLoadingImage: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>
-  promptRef: React.RefObject<HTMLTextAreaElement>
+  promptRef: React.RefObject<HTMLTextAreaElement | null>
 }
 
 class ErrorInfo {
