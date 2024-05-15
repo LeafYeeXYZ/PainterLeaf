@@ -7,7 +7,7 @@
 - Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
 - Front-end and back-end separation, front-end based on `React`, back-end based on `Hono`, see [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 - `API` provided by `CloudflareAI` and `HuggingFace`
-- Internationalization support, currently supports `Simplified Chinese`, `Traditional Chinese`, and `English`
+- Internationalization support, currently supports `简体中文`, `正體中文`, and `English`
 
 |![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|
 |:---:|:---:|
