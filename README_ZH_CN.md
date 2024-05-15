@@ -9,8 +9,9 @@
 - 使用 `CloudflareAI` 和 `HuggingFace` 提供的 `API`
 - 国际化支持, 目前支持 `简体中文`, `繁体中文`, `英文`
 
-|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|![](./readme/light.png)|
-|:---:|:---:|:---:|
+|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|
+|:---:|:---:|
+|![](./readme/light.png)|![](./readme/dark.png)|
 
 ## 使用方法
 ### 部署服务器

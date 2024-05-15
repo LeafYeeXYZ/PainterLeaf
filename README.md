@@ -9,8 +9,9 @@
 - `API` provided by `CloudflareAI` and `HuggingFace`
 - Internationalization support, currently supports `Simplified Chinese`, `Traditional Chinese`, and `English`
 
-|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|![](./readme/light.png)|
-|:---:|:---:|:---:|
+|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|
+|:---:|:---:|
+|![](./readme/light.png)|![](./readme/dark.png)|
 
 ## Usage
 ### Deploy Server
