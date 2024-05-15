@@ -9,11 +9,7 @@
 - 使用 `CloudflareAI` 和 `HuggingFace` 提供的 `API`
 - 國際化支持, 目前支持 `簡體中文`, `正體中文`, `英文`
 
-|![](./readme/light.png)|![](./readme/dark.png)|
-|:---:|:---:|
-
-## 示例
-|![](./readme/example2.png)|![](./readme/example3.png)|![](./readme/example4.png)|
+|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|![](./readme/light.png)|
 |:---:|:---:|:---:|
 
 ## 使用方法
