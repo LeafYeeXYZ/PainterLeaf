@@ -77,7 +77,6 @@
   bottom: 161px;
   right: calc(10% + 7px);
   padding: 0 calc(21px - 0.7rem);
-  width: fit-content;
   height: 21px;
 
   font-size: 0.7rem;
@@ -96,10 +95,6 @@
   opacity: 0.3;
   &:hover {
     opacity: 0.9!important;
-  }
-
-  & .prompt-generator-text {
-    width: fit-content;
   }
 }
 @media screen and (min-width: 768px) {
