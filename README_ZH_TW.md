@@ -1,4 +1,4 @@
-**[简体中文](README_ZH.md) | 正體中文 | [English](README.md)**
+**[简体中文](README_ZH_CN.md) | 正體中文 | [English](README.md)**
 
 # PainterLeaf
 - 文生圖, 支持多種模型

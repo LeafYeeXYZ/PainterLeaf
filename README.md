@@ -1,4 +1,4 @@
-**[简体中文](README_ZH.md) | [正體中文](README_ZH_TW.md) | English**
+**[简体中文](README_ZH_CN.md) | [正體中文](README_ZH_TW.md) | English**
 
 # PainterLeaf
 - Text-to-image, supports multiple models
