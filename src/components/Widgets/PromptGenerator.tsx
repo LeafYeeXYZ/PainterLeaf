@@ -17,7 +17,6 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
 
   const initText: React.JSX.Element = <span>{t.initText}</span>
   const loadText = <span>{t.loadText} <LoadingOutlined /></span>
-  const textRef = useRef<HTMLParagraphElement>(null)
   const [text, setText] = useState<React.JSX.Element>(initText)
   const lebalRef = useRef<HTMLLabelElement>(null)
 
@@ -80,22 +79,16 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
       className='prompt-generator-container'
       htmlFor='prompt-generator-input'
       ref={lebalRef}
-      style={{ width: t.lang.includes('zh') ? '6.8rem' : '8.5rem' }}
     >
       <input
         type="file"
         accept='image/png, image/jpeg'
         name='prompt-generator-input'
         id='prompt-generator-input'
-        style={{ opacity: 0, width: 0 }}
+        style={{ opacity: 0, width: 0, position: 'absolute' }}
         onChange={handleFileChange}
       />
-      <span
-        className='prompt-generator-text'
-        ref={textRef}
-      >
-        {text}
-      </span>
+      {text}
     </label>
   )
 }

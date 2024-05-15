@@ -92,7 +92,7 @@ export const ZH_TW = {
 }
 
 export const EN = {
-  lang: 'en', title: 'PainterLeaf',
+  lang: 'en', title: 'Painter Leaf',
   // Dialog
   info: 'Note', wait: 'Please wait for ${status.current} to complete',
   error: 'Error', confirm: 'OK', genFail: 'Generation Failed',

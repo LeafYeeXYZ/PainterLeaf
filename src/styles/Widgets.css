@@ -71,13 +71,13 @@
 
 .prompt-generator-container {
   position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: fit-content(10rem);
+  height: 21px;
   bottom: 161px;
   right: calc(10% + 7px);
   padding: 0 calc(21px - 0.7rem);
-  height: 21px;
+  line-height: 21px;
+  text-align: center;
 
   font-size: 0.7rem;
   font-weight: bold;

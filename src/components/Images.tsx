@@ -25,9 +25,9 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
   const t = useContext(LangContext)
 
   // 操作进行前检测函数
-  function callback(e: React.MouseEvent, image: Image, func: (image: Image) => Promise<void>) {
+  function callback(e: React.MouseEvent, image: Image, func: (image: Image) => Promise<void>, sideEffect: boolean = true) {
     e.preventDefault()
-    if (status.current) {
+    if (status.current && sideEffect) {
       dialogAction({ type: 'open', title: t.info, content: t.wait.replace('${status.current}', status.current) })
     } else {
       // 处理操作
@@ -83,7 +83,7 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
   // 下载按钮点击事件
   async function handleDownload(image: Image) {
     status.current = t.download
-    const filename = `${Date.now().toString()}.png`
+    const filename = Date.now().toString()
     const a = document.createElement('a')
     a.href = image.base64
     a.download = filename
@@ -123,12 +123,12 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
 
             <button
               className='image-info' 
-              onClick={e => callback(e, image, handleInfo)}
+              onClick={e => callback(e, image, handleInfo, false)}
             ><InfoCircleOutlined /></button>
 
             <button
               className='image-downloader' 
-              onClick={e => callback(e, image, handleDownload)}
+              onClick={e => callback(e, image, handleDownload, false)}
             ><DownloadOutlined /></button>
 
             <button
