@@ -81,6 +81,7 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
   }
   // 下载按钮点击事件
   async function handleDownload(image: Image) {
+    status.current = t.download
     const filename = Date.now().toString()
     const a = document.createElement('a')
     a.href = image.base64
@@ -126,7 +127,7 @@ function Images({ currentImages, setCurrentImages, langMode, dialogAction, statu
 
             <button
               className='image-downloader' 
-              onClick={() => handleDownload(image)}
+              onClick={e => callback(e, image, handleDownload)}
             ><DownloadOutlined /></button>
 
             <button
