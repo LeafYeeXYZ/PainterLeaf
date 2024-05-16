@@ -15,10 +15,10 @@
   "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
   "private": true,
   "scripts": {
-    "dev": "bun run --bun vite --port 16666",
-    "build": "bun run --bun vite build",
-    "lint": "bun run --bun eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "bun run --bun vite preview --port 16667"
+    "dev": "bun x --bun vite --port 16666",
+    "build": "bun x --bun vite build",
+    "lint": "bun x --bun eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "bun x --bun vite preview --port 16667"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
