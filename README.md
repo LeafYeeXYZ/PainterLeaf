@@ -24,18 +24,20 @@ See [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 }
 ```
 
+### Install Bun
+Please refer to [Bun.sh](https://bun.sh). Or simply run `npm i -g bun`
+
 ### Install dependencies
 ```bash
-npm i -g pnpm
-pnpm i
+bun i
 ```
 
 ### Local run
 ```bash
-pnpm dev
+bun run dev
 ```
 
 ### Build
 ```bash
-pnpm build
+bun run build
 ```

@@ -25,18 +25,20 @@
 }
 ```
 
+### 安装 Bun
+请参考 [Bun.sh](https://bun.sh). 或直接运行 `npm i -g bun`
+
 ### 安装依赖
 ```bash
-npm i -g pnpm
-pnpm i
+bun i
 ```
 
 ### 本地运行
 ```bash
-pnpm dev
+bun run dev
 ```
 
 ### 打包
 ```bash
-pnpm build
+bun run build
 ```

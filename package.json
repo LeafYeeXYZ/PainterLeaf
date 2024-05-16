@@ -15,17 +15,17 @@
   "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
   "private": true,
   "scripts": {
-    "dev": "vite --port 16666",
-    "build": "vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview --port 16667"
+    "dev": "bun run --bun vite --port 16666",
+    "build": "bun run --bun vite build",
+    "lint": "bun run --bun eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "bun run --bun vite preview --port 16667"
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
     "antd": "^5.17.2",
     "idb-keyval": "^6.2.1",
-    "react": "19.0.0-beta-26f2496093-20240514",
-    "react-dom": "19.0.0-beta-26f2496093-20240514",
+    "react": "^19.0.0-beta-26f2496093-20240514",
+    "react-dom": "^19.0.0-beta-26f2496093-20240514",
     "swiper": "^11.1.3"
   },
   "devDependencies": {

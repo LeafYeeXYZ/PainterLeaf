@@ -15,7 +15,7 @@ interface ImageProps {
   setCurrentImages: React.Dispatch<React.SetStateAction<Image[]>>
   langMode: 'zh' | 'en'
   dialogAction: React.Dispatch<DialogAction>
-  status: React.MutableRefObject<string>
+  status: React.RefObject<string>
   loadingImage: React.JSX.Element | null
 }
 
