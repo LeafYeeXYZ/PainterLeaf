@@ -29,13 +29,16 @@
     "swiper": "^11.1.3"
   },
   "devDependencies": {
+    "@types/bun": "^1.1.2",
     "@types/react": "npm:types-react@beta",
     "@types/react-dom": "npm:types-react-dom@beta",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.57.0",
+    "babel-plugin-react-compiler": "^0.0.0-experimental-592953e-20240517",
+    "eslint": "^9.0.0",
     "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-compiler": "^0.0.0-experimental-c8b3f72-20240517",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "typescript": "^5.4.5",

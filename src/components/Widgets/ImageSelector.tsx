@@ -23,7 +23,7 @@ function ImageSelector({ ref, geneMode, dialogAction }: ImageSelectorProps) {
     }
     callback()
     // 防抖处理
-    let timer: number
+    let timer: Timer
     const newCallback = () => {
       clearTimeout(timer)
       timer = setTimeout(callback, 200)

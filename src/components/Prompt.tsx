@@ -29,7 +29,7 @@ interface PromptProps {
   setCurrentImages: React.Dispatch<React.SetStateAction<Image[]>>
   dialogAction: React.Dispatch<DialogAction>
   langMode: 'zh' | 'en'
-  status: React.MutableRefObject<string>
+  status: React.RefObject<string>
   children: JSX.Element
   geneMode: 'textToImage' | 'imageToImage'
   fileRef: React.RefObject<HTMLInputElement | null>
