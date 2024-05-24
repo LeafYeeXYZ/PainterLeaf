@@ -46,7 +46,7 @@ export function App() {
   // 图片列表
   const [currentImages, setCurrentImages] = useState<Image[]>(initialImages)
   // 加载图片
-  const [loadingImage, setLoadingImage] = useState<React.JSX.Element | null>(null)
+  const [loadingImage, setLoadingImage] = useState<React.ReactElement | null>(null)
   // useDialog
   const { dialogState, dialogAction, dialogRef } = useDialog()
   // 中文提示词模式

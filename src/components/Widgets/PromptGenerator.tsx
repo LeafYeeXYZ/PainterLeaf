@@ -15,9 +15,9 @@ export default function PromptGenerator({ status, dialogAction, promptRef }: Pro
 
   const t = useContext(LangContext)
 
-  const initText: React.JSX.Element = <span>{t.initText}</span>
+  const initText: React.ReactElement = <span>{t.initText}</span>
   const loadText = <span>{t.loadText} <LoadingOutlined /></span>
-  const [text, setText] = useState<React.JSX.Element>(initText)
+  const [text, setText] = useState<React.ReactElement>(initText)
   const lebalRef = useRef<HTMLLabelElement>(null)
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {

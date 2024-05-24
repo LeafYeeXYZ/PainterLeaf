@@ -3,7 +3,7 @@ import { blobToBase64 } from './base64_blob.ts'
 import { SwiperSlide } from 'swiper/react'
 
 /** 获取加载图片 */
-export default async function getLoadingImage(): Promise<React.JSX.Element> {
+export default async function getLoadingImage(): Promise<React.ReactElement> {
   // 首先尝试从 IndexedDB 中获取加载图片
   const loadingImage = await get('loadingImage')
   // 如果不存在则向服务器请求

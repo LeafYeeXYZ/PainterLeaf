@@ -30,10 +30,10 @@ interface PromptProps {
   dialogAction: React.Dispatch<DialogAction>
   langMode: 'zh' | 'en'
   status: React.RefObject<string>
-  children: JSX.Element
+  children: React.ReactElement
   geneMode: 'textToImage' | 'imageToImage'
   fileRef: React.RefObject<HTMLInputElement | null>
-  setLoadingImage: React.Dispatch<React.SetStateAction<React.JSX.Element | null>>
+  setLoadingImage: React.Dispatch<React.SetStateAction<React.ReactElement | null>>
   promptRef: React.RefObject<HTMLTextAreaElement | null>
 }
 
@@ -52,7 +52,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
   const t = useContext(LangContext)
 
   // 生成模型选项
-  const options: JSX.Element[] = []
+  const options: React.ReactElement[] = []
   for (const model in models) {
     options.push(<option value={model} key={model} data-type={models[model].type}>{models[model].description} {`(${t.modelLangs[models[model].lang]}/${t.modelTypes[models[model].type]})`}</option>)
   }
@@ -63,7 +63,7 @@ function Prompt({ children, currentImages, setCurrentImages, dialogAction, langM
   // 按钮文本
   const initialContent = <span>{t.submitInit}</span>
   const loadingContent = <span>{t.submitLoad} <LoadingOutlined /></span>
-  const [buttonContent, setButtonContent] = useState<React.JSX.Element>(initialContent)
+  const [buttonContent, setButtonContent] = useState<React.ReactElement>(initialContent)
 
   // 翻译函数
   async function translate(text: string): Promise<string> {

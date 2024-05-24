@@ -16,7 +16,7 @@ interface ImageProps {
   langMode: 'zh' | 'en'
   dialogAction: React.Dispatch<DialogAction>
   status: React.RefObject<string>
-  loadingImage: React.JSX.Element | null
+  loadingImage: React.ReactElement | null
 }
 
 function Images({ currentImages, setCurrentImages, langMode, dialogAction, status, loadingImage }: ImageProps) {
