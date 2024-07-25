@@ -1,7 +1,6 @@
 import '../styles/Prompt.css'
 import { useRef, useState, useContext } from 'react'
 import { LangContext } from '../lang.tsx'
-import { SERVER } from '../config.json'
 import getHash from '../libs/getHash.ts'
 import getLoadingImage from '../libs/getLoadingImage.tsx'
 import { blobToBase64 } from '../libs/base64_blob.ts'
@@ -9,6 +8,8 @@ import { DialogAction } from '../libs/useDialog.tsx'
 import { Image } from './App.tsx'
 import { flushSync } from 'react-dom'
 import { LoadingOutlined } from '@ant-design/icons'
+
+const SERVER: string = import.meta.env.VITE_SERVER as string ?? ''
 
 // 获取模型列表
 type Models = {

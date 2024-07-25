@@ -17,13 +17,8 @@
 ### 部署伺服器
 見[這個項目](https://github.com/LeafYeeXYZ/MyAPIs)
 
-### 修改配置
-```javascript
-// 修改 src/config.json
-{
-  "SERVER": "https://api.xxx.workers.dev", // 你的伺服器地址
-}
-```
+### 設置伺服器地址
+在 `.env` 文件, `Vercel` 或 `Cloudflare Pages` 中設置 `VITE_SERVER` 環境變量, 如 `https://api.xxx.workers.dev`
 
 ### 安裝 Bun
 請參考 [Bun.sh](https://bun.sh). 或直接運行 `npm i -g bun`

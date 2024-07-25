@@ -1,5 +1,4 @@
 import type { DialogAction } from '../../libs/useDialog'
-import { SERVER } from '../../config.json'
 import { useRef, useState, useContext } from 'react'
 import { LoadingOutlined } from '@ant-design/icons'
 import { flushSync } from 'react-dom'
@@ -10,6 +9,8 @@ interface PromptGeneratorProps {
   dialogAction: React.Dispatch<DialogAction>
   promptRef: React.RefObject<HTMLTextAreaElement | null>
 }
+
+const SERVER: string = import.meta.env.VITE_SERVER as string ?? ''
 
 export default function PromptGenerator({ status, dialogAction, promptRef }: PromptGeneratorProps) {
 

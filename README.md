@@ -17,12 +17,8 @@
 ### Deploy Server
 See [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 
-### Modify src/config.json
-```javascript
-{
-  "SERVER": "https://api.xxx.workers.dev", // Your server address
-}
-```
+### Set Server URL
+Set `VITE_SERVER` environment variable in `.env` file, `Vercel` or `Cloudflare Pages`, such as `https://api.xxx.workers.dev`
 
 ### Install Bun
 Please refer to [Bun.sh](https://bun.sh). Or simply run `npm i -g bun`
