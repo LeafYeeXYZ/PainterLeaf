@@ -33,7 +33,7 @@ const title = lang.includes('zh') ? (lang.includes('tw') ? '賽博畫師小葉�
 const versionInfo = await check('2024041710')
 // 获取已收藏图片列表
 const initialImages: Image[] = (await get('staredImages')) ?? []
-if (!initialImages) await set('staredImages', [])
+if (!initialImages.length) await set('staredImages', [])
 else initialImages.reverse()
 
 // 主组件
