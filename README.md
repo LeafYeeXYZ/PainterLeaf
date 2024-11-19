@@ -42,3 +42,8 @@ bun dev
 ### Deploy
 
 If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (10s). You can either locally run the server or subscribe to a paid plan.
+
+## Common Issues
+
+- `429` error in your browser console: You may have exceeded the `HuggingFace` api request limit. Please wait for a while, reduce the frequency of requests, and consider subscribing to a paid plan.
+- `504` error in your browser console: The request have exceeded the `Vercel` timeout limit. Please consider subscribing to a paid plan or run the server locally.
