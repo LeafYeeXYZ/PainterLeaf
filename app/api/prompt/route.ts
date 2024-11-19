@@ -21,5 +21,3 @@ export async function POST(req: Request): Promise<Response> {
     return new Response('Failed to generate prompt', { status: 500 })
   }
 }
-
-export const runtime = 'edge'
