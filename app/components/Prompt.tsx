@@ -87,10 +87,11 @@ export default function Prompt() {
         showUploadList={false}
         accept='.jpg,.jpeg,.png'
         beforeUpload={async (file) => {
+          const MAX_SIZE_MB = 2
           try {
             flushSync(() => setDisabled(true))
-            if (file.size > 2 * 1024 * 1024) {
-              alert('Image size should be less than 2MB')
+            if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+              alert(`Image size should be less than ${MAX_SIZE_MB}MB`)
               return false
             }
             const uint8array = new Uint8Array(await file.arrayBuffer())

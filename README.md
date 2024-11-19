@@ -7,10 +7,8 @@
 - Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
 - `API` provided by `CloudflareAI` and `HuggingFace`
 
-## TODO
-
-- [ ] Implement `Image-to-text` feature
-- [ ] Add preview images to `README.md`
+| ![](./readme/2.png) | ![](./readme/1.png) | ![](./readme/3.png) |
+| :---: | :---: | :---: |
 
 ## Usage
 
