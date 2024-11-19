@@ -45,7 +45,7 @@ export default function Images({ containerID }: { containerID: string }) {
                 )}
                 trigger='hover'
               >
-                <p className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md'>
+                <p className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md border'>
                   <InfoCircleOutlined />
                 </p>
               </Popover>
@@ -63,7 +63,7 @@ export default function Images({ containerID }: { containerID: string }) {
                 )}
                 trigger='hover'
               >
-                <p className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer'>
+                <p className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer border'>
                   <DeleteOutlined />
                 </p>
               </Popover>
