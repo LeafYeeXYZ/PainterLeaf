@@ -1,39 +1,45 @@
-**[简体中文](README_ZH_CN.md) | [正體中文](README_ZH_TW.md) | English**
+**For old version, see `v3` branch.**
 
-# PainterLeaf
-- Text-to-image, supports multiple models
-- Image-to-text, convert local images to prompts
-- Also supports image-to-image
+# Painter Leaf
+
+- Text-to-image: supports multiple models
+- Image-to-text: convert local images to prompts
 - Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
-- Front-end and back-end separation, front-end based on `React`, back-end based on `Hono`, see [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 - `API` provided by `CloudflareAI` and `HuggingFace`
-- Internationalization support, currently supports `简体中文`, `正體中文`, and `English`
 
-|![](./readme/mobile-light.jpeg)|![](./readme/mobile-dark.jpeg)|
-|:---:|:---:|
-|![](./readme/light.png)|![](./readme/dark.png)|
+## TODO
+
+- [ ] Implement `Image-to-text` feature
+- [ ] Add preview images to `README.md`
 
 ## Usage
-### Deploy Server
-See [this project](https://github.com/LeafYeeXYZ/MyAPIs)
 
-### Set Server URL
-Set `VITE_SERVER` environment variable in `.env` file, `Vercel` or `Cloudflare Pages`, such as `https://api.xxx.workers.dev`
+### Config Environment Variables
 
-### Install Bun
-Please refer to [Bun.sh](https://bun.sh). Or simply run `npm i -g bun`
+Set following environment variables in `.env` file or `Vercel`:
+
+| Key | Value | Required |
+| :---: | :---: | :---: |
+| `CF_USER_ID` | `Cloudflare` user id | ✅ for `Cloudflare AI` |
+| `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ for `Cloudflare AI` |
+| `HF_API_KEY` | `HuggingFace` api key | ✅ for `HuggingFace` |
+
+> If you don't need specific provider, you can leave the key empty.
 
 ### Install dependencies
+
 ```bash
 bun i
 ```
 
-### Local run
+> If you haven't installed `Bun` yet, please refer to [Bun.sh](https://bun.sh).
+
+### Local Development
+
 ```bash
-bun run dev
+bun dev
 ```
 
-### Build
-```bash
-bun run build
-```
+### Deploy
+
+It's recommended to deploy to `Vercel` while you can also deploy to other platforms, just make sure to set the environment variables correctly.

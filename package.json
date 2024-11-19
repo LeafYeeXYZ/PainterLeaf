@@ -1,47 +1,32 @@
 {
   "name": "painter-leaf",
-  "version": "1.0.0",
-  "description": "赛博画师小叶子",
-  "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/LeafYeeXYZ/PainterLeaf.git"
-  },
-  "author": "LeafYeeXYZ",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/LeafYeeXYZ/PainterLeaf/issues"
-  },
-  "homepage": "https://github.com/LeafYeeXYZ/PainterLeaf#readme",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bunx --bun vite --port 16666",
-    "build": "bunx --bun vite build",
-    "lint": "bunx --bun eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "bunx --bun vite preview --port 16667"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.3.7",
-    "antd": "^5.18.3",
+    "@ant-design/icons": "^5.5.1",
+    "antd": "^5.22.1",
     "idb-keyval": "^6.2.1",
-    "react": "rc",
-    "react-dom": "rc",
-    "swiper": "^11.1.4"
+    "next": "^14",
+    "react": "^18",
+    "react-dom": "^18",
+    "swiper": "^11.1.14",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.6",
-    "@types/react": "npm:types-react@rc",
-    "@types/react-dom": "npm:types-react-dom@rc",
-    "@typescript-eslint/eslint-plugin": "^7.14.1",
-    "@typescript-eslint/parser": "^7.14.1",
-    "@vitejs/plugin-react": "^4.3.1",
-    "babel-plugin-react-compiler": "latest",
-    "eslint": "^9.6.0",
-    "eslint-plugin-react": "^7.34.3",
-    "eslint-plugin-react-compiler": "latest",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "eslint-plugin-react-refresh": "^0.4.7",
-    "typescript": "^5.5.2",
-    "vite": "^5.3.2"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8",
+    "eslint-config-next": "^14",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5"
   }
 }
