@@ -1,7 +1,7 @@
 'use client'
 
 import { Models, type Model } from '../lib/config'
-import { Form, Button, Select, Input, Space } from 'antd'
+import { Form, Button, Select, Input, Space, Upload } from 'antd'
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import type { Task } from '../lib/types'
@@ -29,16 +29,19 @@ export default function Prompt() {
     setTasks((prev) => [task, ...prev])
     setTimeout(() => setDisabled(false), 10)
   }
+  const [form] = Form.useForm<FormValues>()
 
   return (
     <section className='w-full h-full overflow-hidden relative px-4'>
-      <Form<FormValues>
+      <Form
+        form={form}
         layout='vertical'
         initialValues={{
           model: Models[0].value
         }}
         onFinish={handleFinish}
         className='pt-2'
+        disabled={disabled}
       >
         <Form.Item
           name='prompt'
@@ -74,11 +77,48 @@ export default function Prompt() {
               options={Models.map((model) => ({ value: model.value, label: model.label }))}
             />
           </Form.Item>
-          <Button type='primary' htmlType='submit' block disabled={disabled}>
+          <Button htmlType='submit' block>
             Add Task
           </Button>
         </Space.Compact>
       </Form>
+      <Upload
+        className='absolute bottom-20 right-6'
+        showUploadList={false}
+        accept='.jpg,.jpeg,.png'
+        beforeUpload={async (file) => {
+          try {
+            flushSync(() => setDisabled(true))
+            if (file.size > 2 * 1024 * 1024) {
+              alert('Image size should be less than 2MB')
+              return false
+            }
+            const uint8array = new Uint8Array(await file.arrayBuffer())
+            const res = await fetch('/api/prompt', {
+              method: 'POST',
+              body: JSON.stringify({ image: Array.from(uint8array) })
+            })
+            if (!res.ok) {
+              alert('Failed to generate prompt')
+              return false
+            }
+            const data = await res.json()
+            const prompt = data.result.description as string
+            form.setFieldsValue({ prompt })
+            return false
+          } finally {
+            setDisabled(false)
+          }
+        }}
+      >
+        <Button 
+          disabled={disabled}
+          loading={disabled}
+          className='opacity-50 hover:opacity-100'
+        >
+          Image To Prompt
+        </Button>
+      </Upload>
     </section>
   )
 }

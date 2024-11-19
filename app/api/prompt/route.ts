@@ -3,7 +3,7 @@ export async function POST(req: Request): Promise<Response> {
     const { image } = await req.json()
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_USER_ID}/ai/run/@cf/unum/uform-gen2-qwen-500m`
     const body = {
-      image: image,
+      image: image as number[],
       max_tokens: 2048,
       prompt: 'Generate a detailed description in a single paragraph for this image',
     }
