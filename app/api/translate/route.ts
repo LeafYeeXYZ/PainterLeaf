@@ -24,3 +24,5 @@ export async function POST(req: Request): Promise<Response> {
     return new Response(e instanceof Error ? e.message : 'Unkown Server Error', { status: 500 })
   }
 }
+
+export const runtime = 'edge'

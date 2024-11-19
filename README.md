@@ -17,7 +17,7 @@
 
 ### Config Environment Variables
 
-Set following environment variables in `.env` file or `Vercel`:
+Set following environment variables in `.env` file, `Vercel` or `Cloudflare`.
 
 | Key | Value | Required |
 | :---: | :---: | :---: |
@@ -41,4 +41,4 @@ bun dev
 
 ### Deploy
 
-It's recommended to deploy to `Vercel` while you can also deploy to other platforms, just make sure to set the environment variables correctly.
+If you are using `Vercel`, be aware of the `Vercel` requset timeout limit, you may need a pro plan. Otherwise, you can deploy to `Cloudflare` or other platforms. All the serverless functions are in `edge` runtime.
