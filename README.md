@@ -41,6 +41,4 @@ bun dev
 
 ### Deploy
 
-If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (you may need a pro plan).
-
-I'm using `Deno Deploy` for this project, see <deno.com>.
+If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (10s). You can either locally run the server or subscribe to a paid plan.
