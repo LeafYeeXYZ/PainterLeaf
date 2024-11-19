@@ -10,7 +10,6 @@
 ## TODO
 
 - [ ] Implement `Image-to-text` feature
-- [ ] Implement Dark Mode
 - [ ] Add preview images to `README.md`
 
 ## Usage

@@ -1,9 +1,17 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './global.css'
 
 export const metadata: Metadata = {
   title: 'Painter Leaf',
   description: 'Easily create AI-generated art with Painter Leaf',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -13,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className='bg-white dark:bg-gray-950'>
         {children}
       </body>
     </html>

@@ -13,9 +13,10 @@ export default function App() {
 
   // 动态设置主题
   const [config, setConfig] = useState<ThemeConfig>(ANTD_THEME_LIGHT)
-  useEffect(() => {  
+  useEffect(() => {
     const getTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches
     const subTheme = () => setConfig(getTheme() ? ANTD_THEME_DARK : ANTD_THEME_LIGHT)
+    setConfig(getTheme() ? ANTD_THEME_DARK : ANTD_THEME_LIGHT)
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', subTheme)
     return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', subTheme)
   }, [])
@@ -31,7 +32,7 @@ export default function App() {
 
   return (
     <ConfigProvider theme={config}>
-      <main className='w-full h-dvh max-w-xl mx-auto relative overflow-hidden grid grid-cols-1 grid-rows-[1fr,11.1rem]'>
+      <main className='w-full h-dvh max-w-xl mx-auto relative overflow-hidden grid grid-cols-1 grid-rows-[1fr,11.1rem] bg-white dark:bg-gray-950 text-rose-950 dark:text-white'>
         <section className='w-full h-full overflow-hidden'>
           <Painting />
         </section>
