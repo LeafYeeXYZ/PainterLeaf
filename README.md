@@ -20,9 +20,9 @@ Set following environment variables in `.env` file or `Vercel`:
 
 | Key | Value | Required |
 | :---: | :---: | :---: |
-| `CF_USER_ID` | `Cloudflare` user id | ✅ for `Cloudflare AI` |
-| `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ for `Cloudflare AI` |
-| `HF_API_KEY` | `HuggingFace` api key | ✅ for `HuggingFace` |
+| `CF_USER_ID` | `Cloudflare` user id | ✅ |
+| `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ |
+| `HF_API_KEY` | `HuggingFace` api key |  |
 
 > If you don't need specific provider, you can leave the key empty.
 
