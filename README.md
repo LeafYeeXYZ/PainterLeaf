@@ -41,4 +41,4 @@ bun dev
 
 ### Deploy
 
-If you are using `Vercel`, be aware of the `Vercel` requset timeout limit, you may need a pro plan. Otherwise, you can deploy to `Cloudflare` or other platforms. All the serverless functions are in `edge` runtime.
+If you are using `Vercel`, be aware of the `Vercel` requset timeout limit, you may need a pro plan. Otherwise, you can deploy to `Cloudflare`. All the serverless functions are in `edge` runtime.
