@@ -10,6 +10,7 @@
 ## TODO
 
 - [ ] Implement `Image-to-text` feature
+- [ ] Implement Dark Mode
 - [ ] Add preview images to `README.md`
 
 ## Usage
@@ -23,8 +24,6 @@ Set following environment variables in `.env` file or `Vercel`:
 | `CF_USER_ID` | `Cloudflare` user id | ✅ |
 | `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ |
 | `HF_API_KEY` | `HuggingFace` api key |  |
-
-> If you don't need specific provider, you can leave the key empty.
 
 ### Install dependencies
 
