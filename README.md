@@ -1,4 +1,4 @@
-**For old version, see `v3` branch.**
+**For old version, see `v3` branch and <https://paint.leafyee.xyz>**
 
 # Painter Leaf
 

@@ -42,18 +42,22 @@ export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Ta
 
 /** Return whether the task is successfully generated and either base64 data or error message */
 async function generateImage(task: Task): Promise<{ success: boolean, data: string }> {
+  const MAX_RETRY = 3 // Use retry to reduce failure caused by Vercel's Request Timeout of 10 seconds
   const { prompt, model, promptLanguage } = task
   try {
     const promptEN = promptLanguage === 'zh' ? await translate(prompt) : prompt
-    const res = await fetch('/api/image', {
-      method: 'POST',
-      body: JSON.stringify({ prompt: promptEN, model }),
-    })
-    if (!res.ok) {
-      throw new Error('Failed to generate the image')
+    for (let i = 0; i < MAX_RETRY; i++) {
+      const res = await fetch('/api/image', {
+        method: 'POST',
+        body: JSON.stringify({ prompt: promptEN, model }),
+      })
+      if (!res.ok) {
+        continue
+      }
+      const data = await res.blob()
+      return { success: true, data: await getBase64(data) }
     }
-    const data = await res.blob()
-    return { success: true, data: await getBase64(data) }
+    throw new Error('Failed to generate the image')
   } catch (e) {
     return { success: false, data: e instanceof Error ? e.message : JSON.stringify(e) }
   }
