@@ -42,30 +42,26 @@ export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Ta
 
 /** Return whether the task is successfully generated and either base64 data or error message */
 async function generateImage(task: Task): Promise<{ success: boolean, data: string }> {
-  const MAX_RETRY = 3 // Use retry to reduce failure caused by Vercel's Request Timeout of 10 seconds
   const { prompt, model, promptLanguage } = task
   try {
     const promptEN = promptLanguage === 'zh' ? await translate(prompt) : prompt
-    for (let i = 0; i < MAX_RETRY; i++) {
-      let res: Response | undefined
-      if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
-        res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`, {
-          method: 'POST',
-          body: JSON.stringify({ prompt: promptEN, model }),
-        })
-      } else {
-        res = await fetch('/api/image', {
-          method: 'POST',
-          body: JSON.stringify({ prompt: promptEN, model }),
-        })
-      }
-      if (!res!.ok) {
-        continue
-      }
-      const data = await res!.blob()
-      return { success: true, data: await getBase64(data) }
+    let res: Response | undefined
+    if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
+      res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`, {
+        method: 'POST',
+        body: JSON.stringify({ prompt: promptEN, model }),
+      })
+    } else {
+      res = await fetch('/api/image', {
+        method: 'POST',
+        body: JSON.stringify({ prompt: promptEN, model }),
+      })
     }
-    throw new Error('Failed to generate the image')
+    if (!res!.ok) {
+      throw new Error('Failed to generate the image')
+    }
+    const data = await res!.blob()
+    return { success: true, data: await getBase64(data) }
   } catch (e) {
     return { success: false, data: e instanceof Error ? e.message : JSON.stringify(e) }
   }
