@@ -43,7 +43,7 @@ export default function Images({ containerID }: { containerID: string }) {
                     <Tag className='m-0 mt-2'>{image.model}</Tag> 
                   </p>
                 )}
-                trigger='hover'
+                trigger={['hover', 'click']}
               >
                 <p className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md border'>
                   <InfoCircleOutlined />
@@ -61,7 +61,7 @@ export default function Images({ containerID }: { containerID: string }) {
                     danger
                   >Confire Delete</Button>
                 )}
-                trigger='hover'
+                trigger={['hover', 'click']}
               >
                 <p className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer border'>
                   <DeleteOutlined />
