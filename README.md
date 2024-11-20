@@ -7,7 +7,7 @@
 - Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
 - `API` provided by `CloudflareAI` and `HuggingFace`
 
-| ![](./readme/2.png) | ![](./readme/1.png) | ![](./readme/3.png) |
+| ![](./readme/1.jpg) | ![](./readme/2.jpg) | ![](./readme/3.jpg) |
 | :---: | :---: | :---: |
 
 ## Usage
