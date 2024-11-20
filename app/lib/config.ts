@@ -14,8 +14,6 @@ export const Models: Model[] = [
   { value: '@hf/black-forest-labs/FLUX.1-schnell', label: '🤗 FLUX.1 Schnell' },
   { value: '@hf/black-forest-labs/FLUX.1-dev', label: '🤗 FLUX.1 Dev' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large', label: '🤗 SD 3.5 Large' },
-  { value: '@hf/cagliostrolab/animagine-xl-3.1', label: '🤗 AnimagineXL 3.1' },
-  { value: '@hf/UnfilteredAI/NSFW-GEN-ANIME-v2', label: '🤗 NSFWGenAnime' },
 ]
 
 export const ANTD_THEME_LIGHT: ThemeConfig = {
