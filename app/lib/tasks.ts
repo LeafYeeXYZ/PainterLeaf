@@ -2,7 +2,7 @@ import type { Image, Task } from './types'
 import { getHash, getMaxGenerating, getBase64 } from './utils'
 import type { SetAction } from './useZustand'
 
-export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Task[]>) => void, images: Image[], setImages: (action: SetAction<Image[]>) => void, hasImage: (hash: string) => boolean): Promise<void> {
+export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Task[]>) => void, setImages: (action: SetAction<Image[]>) => void, hasImage: (hash: string) => boolean): Promise<void> {
   const maxGenerating = getMaxGenerating()
   const tasksGenerating = tasks.filter((task) => task.status === 'generating').length
   if (

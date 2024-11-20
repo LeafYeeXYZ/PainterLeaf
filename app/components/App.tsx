@@ -21,23 +21,27 @@ export default function App() {
     return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', subTheme)
   }, [])
   // 初始化图片
-  const { tasks, setTasks, images, setImages, hasImage } = useZustand()
+  const { tasks, setTasks, setImages, hasImage } = useZustand()
   useEffect(() => {
     getStaredImages().then((images) => setImages(() => images))
   }, [setImages])
   // 处理任务
   useEffect(() => {
-    handleTasks(tasks, setTasks, images, setImages, hasImage)
-  }, [tasks, setTasks, images, setImages, hasImage])
+    handleTasks(tasks, setTasks, setImages, hasImage)
+  }, [tasks, setTasks, setImages, hasImage])
 
   return (
     <ConfigProvider theme={config}>
-      <main className='w-full h-dvh max-w-xl mx-auto relative overflow-hidden grid grid-cols-1 grid-rows-[1fr,11.1rem] bg-white dark:bg-gray-950 text-rose-950 dark:text-white'>
-        <section className='w-full h-full overflow-hidden'>
-          <Painting />
+      <main className='w-full h-dvh mx-auto relative overflow-hidden grid grid-cols-1 grid-rows-[1fr,11.1rem] text-rose-950 dark:text-white'>
+        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-rose-50'>
+          <div className='w-full h-full overflow-hidden max-w-xl'>
+            <Painting />
+          </div>
         </section>
-        <section className='w-full h-full overflow-hidden'>
-          <Prompt />
+        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-white'>
+          <div className='w-full h-full overflow-hidden max-w-xl'>
+            <Prompt />
+          </div>
         </section>
       </main>
     </ConfigProvider>
