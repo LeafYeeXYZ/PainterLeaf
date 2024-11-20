@@ -11,6 +11,7 @@ export default function Config() {
         <div className='w-full flex justify-center items-center gap-2'>
           <p className='text-sm'>Prompt Language</p>
           <Segmented
+            className='border dark:border-[#424242]'
             options={[
               { value: 'en', label: 'English' },
               { value: 'zh', label: '中文' },

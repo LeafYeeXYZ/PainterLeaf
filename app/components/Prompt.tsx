@@ -121,7 +121,7 @@ export default function Prompt() {
               htmlType='submit' 
               icon={<UnorderedListOutlined />}
             >
-              Add Task
+              Generate
             </Button>
           </Tooltip>
         </Space.Compact>

@@ -33,12 +33,12 @@ export default function App() {
   return (
     <ConfigProvider theme={config}>
       <main className='w-full h-dvh mx-auto relative overflow-hidden grid grid-cols-1 grid-rows-[1fr,11.1rem] text-rose-950 dark:text-white'>
-        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-rose-50'>
+        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-[#fff0f0] dark:bg-[#0e131d]'>
           <div className='w-full h-full overflow-hidden max-w-xl'>
             <Painting />
           </div>
         </section>
-        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-white'>
+        <section className='w-full h-full overflow-hidden flex items-center justify-center bg-white dark:bg-gray-950'>
           <div className='w-full h-full overflow-hidden max-w-xl'>
             <Prompt />
           </div>

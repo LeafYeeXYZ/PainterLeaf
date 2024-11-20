@@ -38,9 +38,9 @@ export default function Images({ containerID }: { containerID: string }) {
                 title='Model & Prompt'
                 content={(
                   <p>
-                    <Tag>{image.model}</Tag> 
-                    <br />
                     {image.prompt}
+                    <br />
+                    <Tag className='m-0 mt-2'>{image.model}</Tag> 
                   </p>
                 )}
                 trigger='hover'

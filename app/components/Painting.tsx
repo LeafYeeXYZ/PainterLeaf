@@ -18,6 +18,7 @@ export default function Painting() {
       <div className='flex justify-center items-center pb-1 pt-5'>
         <Badge size='small' count={tasks.filter((task) => (task.status !== 'success' && task.status !== 'error')).length}>
           <Segmented
+            className='border dark:border-[#424242]'
             options={[
               { value: 'Config', icon: <SettingOutlined />, label: 'Config' },
               { value: 'Images', icon: <PictureOutlined /> , label: 'Images' },
