@@ -20,6 +20,7 @@ export async function getBase64(image: Blob): Promise<string> {
 export async function getStaredImages(): Promise<Image[]> {
   const images = await get<Image[]>('staredImages')
   if (images) {
+    images.reverse()
     return images
   } else {
     await set('staredImages', [])
