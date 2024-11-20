@@ -1,7 +1,8 @@
 'use client'
 
 import { Models, type Model } from '../lib/config'
-import { Form, Button, Select, Input, Space, Upload } from 'antd'
+import { Form, Button, Select, Input, Space, Upload, Tooltip } from 'antd'
+import { FileImageOutlined, ReadOutlined, UnorderedListOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import type { Task } from '../lib/types'
@@ -32,7 +33,7 @@ export default function Prompt() {
   const [form] = Form.useForm<FormValues>()
 
   return (
-    <section className='w-full h-full overflow-hidden relative px-4'>
+    <section className='w-full h-full overflow-hidden relative p-4'>
       <Form
         form={form}
         layout='vertical'
@@ -63,7 +64,7 @@ export default function Prompt() {
         >
           <Input.TextArea
             placeholder='Input Your Prompt Here'
-            autoSize={{ minRows: 4, maxRows: 4 }}
+            autoSize={{ minRows: 3, maxRows: 3 }}
           />
         </Form.Item>
         <Space.Compact block>
@@ -77,49 +78,54 @@ export default function Prompt() {
               options={Models.map((model) => ({ value: model.value, label: model.label }))}
             />
           </Form.Item>
-          <Button htmlType='submit' block>
-            Add Task
-          </Button>
+          <Tooltip title='Generate prompt from image'>
+            <Upload
+              showUploadList={false}
+              accept='.jpg,.jpeg,.png'
+              beforeUpload={async (file) => {
+                const MAX_SIZE_MB = 2
+                try {
+                  flushSync(() => setDisabled(true))
+                  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+                    alert(`Image size should be less than ${MAX_SIZE_MB}MB`)
+                    return false
+                  }
+                  const uint8array = new Uint8Array(await file.arrayBuffer())
+                  const res = await fetch('/api/prompt', {
+                    method: 'POST',
+                    body: JSON.stringify({ image: Array.from(uint8array) })
+                  })
+                  if (!res.ok) {
+                    alert('Failed to generate prompt')
+                    return false
+                  }
+                  const data = await res.json()
+                  const prompt = data.result.description as string
+                  form.setFieldsValue({ prompt })
+                  return false
+                } finally {
+                  setDisabled(false)
+                }
+              }}
+            >
+              <Button 
+                disabled={disabled}
+                loading={disabled}
+              >
+                <FileImageOutlined /> to <ReadOutlined />
+              </Button>
+            </Upload>
+          </Tooltip>
+          <Tooltip title='Add prompt and model to task list'>
+            <Button 
+              htmlType='submit' 
+              icon={<UnorderedListOutlined />}
+            >
+              Add Task
+            </Button>
+          </Tooltip>
         </Space.Compact>
       </Form>
-      <Upload
-        className='absolute bottom-20 right-6'
-        showUploadList={false}
-        accept='.jpg,.jpeg,.png'
-        beforeUpload={async (file) => {
-          const MAX_SIZE_MB = 2
-          try {
-            flushSync(() => setDisabled(true))
-            if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-              alert(`Image size should be less than ${MAX_SIZE_MB}MB`)
-              return false
-            }
-            const uint8array = new Uint8Array(await file.arrayBuffer())
-            const res = await fetch('/api/prompt', {
-              method: 'POST',
-              body: JSON.stringify({ image: Array.from(uint8array) })
-            })
-            if (!res.ok) {
-              alert('Failed to generate prompt')
-              return false
-            }
-            const data = await res.json()
-            const prompt = data.result.description as string
-            form.setFieldsValue({ prompt })
-            return false
-          } finally {
-            setDisabled(false)
-          }
-        }}
-      >
-        <Button 
-          disabled={disabled}
-          loading={disabled}
-          className='opacity-50 hover:opacity-100'
-        >
-          Image To Prompt
-        </Button>
-      </Upload>
     </section>
   )
 }
