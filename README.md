@@ -22,6 +22,8 @@ Set following environment variables in `.env` file, `Vercel`, `Deno Deploy`, etc
 | `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ |
 | `HF_API_KEY` | `HuggingFace` api key |  |
 
+> **Optional**: You can still use `v3` client-server mode without setting variables above, see [this project](https://github.com/LeafYeeXYZ/MyAPIs). After deploying the server, set `NEXT_PUBLIC_WORKERS_SERVER` environment variable (e.g. `https://api.xxx.workers.dev`, without `/`). This is useful when you frequently exceed the `Vercel` timeout limit.
+
 ### Install dependencies
 
 ```bash
@@ -38,7 +40,7 @@ bun dev
 
 ### Deploy
 
-If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (10s). You can either locally run the server or subscribe to a paid plan.
+If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (10s). You can either subscribe to a paid plan or run the server locally.
 
 ## Common Issues
 

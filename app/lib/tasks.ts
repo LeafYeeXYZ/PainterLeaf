@@ -47,14 +47,22 @@ async function generateImage(task: Task): Promise<{ success: boolean, data: stri
   try {
     const promptEN = promptLanguage === 'zh' ? await translate(prompt) : prompt
     for (let i = 0; i < MAX_RETRY; i++) {
-      const res = await fetch('/api/image', {
-        method: 'POST',
-        body: JSON.stringify({ prompt: promptEN, model }),
-      })
-      if (!res.ok) {
+      let res: Response | undefined
+      if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
+        res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`, {
+          method: 'POST',
+          body: JSON.stringify({ prompt: promptEN, model }),
+        })
+      } else {
+        res = await fetch('/api/image', {
+          method: 'POST',
+          body: JSON.stringify({ prompt: promptEN, model }),
+        })
+      }
+      if (!res!.ok) {
         continue
       }
-      const data = await res.blob()
+      const data = await res!.blob()
       return { success: true, data: await getBase64(data) }
     }
     throw new Error('Failed to generate the image')
@@ -65,13 +73,21 @@ async function generateImage(task: Task): Promise<{ success: boolean, data: stri
 
 /** Return the translated prompt */
 async function translate(prompt: string): Promise<string> {
-  const res = await fetch('/api/translate', {
-    method: 'POST',
-    body: JSON.stringify({ zh: prompt }),
-  })
-  if (!res.ok) {
+  let res: Response | undefined
+  if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
+    res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/translate`, {
+      method: 'POST',
+      body: JSON.stringify({ text: prompt, source_lang: 'zh', target_lang: 'en' }),
+    })
+  } else {
+    res = await fetch('/api/translate', {
+      method: 'POST',
+      body: JSON.stringify({ zh: prompt }),
+    })
+  }
+  if (!res!.ok) {
     throw new Error('Failed to translate the prompt')
   }
-  const { result } = await res.json()
+  const { result } = await res!.json()
   return result.translated_text
 }

@@ -91,10 +91,18 @@ export default function Prompt() {
                     return false
                   }
                   const uint8array = new Uint8Array(await file.arrayBuffer())
-                  const res = await fetch('/api/prompt', {
-                    method: 'POST',
-                    body: JSON.stringify({ image: Array.from(uint8array) })
-                  })
+                  let res: Response | undefined
+                  if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
+                    res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/genprompt`, {
+                      method: 'POST',
+                      body: JSON.stringify({ image: Array.from(uint8array) })
+                    })
+                  } else {
+                    res = await fetch('/api/prompt', {
+                      method: 'POST',
+                      body: JSON.stringify({ image: Array.from(uint8array) })
+                    })
+                  }
                   if (!res.ok) {
                     alert('Failed to generate prompt')
                     return false
