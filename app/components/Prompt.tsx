@@ -74,7 +74,7 @@ export default function Prompt() {
             rules={[{ required: true, message: 'Please select model!' }]}
           >
             <Select
-              className='w-full'
+              className='w-full max-w-[calc(100%-12.6rem)]'
               options={Models.map((model) => ({ value: model.value, label: model.label }))}
             />
           </Form.Item>
