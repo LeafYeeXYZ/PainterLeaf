@@ -14,7 +14,11 @@
 
 ### Config Environment Variables
 
-Set following environment variables in `.env` file, `Vercel`, `Deno Deploy`, etc.
+You can use either `Fullstack` or `Client-Server` mode.
+
+#### Fullstack
+
+Set following environment variables in `.env` file or `Vercel`.
 
 | Key | Value | Required |
 | :---: | :---: | :---: |
@@ -22,7 +26,32 @@ Set following environment variables in `.env` file, `Vercel`, `Deno Deploy`, etc
 | `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ |
 | `HF_API_KEY` | `HuggingFace` api key |  |
 
-> **Optional**: You can still use `v3` client-server mode without setting variables above, see [this project](https://github.com/LeafYeeXYZ/MyAPIs). After deploying the server, set `NEXT_PUBLIC_WORKERS_SERVER` environment variable (e.g. `https://api.xxx.workers.dev`, without `/`). This is useful when you frequently exceed the `Vercel` timeout limit.
+> The free plan of `Vercel` has a limit of 10s for each request, which may cause `504` error (especially when using `HuggingFace` models). You can subscribe to a `Vercel` paid plan, run the server locally, or use `Client-Server` mode. <span id="vervel-limit-resolution"></span>
+
+#### Client-Server
+
+Deploy the server to `Cloudflare Workers` (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) and set following environment variables in `.env` file or `Vercel`.
+
+| Key | Value | Required |
+| :---: | :---: | :---: |
+| `NEXT_PUBLIC_WORKERS_SERVER` | `Server` url (e.g. `https://api.xxx.workers.dev`) | ✅ |
+
+### Deploy
+
+Deploy this project to `Vercel` (remember to set environment variables).
+
+### Common Issues
+
+- `429` error: You may have exceeded the `HuggingFace` api request limit. Please wait for a while, reduce the frequency of requests, and consider subscribing to a paid plan.
+- `504` error: The request have exceeded the `Vercel` time limit. See [above](#vervel-limit-resolution) for resolution.
+
+## Development
+
+### Clone the repository
+
+```bash
+git clone https://github.com/LeafYeeXYZ/PainterLeaf.git
+```
 
 ### Install dependencies
 
@@ -38,11 +67,8 @@ bun i
 bun dev
 ```
 
-### Deploy
+### Build
 
-If you are using `Vercel`, be aware of the `Vercel` requset timeout limit (10s). You can either subscribe to a paid plan or run the server locally.
-
-## Common Issues
-
-- `429` error in your browser console: You may have exceeded the `HuggingFace` api request limit. Please wait for a while, reduce the frequency of requests, and consider subscribing to a paid plan.
-- `504` error in your browser console: The request have exceeded the `Vercel` timeout limit. Please consider subscribing to a paid plan or run the server locally.
+```bash
+bun run build
+```

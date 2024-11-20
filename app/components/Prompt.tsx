@@ -104,7 +104,7 @@ export default function Prompt() {
                     })
                   }
                   if (!res.ok) {
-                    alert('Failed to generate prompt')
+                    alert(`Failed to generate prompt, error: ${res.status} (${res.statusText})`)
                     return false
                   }
                   const data = await res.json()
