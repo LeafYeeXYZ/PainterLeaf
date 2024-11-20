@@ -41,7 +41,7 @@ export default function Painting() {
           />
         </Badge>
       </div>
-      <div className='w-full h-[calc(100%-3.5rem)] overflow-hidden relative' id={containerID}>
+      <div className='w-full h-[calc(100%-3.5rem)] overflow-visible relative' id={containerID}>
         {page}
       </div>
     </section>
