@@ -36,6 +36,8 @@ Deploy the server to `Cloudflare Workers` (see [this project](https://github.com
 | :---: | :---: | :---: |
 | `NEXT_PUBLIC_WORKERS_SERVER` | `Server` url (e.g. `https://api.xxx.workers.dev`) | ✅ |
 
+> Once `NEXT_PUBLIC_WORKERS_SERVER` is set, all the other environment variables will be ignored.
+
 ### Deploy
 
 Deploy this project to `Vercel` (remember to set environment variables).
