@@ -11,9 +11,9 @@ export const Models: Model[] = [
   { value: '@cf/black-forest-labs/flux-1-schnell', label: '☁️ FLUX.1 Schnell' },
   { value: '@cf/stabilityai/stable-diffusion-xl-base-1.0', label: '☁️ SDXL Base 1.0' },
   { value: '@cf/bytedance/stable-diffusion-xl-lightning', label: '☁️ SDXL Lightning' },
-  { value: '@hf/black-forest-labs/FLUX.1-schnell', label: '🤗 FLUX.1 Schnell' },
   { value: '@hf/black-forest-labs/FLUX.1-dev', label: '🤗 FLUX.1 Dev' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large', label: '🤗 SD 3.5 Large' },
+  { value: '@hf/stabilityai/stable-diffusion-3.5-large-turbo', label: '🤗 SD 3.5 Large Turbo' },
 ]
 
 export const ANTD_THEME_LIGHT: ThemeConfig = {
