@@ -14,8 +14,6 @@ export const Models: Model[] = [
   { value: '@hf/black-forest-labs/FLUX.1-dev', label: '🤗 FLUX.1 Dev' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large', label: '🤗 SD 3.5 Large' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large-turbo', label: '🤗 SD 3.5 Large Turbo' },
-  { value: '@hf/Shakker-Labs/SD3.5-LoRA-Chinese-Line-Art', label: '🤗 SD 3.5 Chinese Line Art' },
-  { value: '@hf/John6666/mala-anime-mix-nsfw-pony-xl-v5new-sdxl-spo', label: '🤗 SDXL NSFW' },
 ]
 
 export const ANTD_THEME_LIGHT: ThemeConfig = {
