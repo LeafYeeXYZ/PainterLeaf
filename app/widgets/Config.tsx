@@ -8,7 +8,7 @@ export default function Config() {
   return (
     <section className='w-full h-full overflow-hidden relative'>
       <div className='w-full h-full flex flex-col justify-center items-center gap-4'>
-        <div className='w-full flex justify-center items-center gap-2'>
+        <div className='w-full flex justify-center items-center gap-2 max-w-xl'>
           <p className='text-sm'>Prompt Language</p>
           <Segmented
             className='border dark:border-[#424242]'

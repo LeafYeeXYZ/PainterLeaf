@@ -1,8 +1,8 @@
 'use client'
 
 import { Models, type Model } from '../lib/config'
-import { Form, Button, Select, Input, Space, Upload, Tooltip } from 'antd'
-import { FileImageOutlined, ReadOutlined, UnorderedListOutlined } from '@ant-design/icons'
+import { Form, Button, Select, Input, Space, Upload, Popover } from 'antd'
+import { FileImageOutlined, FileAddOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import type { Task } from '../lib/types'
@@ -74,12 +74,13 @@ export default function Prompt() {
             rules={[{ required: true, message: 'Please select model!' }]}
           >
             <Select
-              className='w-full max-w-[calc(100%-12.6rem)]'
+              className='w-full'
               options={Models.map((model) => ({ value: model.value, label: model.label }))}
             />
           </Form.Item>
-          <Tooltip title='Generate prompt from image'>
-            <Upload
+          <Popover
+            title='Generate Prompt from Image'
+            content={(<Upload
               showUploadList={false}
               accept='.jpg,.jpeg,.png'
               beforeUpload={async (file) => {
@@ -104,7 +105,7 @@ export default function Prompt() {
                     })
                   }
                   if (!res.ok) {
-                    alert(`Failed to generate prompt, error: ${res.status} (${res.statusText})`)
+                    alert(`Failed to generate prompt, error: ${res.status}`)
                     return false
                   }
                   const data = await res.json()
@@ -120,18 +121,29 @@ export default function Prompt() {
                 disabled={disabled}
                 loading={disabled}
               >
-                <FileImageOutlined /> to <ReadOutlined />
+                Choose Image
               </Button>
-            </Upload>
-          </Tooltip>
-          <Tooltip title='Add prompt and model to task list'>
+            </Upload>)}
+            trigger={['hover', 'click']}
+          >
+            <Button 
+              disabled={disabled}
+              loading={disabled}
+              icon={<FileImageOutlined />}
+            />
+          </Popover>
+          <Popover
+            title='Generate Image'
+            content='Add prompt and model to task list'
+            trigger={['hover', 'click']}
+          >
             <Button 
               htmlType='submit' 
-              icon={<UnorderedListOutlined />}
+              icon={<FileAddOutlined />}
             >
               Generate
             </Button>
-          </Tooltip>
+          </Popover>
         </Space.Compact>
       </Form>
     </section>

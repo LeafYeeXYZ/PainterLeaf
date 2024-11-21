@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { EffectCards } from 'swiper/modules'
 import { useImageSize } from '../lib/useImageSize'
 import { useZustand } from '../lib/useZustand'
-import { Tooltip, Button, Popover, Tag } from 'antd'
+import { Button, Popover, Tag } from 'antd'
 import { addStaredImage, deleteStaredImage } from '../lib/utils'
 import { DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
 
@@ -67,9 +67,10 @@ export default function Images({ containerID }: { containerID: string }) {
                   <DeleteOutlined />
                 </p>
               </Popover>
-              <Tooltip 
+              <Popover
                 title='Star Image'
-                autoAdjustOverflow
+                content='Unstarred images will disappear when the page is refreshed'
+                trigger={['hover', 'click']}
               >
                 <Button
                   className='absolute top-0 left-0 m-2'
@@ -84,7 +85,7 @@ export default function Images({ containerID }: { containerID: string }) {
                     }
                   }}
                 />
-              </Tooltip>
+              </Popover>
             </SwiperSlide>
           ))}
         </Swiper>

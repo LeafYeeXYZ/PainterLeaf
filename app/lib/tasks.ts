@@ -58,7 +58,7 @@ async function generateImage(task: Task): Promise<{ success: boolean, data: stri
       })
     }
     if (!res!.ok) {
-      throw new Error(`Failed to generate the image, error: ${res!.status} (${res!.statusText})`)
+      throw new Error(`Failed to generate the image, error: ${res!.status}`)
     }
     const data = await res!.blob()
     return { success: true, data: await getBase64(data) }
@@ -82,7 +82,7 @@ async function translate(prompt: string): Promise<string> {
     })
   }
   if (!res!.ok) {
-    throw new Error(`Failed to translate the prompt, error: ${res!.status} (${res!.statusText})`)
+    throw new Error(`Failed to translate the prompt, error: ${res!.status}`)
   }
   const { result } = await res!.json()
   return result.translated_text
