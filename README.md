@@ -2,21 +2,23 @@
 
 # Painter Leaf
 
-- Text-to-image: supports multiple models
-- Image-to-text: convert local images to prompts
-- Prompt supports Chinese and English (Chinese will automatically call `AI` translation)
-- `API` provided by `CloudflareAI` and `HuggingFace`
+A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Features include: 
+
+- Prompt-to-image: supports a variety of models (e.g. `Flux.1`、`StableDiffusion 3.5`)
+- Image-to-Prompt: convert local images to prompts
+- AI Translation: use Chinese prompts in any model
+- Store: save your creations to `IndexedDB`
 
 | ![](./readme/1.jpg) | ![](./readme/2.jpg) | ![](./readme/3.jpg) |
 | :---: | :---: | :---: |
 
-## Usage
+## 1 Deployment
 
-### Config Environment Variables
+### 1.1 Config Environment Variables
 
 You can use either `Fullstack` or `Client-Server` mode.
 
-#### Fullstack
+#### 1.1.1 Fullstack
 
 Set following environment variables in `.env` file or `Vercel`.
 
@@ -28,7 +30,7 @@ Set following environment variables in `.env` file or `Vercel`.
 
 > The free plan of `Vercel` has a limit of 10s for each request, which may cause `504` error (especially when using `HuggingFace` models). You can subscribe to a `Vercel` paid plan, run the server locally, or use `Client-Server` mode. <span id="vervel-limit-resolution"></span>
 
-#### Client-Server
+#### 1.1.2 Client-Server
 
 Deploy the server to `Cloudflare Workers` (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) and set following environment variables in `.env` file or `Vercel`.
 
@@ -38,38 +40,37 @@ Deploy the server to `Cloudflare Workers` (see [this project](https://github.com
 
 > Once `NEXT_PUBLIC_WORKERS_SERVER` is set, all the other environment variables will be ignored.
 
-### Deploy
+### 1.2 Deploy to Vercel
 
 Deploy this project to `Vercel` (remember to set environment variables).
 
-### Common Issues
+### 1.3 Common Issues
 
 - `429` error: You may have exceeded the `HuggingFace` api request limit. Please wait for a while, reduce the frequency of requests, and consider subscribing to a paid plan.
 - `504` error: The request have exceeded the `Vercel` time limit. See [above](#vervel-limit-resolution) for resolution.
 
-## Development
+## 2 Development
 
-### Clone the repository
+### 2.1 Clone the repository
 
 ```bash
 git clone https://github.com/LeafYeeXYZ/PainterLeaf.git
+cd PainterLeaf
 ```
 
-### Install dependencies
+### 2.2 Install dependencies
 
 ```bash
-bun i
+bun install # or use other package manager you like
 ```
 
-> If you haven't installed `Bun` yet, please refer to [Bun.sh](https://bun.sh).
-
-### Local Development
+### 2.3 Local Development
 
 ```bash
-bun dev
+bun run dev
 ```
 
-### Build
+### 2.4 Build
 
 ```bash
 bun run build
