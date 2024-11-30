@@ -20,9 +20,10 @@ export default function Prompt() {
   const [disabled, setDisabled] = useState(false)
   const handleFinish = (value: FormValues) => {
     flushSync(() => setDisabled(true))
+    const model = Models.find((m) => m.value === value.model)!
     const task = {
-      prompt: value.prompt,
-      model: value.model,
+      prompt: model.trigger ? `${model.trigger}, ${value.prompt}` : value.prompt,
+      model: model.value,
       promptLanguage: getPromptLanguage(),
       status: 'waiting' as Task['status'],
       createTimestamp: Date.now()
