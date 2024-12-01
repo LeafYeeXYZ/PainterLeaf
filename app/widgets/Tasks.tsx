@@ -39,11 +39,7 @@ export default function Tasks() {
               }
             >
               <p>
-                {task.error ? (
-                  <span>{task.error}</span>
-                ) : (
-                  <span><Tag>{task.promptLanguage} prompt</Tag> {task.prompt}</span>
-                )}
+                {task.error || `${task.trigger ? `${task.trigger}, ` : ''}${task.prompt}`}
               </p>
             </Card>
           ))}

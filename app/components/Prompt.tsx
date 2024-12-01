@@ -1,6 +1,6 @@
 'use client'
 
-import { Models, type Model } from '../lib/config'
+import { Models } from '../lib/config'
 import { Form, Button, Select, Input, Space, Upload, Popover } from 'antd'
 import { FileImageOutlined, FileAddOutlined } from '@ant-design/icons'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ import { useZustand } from '../lib/useZustand'
 
 type FormValues = {
   prompt: string
-  model: Model['value']
+  model: string
 }
 
 export default function Prompt() {
@@ -22,7 +22,8 @@ export default function Prompt() {
     flushSync(() => setDisabled(true))
     const model = Models.find((m) => m.value === value.model)!
     const task = {
-      prompt: model.trigger ? `${model.trigger}, ${value.prompt}` : value.prompt,
+      prompt: value.prompt,
+      trigger: model.trigger,
       model: model.value,
       promptLanguage: getPromptLanguage(),
       status: 'waiting' as Task['status'],

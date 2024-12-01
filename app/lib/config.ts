@@ -1,11 +1,6 @@
 import type { ThemeConfig } from 'antd'
 import { theme } from 'antd'
-
-export type Model = {
-  value: string
-  label: string
-  trigger?: string
-}
+import type { Model } from './types'
 
 export const Models: Model[] = [
   // 由于这个模型和 Cloudflare 的其他模型返回值不同, 故在 image/route.ts 中进行了两处特殊处理

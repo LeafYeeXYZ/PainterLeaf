@@ -29,7 +29,7 @@ export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Ta
           star: false,
           hash,
           data,
-          prompt: task.prompt,
+          prompt: `${task.trigger ? `${task.trigger}, ` : ''}${task.prompt}`,
           model: task.model,
         }, ...prev])
         setTasks((prev) => prev.map((t) => t.createTimestamp === task.createTimestamp ? { ...t, status: 'success' } : t))
@@ -42,9 +42,9 @@ export async function handleTasks(tasks: Task[], setTasks: (action: SetAction<Ta
 
 /** Return whether the task is successfully generated and either base64 data or error message */
 async function generateImage(task: Task): Promise<{ success: boolean, data: string }> {
-  const { prompt, model, promptLanguage } = task
+  const { prompt, model, promptLanguage, trigger } = task
   try {
-    const promptEN = promptLanguage === 'zh' ? await translate(prompt) : prompt
+    const promptEN = `${trigger ? `${trigger}, ` : ''}${promptLanguage === 'en' ? prompt : await translate(prompt)}`
     let res: Response | undefined
     if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
       res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`, {

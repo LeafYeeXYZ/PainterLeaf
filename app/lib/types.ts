@@ -16,6 +16,8 @@ export type Task = {
   createTimestamp: number
   /** The task's prompt */
   prompt: string
+  /** The trigger of lora model */
+  trigger?: string
   /** The task's model value */
   model: string
   /** The task's prompt language */
@@ -24,4 +26,10 @@ export type Task = {
   status: 'waiting' | 'generating' | 'success' | 'error'
   /** The task's error message */
   error?: string
+}
+
+export type Model = {
+  value: string
+  label: string
+  trigger?: string
 }
