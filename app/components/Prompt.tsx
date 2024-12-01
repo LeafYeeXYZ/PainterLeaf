@@ -75,7 +75,7 @@ export default function Prompt() {
             rules={[{ required: true, message: 'Please select model!' }]}
           >
             <Select
-              className='w-full'
+              className='w-full text-ellipsis overflow-hidden text-nowrap'
               options={Models.map((model) => ({ value: model.value, label: model.label }))}
             />
           </Form.Item>

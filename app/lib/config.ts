@@ -16,6 +16,9 @@ export const Models: Model[] = [
   { value: '@hf/stabilityai/stable-diffusion-3.5-large', label: '🤗 SD 3.5 Large' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large-turbo', label: '🤗 SD 3.5 Large Turbo' },
   { value: '@hf/Wriath18/small_boy', label: '🤗 FLUX.1 Dev BOY-Lora', trigger: 'BOY' },
+  { value: '@hf/strangerzonehf/Flux-Super-Realism-LoRA', label: '🤗 FLUX.1 Dev Realism-Lora', trigger: 'Super Realism' },
+  { value: '@hf/strangerzonehf/Flux-Isometric-3D-LoRA', label: '🤗 FLUX.1 Dev Isometric-Lora', trigger: 'Isometric 3D' },
+  { value: '@hf/strangerzonehf/Flux-Cute-3D-Kawaii-LoRA', label: '🤗 FLUX.1 Dev Cute3D-Lora', trigger: 'Cute 3d Kawaii' },
 ]
 
 export const ANTD_THEME_LIGHT: ThemeConfig = {
