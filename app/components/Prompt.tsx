@@ -86,7 +86,7 @@ export default function Prompt() {
               showUploadList={false}
               accept='.jpg,.jpeg,.png'
               beforeUpload={async (file) => {
-                const MAX_SIZE_MB = 2
+                const MAX_SIZE_MB = 5
                 try {
                   flushSync(() => setDisabled(true))
                   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
@@ -96,7 +96,7 @@ export default function Prompt() {
                   const uint8array = new Uint8Array(await file.arrayBuffer())
                   let res: Response | undefined
                   if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
-                    res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/genprompt`, {
+                    res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/genprompt/v4`, {
                       method: 'POST',
                       body: JSON.stringify({ image: Array.from(uint8array) })
                     })
@@ -111,7 +111,7 @@ export default function Prompt() {
                     return false
                   }
                   const data = await res.json()
-                  const prompt = data.result.description as string
+                  const prompt = data.result.response as string
                   form.setFieldsValue({ prompt })
                   return false
                 } finally {

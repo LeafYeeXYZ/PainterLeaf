@@ -1,11 +1,11 @@
 export async function POST(req: Request): Promise<Response> {
   try {
     const { image } = await req.json()
-    const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_USER_ID}/ai/run/@cf/unum/uform-gen2-qwen-500m`
+    const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_USER_ID}/ai/run/@cf/meta/llama-3.2-11b-vision-instruct`
     const body = {
       image: image as number[],
       max_tokens: 4096,
-      prompt: 'Generate a detailed description in a single paragraph for this image',
+      prompt: 'Analyze the given image and provide a detailed description. Include details about the main subject/people, background, colors, composition, and mood. Ensure the description is vivid and suitable for input into a text-to-image generation model.',
     }
     const response = await fetch(url, {
       method: 'POST',
