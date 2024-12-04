@@ -18,7 +18,7 @@ A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Featur
 
 You can use either `Fullstack` or `Client-Server` mode.
 
-> You may need to initialize `Cloudflare AI` `llama3.2 11B vision` model before using `Image-to-Prompt` feature. See [here](https://developers.cloudflare.com/workers-ai/models/llama-3.2-11b-vision-instruct/#Input) for more information.
+> You may need to initialize `Cloudflare AI` `llama3.2 11B vision` model before using `Image-to-Prompt` feature. See [here](https://developers.cloudflare.com/workers-ai/models/llama-3.2-11b-vision-instruct/) for more information.
 
 #### 1.1.1 Fullstack
 
