@@ -3,7 +3,7 @@
 import Painting from './Painting'
 import Prompt from './Prompt'
 import { useState, useEffect } from 'react'
-import { ConfigProvider, type ThemeConfig } from 'antd'
+import { ConfigProvider, type ThemeConfig, message } from 'antd'
 import { ANTD_THEME_DARK, ANTD_THEME_LIGHT } from '../lib/config'
 import { getStaredImages } from '../lib/utils'
 import { useZustand } from '../lib/useZustand'
@@ -21,7 +21,7 @@ export default function App() {
     return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', subTheme)
   }, [])
   // 初始化图片
-  const { tasks, setTasks, setImages, hasImage } = useZustand()
+  const { tasks, setTasks, setImages, hasImage, setMessageApi } = useZustand()
   useEffect(() => {
     getStaredImages().then((images) => setImages(() => images))
   }, [setImages])
@@ -29,6 +29,11 @@ export default function App() {
   useEffect(() => {
     handleTasks(tasks, setTasks, setImages, hasImage)
   }, [tasks, setTasks, setImages, hasImage])
+  // 消息提示
+  const [messageApi, contextHolder] = message.useMessage()
+  useEffect(() => {
+    setMessageApi(messageApi)
+  }, [messageApi, setMessageApi])
 
   return (
     <ConfigProvider theme={config}>
@@ -44,6 +49,7 @@ export default function App() {
           </div>
         </section>
       </main>
+      {contextHolder}
     </ConfigProvider>
   )
 }

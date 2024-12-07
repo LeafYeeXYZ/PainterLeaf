@@ -16,7 +16,7 @@ type FormValues = {
 
 export default function Prompt() {
   
-  const { setTasks } = useZustand()
+  const { setTasks, messageApi } = useZustand()
   const [disabled, setDisabled] = useState(false)
   const handleFinish = (value: FormValues) => {
     flushSync(() => setDisabled(true))
@@ -90,7 +90,7 @@ export default function Prompt() {
                 try {
                   flushSync(() => setDisabled(true))
                   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-                    alert(`Image size should be less than ${MAX_SIZE_MB}MB`)
+                    messageApi?.error(`Image size should be less than ${MAX_SIZE_MB} MB`)
                     return false
                   }
                   const uint8array = new Uint8Array(await file.arrayBuffer())
@@ -107,7 +107,7 @@ export default function Prompt() {
                     })
                   }
                   if (!res.ok) {
-                    alert(`Failed to generate prompt, error: ${res.status}`)
+                    messageApi?.error(`Failed to generate prompt, error: ${res.status}`)
                     return false
                   }
                   const data = await res.json()

@@ -13,7 +13,7 @@ import { DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@a
 
 export default function Images({ containerID }: { containerID: string }) {
 
-  const { images, setImages } = useZustand()
+  const { images, setImages, messageApi } = useZustand()
   const imageSize = useImageSize(containerID)
   return (
     <section className='w-full h-full flex justify-center items-center'>
@@ -39,6 +39,19 @@ export default function Images({ containerID }: { containerID: string }) {
                 content={(
                   <p>
                     {image.prompt}
+                    <Tag 
+                      className='m-0 ml-2 cursor-pointer'
+                      onClick={async () => {
+                        try {
+                          messageApi?.success('Copied to clipboard', 1)
+                          await navigator.clipboard.writeText(image.prompt)
+                        } catch {
+                          messageApi?.error('Filed to copy, please copy manually')
+                        }
+                      }}
+                    >
+                      Click to Copy
+                    </Tag>
                     <br />
                     <Tag className='m-0 mt-2'>{image.model}</Tag> 
                   </p>
