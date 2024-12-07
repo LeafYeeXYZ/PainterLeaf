@@ -30,6 +30,7 @@ export default function Prompt() {
       createTimestamp: Date.now()
     }
     setTasks((prev) => [task, ...prev])
+    messageApi?.success('Added to tasks', 1)
     setTimeout(() => setDisabled(false), 10)
   }
   const [form] = Form.useForm<FormValues>()
@@ -88,8 +89,15 @@ export default function Prompt() {
               beforeUpload={async (file) => {
                 const MAX_SIZE_MB = 5
                 try {
+                  messageApi?.open({
+                    type: 'loading',
+                    content: 'Generating prompt',
+                    duration: 0,
+                    key: 'generating-prompt'
+                  })
                   flushSync(() => setDisabled(true))
                   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+                    messageApi?.destroy('generating-prompt')
                     messageApi?.error(`Image size should be less than ${MAX_SIZE_MB} MB`)
                     return false
                   }
@@ -107,15 +115,20 @@ export default function Prompt() {
                     })
                   }
                   if (!res.ok) {
-                    messageApi?.error(`Failed to generate prompt, error: ${res.status}`)
-                    return false
+                    throw new Error(`${res.status}`)
                   }
                   const data = await res.json()
+                  console.log(data)
                   const prompt = data.result.response as string
                   form.setFieldsValue({ prompt })
-                  return false
+                  messageApi?.destroy('generating-prompt')
+                  messageApi?.success('Prompt generated', 1)
+                } catch (e) {
+                  messageApi?.destroy('generating-prompt')
+                  messageApi?.error(`Failed to generate prompt, error: ${e instanceof Error ? e.message : 'unknown'}`)
                 } finally {
                   setDisabled(false)
+                  return false
                 }
               }}
             >

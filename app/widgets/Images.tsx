@@ -70,6 +70,7 @@ export default function Images({ containerID }: { containerID: string }) {
                     onClick={async () => {
                       await deleteStaredImage(image)
                       setImages((prev) => prev.filter((i) => i.hash !== image.hash))
+                      messageApi?.success('Image deleted', 1)
                     }}
                     danger
                   >Confire Delete</Button>
@@ -92,9 +93,11 @@ export default function Images({ containerID }: { containerID: string }) {
                     if (image.star) {
                       await deleteStaredImage(image)
                       setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: false } : i))
+                      messageApi?.success('Image unstared', 1)
                     } else {
                       await addStaredImage(image)
                       setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: true } : i))
+                      messageApi?.success('Image stared', 1)
                     }
                   }}
                 />
