@@ -38,9 +38,8 @@ export default function Images({ containerID }: { containerID: string }) {
                 title='Model & Prompt'
                 content={(
                   <p>
-                    {image.prompt}
                     <Tag 
-                      className='m-0 ml-2 cursor-pointer'
+                      className='m-0 mr-1 cursor-pointer'
                       onClick={async () => {
                         try {
                           messageApi?.success('Copied to clipboard', 1)
@@ -50,8 +49,9 @@ export default function Images({ containerID }: { containerID: string }) {
                         }
                       }}
                     >
-                      Click to Copy
+                      Click here to Copy
                     </Tag>
+                    {image.prompt}
                     <br />
                     <Tag className='m-0 mt-2'>{image.model}</Tag> 
                   </p>
