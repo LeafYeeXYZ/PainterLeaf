@@ -1,5 +1,3 @@
-**For old version, see `v3` branch and <https://paint.leafyee.xyz>**
-
 # Painter Leaf
 
 A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Features include: 
@@ -9,14 +7,15 @@ A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Featur
 - AI Translation: use Chinese prompts in any model
 - Store: save your creations to `IndexedDB`
 
-| ![](./readme/1.jpg) | ![](./readme/2.jpg) | ![](./readme/3.jpg) |
-| :---: | :---: | :---: |
+![](./readme/1.png)
+
+![](./readme/2.png)
 
 ## 1 Deployment
 
 ### 1.1 Config Environment Variables
 
-You can use either `Fullstack` or `Client-Server` mode.
+You can use either `Fullstack` or `Client-Server` mode and set the corresponding environment variables.
 
 > You may need to initialize `Cloudflare AI` `llama3.2 11B vision` model before using `Image-to-Prompt` feature. See [here](https://developers.cloudflare.com/workers-ai/models/llama-3.2-11b-vision-instruct/) for more information.
 
@@ -34,7 +33,7 @@ Set following environment variables in `.env` file or `Vercel`.
 
 #### 1.1.2 Client-Server
 
-Deploy the server to `Cloudflare Workers` (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) and set following environment variables in `.env` file or `Vercel`.
+Deploy the server (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) to `Cloudflare Workers` and set following environment variables in `.env` file or `Vercel`.
 
 | Key | Value | Required |
 | :---: | :---: | :---: |
@@ -44,14 +43,16 @@ Deploy the server to `Cloudflare Workers` (see [this project](https://github.com
 
 ### 1.2 Deploy to Vercel
 
-Deploy this project to `Vercel` (remember to set environment variables).
+Deploy this project to `Vercel` (remember to set environment variables when deploying).
 
 ### 1.3 Common Issues
 
 - `429` error: You may have exceeded the `HuggingFace` api request limit. Please wait for a while, reduce the frequency of requests, and consider subscribing to a paid plan.
-- `504` error: The request have exceeded the `Vercel` time limit. See [above](#vervel-limit-resolution) for resolution.
+- `504` error: The request may have exceeded the `Vercel` time limit. See [above](#vervel-limit-resolution) for resolution.
 
 ## 2 Development
+
+> **For old version, see `v3` branch and <https://paint.leafyee.xyz>**
 
 ### 2.1 Clone the repository
 
