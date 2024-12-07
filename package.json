@@ -9,24 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.5.1",
-    "antd": "^5.22.1",
+    "@ant-design/icons": "^5.5.2",
+    "antd": "^5.22.3",
     "idb-keyval": "^6.2.1",
-    "next": "^14",
-    "react": "^18",
-    "react-dom": "^18",
-    "swiper": "^11.1.14",
-    "zustand": "^5.0.1"
+    "next": "^15.0.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "swiper": "^11.1.15",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^20.17.9",
+    "@types/react": "^18.3.14",
+    "@types/react-dom": "^18.3.2",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8",
-    "eslint-config-next": "^14",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.0.4",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15",
-    "typescript": "^5"
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.7.2"
   }
 }
