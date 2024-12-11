@@ -39,7 +39,7 @@ export default function Images({ containerID }: { containerID: string }) {
                 content={(
                   <p>
                     <Tag 
-                      className='m-0 mr-1 cursor-pointer'
+                      className='m-0 mr-2 cursor-pointer'
                       onClick={async () => {
                         try {
                           messageApi?.success('Copied to clipboard', 1)
