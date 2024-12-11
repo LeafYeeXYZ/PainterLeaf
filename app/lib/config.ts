@@ -14,6 +14,8 @@ export const Models: Model[] = [
   { value: '@hf/strangerzonehf/Flux-Super-Realism-LoRA', label: '🤗 FLUX.1 Dev Realism-Lora', trigger: 'Super Realism' },
   { value: '@hf/strangerzonehf/Flux-Isometric-3D-LoRA', label: '🤗 FLUX.1 Dev Isometric-Lora', trigger: 'Isometric 3D' },
   { value: '@hf/strangerzonehf/Flux-Cute-3D-Kawaii-LoRA', label: '🤗 FLUX.1 Dev Cute3D-Lora', trigger: 'Cute 3d Kawaii' },
+  { value: '@hf/strangerzonehf/Flux-Icon-Kit-LoRA', label: '🤗 FLUX.1 Dev Icon-Lora', trigger: 'Icon Kit' },
+  { value: '@hf/Datou1111/shou_xin', label: '🤗 FLUX.1 Dev Pencil-Lora', trigger: 'shou_xin, pencil sketch' },
 ]
 
 export const ANTD_THEME_LIGHT: ThemeConfig = {
