@@ -45,8 +45,12 @@ export default function Tasks() {
           ))}
         </div>
       ) : (
-        <p className='w-full h-full flex justify-center items-center'>
-          No Tasks
+        <p className='w-full h-full flex flex-col justify-center items-center gap-3'>
+          <p className='text-xl font-bold'>No Tasks Yet</p>
+          <p>To generate an image:</p>
+          <p>Step 1: Write your prompt below</p>
+          <p>Step 2: Click the generate button</p>
+          <p>Step 3: Wait for the image to load</p>
         </p>
       )}
     </section>

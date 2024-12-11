@@ -35,9 +35,15 @@ export default function Images({ containerID }: { containerID: string }) {
                 className='object-cover'
               />
               <Popover
-                title='Model & Prompt'
+                title={(
+                  <p>
+                    Model & Prompt
+                  </p>
+                )}
                 content={(
                   <p>
+                    {image.prompt}
+                    <br />
                     <Tag 
                       className='m-0 mr-2 cursor-pointer'
                       onClick={async () => {
@@ -49,10 +55,8 @@ export default function Images({ containerID }: { containerID: string }) {
                         }
                       }}
                     >
-                      Click here to Copy
+                      Click to Copy
                     </Tag>
-                    {image.prompt}
-                    <br />
                     <Tag className='m-0 mt-2'>{image.model}</Tag> 
                   </p>
                 )}
@@ -106,8 +110,12 @@ export default function Images({ containerID }: { containerID: string }) {
           ))}
         </Swiper>
       ) : (
-        <p className='w-full h-full flex justify-center items-center'>
-          No Images
+        <p className='w-full h-full flex flex-col justify-center items-center gap-3'>
+          <p className='font-bold text-lg'>No Images Here</p>
+          <p>To generate an image:</p>
+          <p>Step 1: Write your prompt below</p>
+          <p>Step 2: Click the generate button</p>
+          <p>Step 3: Wait for the image to load</p>
         </p>
       )}
     </section>
