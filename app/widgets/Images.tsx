@@ -42,10 +42,9 @@ export default function Images({ containerID }: { containerID: string }) {
                 )}
                 content={(
                   <p>
-                    {image.prompt}
-                    <br />
+                    <p>{image.prompt}</p>
                     <Tag 
-                      className='m-0 mr-2 cursor-pointer'
+                      className='m-0 mt-2 mr-2 cursor-pointer'
                       onClick={async () => {
                         try {
                           messageApi?.success('Copied to clipboard', 1)
