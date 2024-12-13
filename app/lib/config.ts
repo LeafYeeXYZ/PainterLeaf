@@ -10,6 +10,7 @@ export const Models: Model[] = [
   { value: '@hf/black-forest-labs/FLUX.1-dev', label: '🤗 FLUX.1 Dev' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large', label: '🤗 SD 3.5 Large' },
   { value: '@hf/stabilityai/stable-diffusion-3.5-large-turbo', label: '🤗 SD 3.5 Large Turbo' },
+  { value: '@hf/Shakker-Labs/FLUX.1-dev-LoRA-Children-Simple-Sketch', label: '🤗 FLUX.1 Dev Sketch-Lora', trigger: 'sketched style' },
   { value: '@hf/Wriath18/small_boy', label: '🤗 FLUX.1 Dev BOY-Lora', trigger: 'BOY' },
   { value: '@hf/strangerzonehf/Flux-Super-Realism-LoRA', label: '🤗 FLUX.1 Dev Realism-Lora', trigger: 'Super Realism' },
   { value: '@hf/strangerzonehf/Flux-Isometric-3D-LoRA', label: '🤗 FLUX.1 Dev Isometric-Lora', trigger: 'Isometric 3D' },
