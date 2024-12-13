@@ -10,21 +10,21 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
-    "antd": "^5.22.3",
+    "antd": "^5.22.4",
     "idb-keyval": "^6.2.1",
-    "next": "^15.0.4",
+    "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "swiper": "^11.1.15",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
-    "@types/node": "^20.17.9",
-    "@types/react": "^18.3.14",
-    "@types/react-dom": "^18.3.2",
+    "@types/node": "^20.17.10",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^15.0.4",
+    "eslint-config-next": "^15.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2"
