@@ -17,7 +17,7 @@ export default function Tasks() {
               className='w-full mb-4'
               size='small'
               title={
-                <p>
+                <div>
                   <Tag 
                     icon={task.status === 'generating' ? <LoadingOutlined /> : undefined}
                     color={task.status === 'success' ? 'green' : task.status === 'error' ? 'red' : 'blue'}
@@ -27,7 +27,7 @@ export default function Tasks() {
                   <Tag>
                     {task.model}
                   </Tag>
-                </p>
+                </div>
               }
               extra={
                 <Button
@@ -38,20 +38,20 @@ export default function Tasks() {
                 />
               }
             >
-              <p>
+              <div>
                 {task.error || `${task.trigger ? `${task.trigger}, ` : ''}${task.prompt}`}
-              </p>
+              </div>
             </Card>
           ))}
         </div>
       ) : (
-        <p className='w-full h-full flex flex-col justify-center items-center gap-3'>
-          <p className='text-xl font-bold'>No Tasks Yet</p>
-          <p>To generate an image:</p>
-          <p>Step 1: Write your prompt below</p>
-          <p>Step 2: Click the generate button</p>
-          <p>Step 3: Wait for the image to load</p>
-        </p>
+        <div className='w-full h-full flex flex-col justify-center items-center gap-3'>
+          <div className='text-xl font-bold'>No Tasks Yet</div>
+          <div>To generate an image:</div>
+          <div>Step 1: Write your prompt below</div>
+          <div>Step 2: Click the generate button</div>
+          <div>Step 3: Wait for the image to load</div>
+        </div>
       )}
     </section>
   )

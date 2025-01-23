@@ -9,7 +9,7 @@ export default function Config() {
     <section className='w-full h-full overflow-hidden relative'>
       <div className='w-full h-full flex flex-col justify-center items-center gap-4'>
         <div className='w-full flex justify-center items-center gap-2 max-w-xl'>
-          <p className='text-sm'>Prompt Language</p>
+          <div className='text-sm'>Prompt Language</div>
           <Segmented
             className='border dark:border-[#424242]'
             options={[
@@ -23,7 +23,7 @@ export default function Config() {
           />
         </div>
         <div className='w-full flex justify-center items-center gap-2'>
-          <p className='text-sm'>Max Running Tasks</p>
+          <div className='text-sm'>Max Running Tasks</div>
           <InputNumber
             min={1}
             max={3}

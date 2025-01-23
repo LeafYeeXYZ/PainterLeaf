@@ -36,13 +36,13 @@ export default function Images({ containerID }: { containerID: string }) {
               />
               <Popover
                 title={(
-                  <p>
+                  <div>
                     Model & Prompt
-                  </p>
+                  </div>
                 )}
                 content={(
-                  <p>
-                    <p>{image.prompt}</p>
+                  <div>
+                    <div>{image.prompt}</div>
                     <Tag 
                       className='m-0 mt-2 mr-2 cursor-pointer'
                       onClick={async () => {
@@ -57,13 +57,13 @@ export default function Images({ containerID }: { containerID: string }) {
                       Click to Copy
                     </Tag>
                     <Tag className='m-0 mt-2'>{image.model}</Tag> 
-                  </p>
+                  </div>
                 )}
                 trigger={['hover', 'click']}
               >
-                <p className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md border'>
+                <div className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md border'>
                   <InfoCircleOutlined />
-                </p>
+                </div>
               </Popover>
               <Popover
                 title='Delete Image'
@@ -80,9 +80,9 @@ export default function Images({ containerID }: { containerID: string }) {
                 )}
                 trigger={['hover', 'click']}
               >
-                <p className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer border'>
+                <div className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer border'>
                   <DeleteOutlined />
-                </p>
+                </div>
               </Popover>
               <Popover
                 title='Star Image'
@@ -109,13 +109,13 @@ export default function Images({ containerID }: { containerID: string }) {
           ))}
         </Swiper>
       ) : (
-        <p className='w-full h-full flex flex-col justify-center items-center gap-3'>
-          <p className='font-bold text-lg'>No Images Here</p>
-          <p>To generate an image:</p>
-          <p>Step 1: Write your prompt below</p>
-          <p>Step 2: Click the generate button</p>
-          <p>Step 3: Wait for the image to load</p>
-        </p>
+        <div className='w-full h-full flex flex-col justify-center items-center gap-3'>
+          <div className='font-bold text-lg'>No Images Here</div>
+          <div>To generate an image:</div>
+          <div>Step 1: Write your prompt below</div>
+          <div>Step 2: Click the generate button</div>
+          <div>Step 3: Wait for the image to load</div>
+        </div>
       )}
     </section>
   )
