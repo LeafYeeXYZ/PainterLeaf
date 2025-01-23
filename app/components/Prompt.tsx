@@ -36,7 +36,7 @@ export default function Prompt() {
   const [form] = Form.useForm<FormValues>()
 
   return (
-    <section className='w-full h-full overflow-hidden relative p-4'>
+    <section className='w-full h-full overflow-hidden relative p-4 flex items-center justify-center'>
       <Form
         form={form}
         layout='vertical'
@@ -44,7 +44,7 @@ export default function Prompt() {
           model: Models[0].value
         }}
         onFinish={handleFinish}
-        className='pt-2'
+        className='w-full'
         disabled={disabled}
       >
         <Form.Item

@@ -41,22 +41,24 @@ export default function Images({ containerID }: { containerID: string }) {
                   </div>
                 )}
                 content={(
-                  <div>
+                  <div className='flex flex-col gap-2'>
                     <div>{image.prompt}</div>
-                    <Tag 
-                      className='m-0 mt-2 mr-2 cursor-pointer'
-                      onClick={async () => {
-                        try {
-                          messageApi?.success('Copied to clipboard', 1)
-                          await navigator.clipboard.writeText(image.prompt)
-                        } catch {
-                          messageApi?.error('Filed to copy, please copy manually')
-                        }
-                      }}
-                    >
-                      Click to Copy
-                    </Tag>
-                    <Tag className='m-0 mt-2'>{image.model}</Tag> 
+                    <div>
+                      <Tag 
+                        className='m-0 mt-2 mr-2 cursor-pointer'
+                        onClick={async () => {
+                          try {
+                            messageApi?.success('Copied to clipboard', 1)
+                            await navigator.clipboard.writeText(image.prompt)
+                          } catch {
+                            messageApi?.error('Filed to copy, please copy manually')
+                          }
+                        }}
+                      >
+                        Click to Copy
+                      </Tag>
+                      <Tag className='m-0 mt-2'>{image.model}</Tag> 
+                    </div>
                   </div>
                 )}
                 trigger={['hover', 'click']}
