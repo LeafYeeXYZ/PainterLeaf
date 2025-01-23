@@ -91,21 +91,22 @@ export default function Images({ containerID }: { containerID: string }) {
                 content='Unstarred images will disappear when the page is refreshed'
                 trigger={['hover', 'click']}
               >
-                <Button
-                  className='absolute top-0 left-0 m-2'
-                  icon={image.star ? <StarFilled /> : <StarOutlined />}
-                  onClick={async () => {
-                    if (image.star) {
-                      await deleteStaredImage(image)
-                      setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: false } : i))
-                      messageApi?.success('Image unstared', 1)
-                    } else {
-                      await addStaredImage(image)
-                      setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: true } : i))
-                      messageApi?.success('Image stared', 1)
-                    }
-                  }}
-                />
+                <div className='absolute top-0 left-0 m-2'>
+                  <Button
+                    icon={image.star ? <StarFilled /> : <StarOutlined />}
+                    onClick={async () => {
+                      if (image.star) {
+                        await deleteStaredImage(image)
+                        setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: false } : i))
+                        messageApi?.success('Image unstared', 1)
+                      } else {
+                        await addStaredImage(image)
+                        setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: true } : i))
+                        messageApi?.success('Image stared', 1)
+                      }
+                    }}
+                  />
+                </div>
               </Popover>
             </SwiperSlide>
           ))}
