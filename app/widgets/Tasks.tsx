@@ -10,11 +10,11 @@ export default function Tasks() {
   return (
     <section className='w-full h-full flex justify-center items-center overflow-hidden py-4'>
       {tasks.length > 0 ? (
-        <div className='w-full h-full flex flex-col justify-start items-center overflow-auto max-w-xl'>
+        <div className='w-full h-full flex flex-col justify-start items-center overflow-auto max-w-xl gap-4'>
           {tasks.map((task) => (
             <Card
               key={task.createTimestamp}
-              className='w-full mb-4'
+              className='w-full'
               size='small'
               title={
                 <div>
