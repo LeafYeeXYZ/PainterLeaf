@@ -9,10 +9,14 @@ import { useImageSize } from '../lib/useImageSize'
 import { useZustand } from '../lib/useZustand'
 import { Button, Popover, Tag } from 'antd'
 import { addStaredImage, deleteStaredImage } from '../lib/utils'
-import { DeleteOutlined, StarOutlined, StarFilled, InfoCircleOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  StarOutlined,
+  StarFilled,
+  InfoCircleOutlined,
+} from '@ant-design/icons'
 
 export default function Images({ containerID }: { containerID: string }) {
-
   const { images, setImages, messageApi } = useZustand()
   const imageSize = useImageSize(containerID)
   return (
@@ -26,7 +30,10 @@ export default function Images({ containerID }: { containerID: string }) {
           style={{ width: imageSize, height: imageSize }}
         >
           {images.map((image) => (
-            <SwiperSlide key={image.hash} className='w-full h-full relative flex justify-center items-center rounded-xl overflow-hidden'>
+            <SwiperSlide
+              key={image.hash}
+              className='w-full h-full relative flex justify-center items-center rounded-xl overflow-hidden'
+            >
               <NextImage
                 src={image.data}
                 alt={image.prompt}
@@ -35,32 +42,30 @@ export default function Images({ containerID }: { containerID: string }) {
                 className='object-cover'
               />
               <Popover
-                title={(
-                  <div>
-                    Model & Prompt
-                  </div>
-                )}
-                content={(
+                title={<div>Model & Prompt</div>}
+                content={
                   <div className='flex flex-col gap-2'>
                     <div>{image.prompt}</div>
                     <div>
-                      <Tag 
+                      <Tag
                         className='m-0 mt-2 mr-2 cursor-pointer'
                         onClick={async () => {
                           try {
                             messageApi?.success('Copied to clipboard', 1)
                             await navigator.clipboard.writeText(image.prompt)
                           } catch {
-                            messageApi?.error('Filed to copy, please copy manually')
+                            messageApi?.error(
+                              'Filed to copy, please copy manually',
+                            )
                           }
                         }}
                       >
                         Click to Copy
                       </Tag>
-                      <Tag className='m-0 mt-2'>{image.model}</Tag> 
+                      <Tag className='m-0 mt-2'>{image.model}</Tag>
                     </div>
                   </div>
-                )}
+                }
                 trigger={['hover', 'click']}
               >
                 <div className='absolute top-0 right-0 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md border'>
@@ -69,17 +74,21 @@ export default function Images({ containerID }: { containerID: string }) {
               </Popover>
               <Popover
                 title='Delete Image'
-                content={(
+                content={
                   <Button
                     icon={<DeleteOutlined />}
                     onClick={async () => {
                       await deleteStaredImage(image)
-                      setImages((prev) => prev.filter((i) => i.hash !== image.hash))
+                      setImages((prev) =>
+                        prev.filter((i) => i.hash !== image.hash),
+                      )
                       messageApi?.success('Image deleted', 1)
                     }}
                     danger
-                  >Confire Delete</Button>
-                )}
+                  >
+                    Confire Delete
+                  </Button>
+                }
                 trigger={['hover', 'click']}
               >
                 <div className='absolute top-0 right-10 m-2 px-2 py-1 bg-white dark:bg-gray-950 text-rose-950 dark:text-white rounded-md cursor-pointer border'>
@@ -97,11 +106,19 @@ export default function Images({ containerID }: { containerID: string }) {
                     onClick={async () => {
                       if (image.star) {
                         await deleteStaredImage(image)
-                        setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: false } : i))
+                        setImages((prev) =>
+                          prev.map((i) =>
+                            i.hash === image.hash ? { ...i, star: false } : i,
+                          ),
+                        )
                         messageApi?.success('Image unstared', 1)
                       } else {
                         await addStaredImage(image)
-                        setImages((prev) => prev.map((i) => i.hash === image.hash ? { ...i, star: true } : i))
+                        setImages((prev) =>
+                          prev.map((i) =>
+                            i.hash === image.hash ? { ...i, star: true } : i,
+                          ),
+                        )
                         messageApi?.success('Image stared', 1)
                       }
                     }}

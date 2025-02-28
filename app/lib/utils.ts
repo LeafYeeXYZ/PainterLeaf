@@ -5,7 +5,9 @@ export async function getHash(image: string): Promise<string> {
   const encoder = new TextEncoder()
   const data = encoder.encode(image)
   const buffer = await crypto.subtle.digest('SHA-256', data)
-  return Array.from(new Uint8Array(buffer)).map((b) => b.toString(16).padStart(2, '0')).join('')
+  return Array.from(new Uint8Array(buffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 export async function getBase64(image: Blob): Promise<string> {
@@ -29,11 +31,16 @@ export async function getStaredImages(): Promise<Image[]> {
 }
 
 export async function addStaredImage(image: Image): Promise<void> {
-  await update('staredImages', (images: Image[] | undefined) => [...(images ?? []), { ...image, star: true }])
+  await update('staredImages', (images: Image[] | undefined) => [
+    ...(images ?? []),
+    { ...image, star: true },
+  ])
 }
 
 export async function deleteStaredImage(image: Image): Promise<void> {
-  await update('staredImages', (images: Image[] | undefined) => (images ?? []).filter((i) => i.hash !== image.hash))
+  await update('staredImages', (images: Image[] | undefined) =>
+    (images ?? []).filter((i) => i.hash !== image.hash),
+  )
 }
 
 export function getPromptLanguage(): Task['promptLanguage'] {
@@ -41,7 +48,9 @@ export function getPromptLanguage(): Task['promptLanguage'] {
   return local === 'zh' ? 'zh' : 'en'
 }
 
-export function setPromptLanguage(promptLanguage: Task['promptLanguage']): void {
+export function setPromptLanguage(
+  promptLanguage: Task['promptLanguage'],
+): void {
   localStorage.setItem('promptLanguage', promptLanguage)
 }
 

@@ -6,7 +6,7 @@ export async function POST(req: Request): Promise<Response> {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'Authorization': `Bearer ${process.env.CF_AI_API_KEY}`
+        Authorization: `Bearer ${process.env.CF_AI_API_KEY}`,
       },
       body: JSON.stringify({
         text: zh,
@@ -20,7 +20,10 @@ export async function POST(req: Request): Promise<Response> {
     } else {
       return new Response('Translate Failed', { status: 500 })
     }
-  } catch(e) {
-    return new Response(e instanceof Error ? e.message : 'Unkown Server Error', { status: 500 })
+  } catch (e) {
+    return new Response(
+      e instanceof Error ? e.message : 'Unkown Server Error',
+      { status: 500 },
+    )
   }
 }

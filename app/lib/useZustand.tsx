@@ -23,5 +23,5 @@ export const useZustand = create<States>()((set, get) => ({
     return get().images.some((image) => image.hash === hash)
   },
   messageApi: null,
-  setMessageApi: (messageApi) => set({ messageApi })
+  setMessageApi: (messageApi) => set({ messageApi }),
 }))

@@ -15,7 +15,6 @@ type FormValues = {
 }
 
 export default function Prompt() {
-  
   const { setTasks, messageApi } = useZustand()
   const [disabled, setDisabled] = useState(false)
   const handleFinish = (value: FormValues) => {
@@ -27,7 +26,7 @@ export default function Prompt() {
       model: model.value,
       promptLanguage: getPromptLanguage(),
       status: 'waiting' as Task['status'],
-      createTimestamp: Date.now()
+      createTimestamp: Date.now(),
     }
     setTasks((prev) => [task, ...prev])
     messageApi?.success('Added to tasks', 1)
@@ -41,7 +40,7 @@ export default function Prompt() {
         form={form}
         layout='vertical'
         initialValues={{
-          model: Models[0].value
+          model: Models[0].value,
         }}
         onFinish={handleFinish}
         className='w-full'
@@ -55,14 +54,26 @@ export default function Prompt() {
               validator(_, value) {
                 if (!value) return Promise.resolve()
                 const promptLanguage = getPromptLanguage()
-                if (promptLanguage === 'en' && (value as string).match(/[\u4e00-\u9fa5]/)) {
-                  return Promise.reject(new Error('Chinese characters are not allowed in English prompt'))
-                } else if (promptLanguage === 'zh' && !(value as string).match(/[\u4e00-\u9fa5]/)) {
-                  return Promise.reject(new Error('请输入中文提示词, 或在设置中切换至英文'))
+                if (
+                  promptLanguage === 'en' &&
+                  (value as string).match(/[\u4e00-\u9fa5]/)
+                ) {
+                  return Promise.reject(
+                    new Error(
+                      'Chinese characters are not allowed in English prompt',
+                    ),
+                  )
+                } else if (
+                  promptLanguage === 'zh' &&
+                  !(value as string).match(/[\u4e00-\u9fa5]/)
+                ) {
+                  return Promise.reject(
+                    new Error('请输入中文提示词, 或在设置中切换至英文'),
+                  )
                 }
                 return Promise.resolve()
-              }
-            })
+              },
+            }),
           ]}
         >
           <Input.TextArea
@@ -78,70 +89,81 @@ export default function Prompt() {
           >
             <Select
               className='w-full text-ellipsis overflow-hidden text-nowrap'
-              options={Models.map((model) => ({ value: model.value, label: model.label }))}
+              options={Models.map((model) => ({
+                value: model.value,
+                label: model.label,
+              }))}
             />
           </Form.Item>
           <Popover
             title='Generate Prompt from Image'
-            content={(<Upload
-              showUploadList={false}
-              accept='.jpg,.jpeg,.png'
-              beforeUpload={async (file) => {
-                const MAX_SIZE_MB = 5
-                try {
-                  messageApi?.open({
-                    type: 'loading',
-                    content: 'Generating prompt',
-                    duration: 0,
-                    key: 'generating-prompt'
-                  })
-                  flushSync(() => setDisabled(true))
-                  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+            content={
+              <Upload
+                showUploadList={false}
+                accept='.jpg,.jpeg,.png'
+                beforeUpload={async (file) => {
+                  const MAX_SIZE_MB = 5
+                  try {
+                    messageApi?.open({
+                      type: 'loading',
+                      content: 'Generating prompt',
+                      duration: 0,
+                      key: 'generating-prompt',
+                    })
+                    flushSync(() => setDisabled(true))
+                    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+                      messageApi?.destroy('generating-prompt')
+                      messageApi?.error(
+                        `Image size should be less than ${MAX_SIZE_MB} MB`,
+                      )
+                      return false
+                    }
+                    const uint8array = new Uint8Array(await file.arrayBuffer())
+                    let res: Response | undefined
+                    if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
+                      res = await fetch(
+                        `${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/genprompt/v4`,
+                        {
+                          method: 'POST',
+                          body: JSON.stringify({
+                            image: Array.from(uint8array),
+                          }),
+                        },
+                      )
+                    } else {
+                      res = await fetch('/api/prompt', {
+                        method: 'POST',
+                        body: JSON.stringify({ image: Array.from(uint8array) }),
+                      })
+                    }
+                    if (!res.ok) {
+                      throw new Error(`${res.status}`)
+                    }
+                    const data = await res.json()
+                    console.log(data)
+                    const prompt = data.result.response as string
+                    form.setFieldsValue({ prompt })
                     messageApi?.destroy('generating-prompt')
-                    messageApi?.error(`Image size should be less than ${MAX_SIZE_MB} MB`)
+                    messageApi?.success('Prompt generated', 1)
+                  } catch (e) {
+                    messageApi?.destroy('generating-prompt')
+                    messageApi?.error(
+                      `Failed to generate prompt, error: ${e instanceof Error ? e.message : 'unknown'}`,
+                    )
+                  } finally {
+                    setDisabled(false)
                     return false
                   }
-                  const uint8array = new Uint8Array(await file.arrayBuffer())
-                  let res: Response | undefined
-                  if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
-                    res = await fetch(`${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/genprompt/v4`, {
-                      method: 'POST',
-                      body: JSON.stringify({ image: Array.from(uint8array) })
-                    })
-                  } else {
-                    res = await fetch('/api/prompt', {
-                      method: 'POST',
-                      body: JSON.stringify({ image: Array.from(uint8array) })
-                    })
-                  }
-                  if (!res.ok) {
-                    throw new Error(`${res.status}`)
-                  }
-                  const data = await res.json()
-                  console.log(data)
-                  const prompt = data.result.response as string
-                  form.setFieldsValue({ prompt })
-                  messageApi?.destroy('generating-prompt')
-                  messageApi?.success('Prompt generated', 1)
-                } catch (e) {
-                  messageApi?.destroy('generating-prompt')
-                  messageApi?.error(`Failed to generate prompt, error: ${e instanceof Error ? e.message : 'unknown'}`)
-                } finally {
-                  setDisabled(false)
-                  return false
-                }
-              }}
-            >
-              <Button 
-                disabled={disabled}
-                loading={disabled}
+                }}
               >
-                Choose Image
-              </Button>
-            </Upload>)}
+                <Button disabled={disabled} loading={disabled}>
+                  Choose Image
+                </Button>
+              </Upload>
+            }
             trigger={['hover', 'click']}
           >
-            <Button 
+            <Button
               disabled={disabled}
               loading={disabled}
               icon={<FileImageOutlined />}
@@ -152,10 +174,7 @@ export default function Prompt() {
             content='Add prompt and model to task list'
             trigger={['hover', 'click']}
           >
-            <Button 
-              htmlType='submit' 
-              icon={<FileAddOutlined />}
-            >
+            <Button htmlType='submit' icon={<FileAddOutlined />}>
               Generate
             </Button>
           </Popover>

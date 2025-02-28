@@ -1,10 +1,14 @@
 'use client'
 
 import { Segmented, InputNumber } from 'antd'
-import { getPromptLanguage, setPromptLanguage, getMaxGenerating, setMaxGenerating } from '../lib/utils'
+import {
+  getPromptLanguage,
+  setPromptLanguage,
+  getMaxGenerating,
+  setMaxGenerating,
+} from '../lib/utils'
 
 export default function Config() {
-
   return (
     <section className='w-full h-full overflow-hidden relative'>
       <div className='w-full h-full flex flex-col justify-center items-center gap-4'>

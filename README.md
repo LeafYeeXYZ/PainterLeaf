@@ -1,6 +1,6 @@
 # Painter Leaf
 
-A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Features include: 
+A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Features include:
 
 - Prompt-to-image: supports a variety of models (e.g. `Flux.1`、`StableDiffusion 3.5`)
 - Image-to-Prompt: convert local images to prompts
@@ -23,11 +23,11 @@ You can use either `Fullstack` or `Client-Server` mode and set the corresponding
 
 Set following environment variables in `.env` file or `Vercel`.
 
-| Key | Value | Required |
-| :---: | :---: | :---: |
-| `CF_USER_ID` | `Cloudflare` user id | ✅ |
-| `CF_AI_API_KEY` | `Cloudflare AI` api key | ✅ |
-| `HF_API_KEY` | `HuggingFace` api key |  |
+|       Key       |          Value          | Required |
+| :-------------: | :---------------------: | :------: |
+|  `CF_USER_ID`   |  `Cloudflare` user id   |    ✅    |
+| `CF_AI_API_KEY` | `Cloudflare AI` api key |    ✅    |
+|  `HF_API_KEY`   |  `HuggingFace` api key  |          |
 
 > The free plan of `Vercel` has a limit of 10s for each request, which may cause `504` error (especially when using `HuggingFace` models). You can subscribe to a `Vercel` paid plan, run the server locally, or use `Client-Server` mode. <span id="vervel-limit-resolution"></span>
 
@@ -35,9 +35,9 @@ Set following environment variables in `.env` file or `Vercel`.
 
 Deploy the server (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) to `Cloudflare Workers` and set following environment variables in `.env` file or `Vercel`.
 
-| Key | Value | Required |
-| :---: | :---: | :---: |
-| `NEXT_PUBLIC_WORKERS_SERVER` | `Server` url (e.g. `https://api.xxx.workers.dev`) | ✅ |
+|             Key              |                       Value                       | Required |
+| :--------------------------: | :-----------------------------------------------: | :------: |
+| `NEXT_PUBLIC_WORKERS_SERVER` | `Server` url (e.g. `https://api.xxx.workers.dev`) |    ✅    |
 
 > Once `NEXT_PUBLIC_WORKERS_SERVER` is set, all the other environment variables will be ignored.
 

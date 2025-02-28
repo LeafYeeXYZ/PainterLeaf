@@ -10,15 +10,21 @@ import { useZustand } from '../lib/useZustand'
 import { handleTasks } from '../lib/tasks'
 
 export default function App() {
-
   // 动态设置主题
   const [config, setConfig] = useState<ThemeConfig>(ANTD_THEME_LIGHT)
   useEffect(() => {
-    const getTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches
-    const subTheme = () => setConfig(getTheme() ? ANTD_THEME_DARK : ANTD_THEME_LIGHT)
+    const getTheme = () =>
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    const subTheme = () =>
+      setConfig(getTheme() ? ANTD_THEME_DARK : ANTD_THEME_LIGHT)
     setConfig(getTheme() ? ANTD_THEME_DARK : ANTD_THEME_LIGHT)
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', subTheme)
-    return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', subTheme)
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', subTheme)
+    return () =>
+      window
+        .matchMedia('(prefers-color-scheme: dark)')
+        .removeEventListener('change', subTheme)
   }, [])
   // 初始化图片
   const { tasks, setTasks, setImages, hasImage, setMessageApi } = useZustand()

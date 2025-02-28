@@ -5,7 +5,6 @@ import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useZustand } from '../lib/useZustand'
 
 export default function Tasks() {
-
   const { tasks, setTasks } = useZustand()
   return (
     <section className='w-full h-full flex justify-center items-center overflow-hidden py-4'>
@@ -18,28 +17,43 @@ export default function Tasks() {
               size='small'
               title={
                 <div>
-                  <Tag 
-                    icon={task.status === 'generating' ? <LoadingOutlined /> : undefined}
-                    color={task.status === 'success' ? 'green' : task.status === 'error' ? 'red' : 'blue'}
+                  <Tag
+                    icon={
+                      task.status === 'generating' ? (
+                        <LoadingOutlined />
+                      ) : undefined
+                    }
+                    color={
+                      task.status === 'success'
+                        ? 'green'
+                        : task.status === 'error'
+                          ? 'red'
+                          : 'blue'
+                    }
                   >
                     {task.status}
                   </Tag>
-                  <Tag>
-                    {task.model}
-                  </Tag>
+                  <Tag>{task.model}</Tag>
                 </div>
               }
               extra={
                 <Button
                   type='text'
                   icon={<DeleteOutlined />}
-                  onClick={() => setTasks((prev) => prev.filter((t) => t.createTimestamp !== task.createTimestamp))}
+                  onClick={() =>
+                    setTasks((prev) =>
+                      prev.filter(
+                        (t) => t.createTimestamp !== task.createTimestamp,
+                      ),
+                    )
+                  }
                   disabled={task.status === 'generating'}
                 />
               }
             >
               <div>
-                {task.error || `${task.trigger ? `${task.trigger}, ` : ''}${task.prompt}`}
+                {task.error ||
+                  `${task.trigger ? `${task.trigger}, ` : ''}${task.prompt}`}
               </div>
             </Card>
           ))}
