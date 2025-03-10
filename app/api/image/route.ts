@@ -38,7 +38,8 @@ class PainterRequest {
       }
     } else if (this.#hfReg.test(model)) {
       // Hugging Face
-      this.url = `https://api-inference.huggingface.co/models/${model.replace(this.#hfReg, '')}`
+      // this.url = `https://api-inference.huggingface.co/models/${model.replace(this.#hfReg, '')}`
+      this.url = `https://router.huggingface.co/hf-inference/models/${model.replace(this.#hfReg, '')}`
       this.options = {
         method: 'POST',
         headers: {

@@ -1,3 +1,7 @@
+**Please deploy your own server cause mine exceeds the free plan limit.**
+
+![](./readme/3.png)
+
 # Painter Leaf
 
 A image creator based on **free** `Cloudflare AI` and `HuggingFace` APIs. Features include:
