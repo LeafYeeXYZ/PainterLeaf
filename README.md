@@ -58,8 +58,6 @@ Deploy this project to `Vercel` (remember to set environment variables when depl
 
 ## 2 Development
 
-> **For old version, see `v3` branch and <https://paint.leafyee.xyz>**
-
 ### 2.1 Clone the repository
 
 ```bash
