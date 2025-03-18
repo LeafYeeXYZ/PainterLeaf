@@ -1,7 +1,10 @@
 export async function POST(req: Request): Promise<Response> {
   try {
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_USER_ID}/ai/run/@cf/meta/m2m100-1.2b`
-    const { zh } = await req.json()
+    const { zh, password } = await req.json()
+    if (process.env.SERVER_PASSWORD && password !== process.env.SERVER_PASSWORD) {
+      return new Response('Unauthorized - Invalid Server Password', { status: 401, statusText: 'Unauthorized - Invalid Server Password' })
+    }
     const res = await fetch(url, {
       method: 'POST',
       headers: {

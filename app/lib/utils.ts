@@ -62,3 +62,11 @@ export function getMaxGenerating(): number {
 export function setMaxGenerating(maxGenerating: number): void {
   localStorage.setItem('maxGenerating', String(maxGenerating))
 }
+
+export function getPassword(): string {
+  return localStorage.getItem('password') ?? ''
+}
+
+export function setPassword(password: string): void {
+  localStorage.setItem('password', password)
+}

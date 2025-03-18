@@ -1,6 +1,12 @@
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { image } = await req.json()
+    const { image, password } = await req.json()
+    if (process.env.SERVER_PASSWORD && password !== process.env.SERVER_PASSWORD) {
+      return new Response('Unauthorized - Invalid Server Password', {
+        status: 401,
+        statusText: 'Unauthorized - Invalid Server Password',
+      })
+    }
     const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_USER_ID}/ai/run/@cf/meta/llama-3.2-11b-vision-instruct`
     const body = {
       image: image as number[],

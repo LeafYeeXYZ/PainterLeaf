@@ -1,5 +1,5 @@
 import type { Image, Task } from './types'
-import { getHash, getMaxGenerating, getBase64 } from './utils'
+import { getHash, getMaxGenerating, getBase64, getPassword } from './utils'
 import type { SetAction } from './useZustand'
 
 export async function handleTasks(
@@ -87,6 +87,7 @@ export async function handleTasks(
 async function generateImage(
   task: Task,
 ): Promise<{ success: boolean; data: string }> {
+  const password = getPassword()
   const { prompt, model, promptLanguage, trigger } = task
   try {
     const promptEN = `${trigger ? `${trigger}, ` : ''}${promptLanguage === 'en' ? prompt : await translate(prompt)}`
@@ -96,17 +97,25 @@ async function generateImage(
         `${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`,
         {
           method: 'POST',
-          body: JSON.stringify({ prompt: promptEN, model }),
+          body: JSON.stringify({ 
+            prompt: promptEN, 
+            model,
+            password,
+          }),
         },
       )
     } else {
       res = await fetch('/api/image', {
         method: 'POST',
-        body: JSON.stringify({ prompt: promptEN, model }),
+        body: JSON.stringify({ 
+          prompt: promptEN, 
+          model,
+          password,
+        }),
       })
     }
     if (!res!.ok) {
-      throw new Error(`Failed to generate the image, error: ${res!.status}`)
+      throw new Error(`Failed to generate the image, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`)
     }
     const data = await res!.blob()
     return { success: true, data: await getBase64(data) }
@@ -120,6 +129,7 @@ async function generateImage(
 
 /** Return the translated prompt */
 async function translate(prompt: string): Promise<string> {
+  const password = getPassword()
   let res: Response | undefined
   if (process.env.NEXT_PUBLIC_WORKERS_SERVER) {
     res = await fetch(
@@ -130,17 +140,21 @@ async function translate(prompt: string): Promise<string> {
           text: prompt,
           source_lang: 'zh',
           target_lang: 'en',
+          password,
         }),
       },
     )
   } else {
     res = await fetch('/api/translate', {
       method: 'POST',
-      body: JSON.stringify({ zh: prompt }),
+      body: JSON.stringify({ 
+        zh: prompt,
+        password,
+      }),
     })
   }
   if (!res!.ok) {
-    throw new Error(`Failed to translate the prompt, error: ${res!.status}`)
+    throw new Error(`Failed to translate the prompt, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`)
   }
   const { result } = await res!.json()
   return result.translated_text

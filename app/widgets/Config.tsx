@@ -1,11 +1,13 @@
 'use client'
 
-import { Segmented, InputNumber } from 'antd'
+import { Segmented, InputNumber, Input } from 'antd'
 import {
   getPromptLanguage,
   setPromptLanguage,
   getMaxGenerating,
   setMaxGenerating,
+  getPassword,
+  setPassword,
 } from '../lib/utils'
 
 export default function Config() {
@@ -37,6 +39,18 @@ export default function Config() {
               return typeof value === 'number' && setMaxGenerating(value)
             }}
           />
+        </div>
+        <div className='w-full flex justify-center items-center gap-2'>
+          <div className='text-sm'>Server Password</div>
+          <div className='w-40'>
+            <Input.Password
+              defaultValue={getPassword()}
+              onChange={(e) => {
+                return typeof e.target.value === 'string' &&
+                  setPassword(e.target.value)
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>

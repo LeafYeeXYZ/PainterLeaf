@@ -62,7 +62,14 @@ class PainterRequest {
 export async function POST(req: Request): Promise<Response> {
   try {
     // 图片
-    const { model, prompt } = await req.json()
+    const { model, prompt, password } = await req.json()
+    // 验证密码
+    if (process.env.SERVER_PASSWORD && password !== process.env.SERVER_PASSWORD) {
+      return new Response('Unauthorized - Invalid Server Password', {
+        status: 401,
+        statusText: 'Unauthorized - Invalid Server Password',
+      })
+    }
     // 请求参数和请求地址
     const { options, url } = new PainterRequest(model, prompt, {
       CF_USER_ID: process.env.CF_USER_ID ?? '',

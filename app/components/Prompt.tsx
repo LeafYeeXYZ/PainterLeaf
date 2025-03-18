@@ -6,7 +6,7 @@ import { FileImageOutlined, FileAddOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import type { Task } from '../lib/types'
-import { getPromptLanguage } from '../lib/utils'
+import { getPromptLanguage, getPassword } from '../lib/utils'
 import { useZustand } from '../lib/useZustand'
 
 type FormValues = {
@@ -127,17 +127,21 @@ export default function Prompt() {
                           method: 'POST',
                           body: JSON.stringify({
                             image: Array.from(uint8array),
+                            password: getPassword(),
                           }),
                         },
                       )
                     } else {
                       res = await fetch('/api/prompt', {
                         method: 'POST',
-                        body: JSON.stringify({ image: Array.from(uint8array) }),
+                        body: JSON.stringify({ 
+                          image: Array.from(uint8array),
+                          password: getPassword(),
+                        }),
                       })
                     }
                     if (!res.ok) {
-                      throw new Error(`${res.status}`)
+                      throw new Error(`${res.status}${res.statusText ? ` ${res.statusText}` : ''}`)
                     }
                     const data = await res.json()
                     console.log(data)
