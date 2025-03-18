@@ -1,4 +1,4 @@
-**Please deploy your own server cause mine exceeds the free plan limit.** (`2025.03.18` I've added a "server password" feature to prevent unauthorized access.)
+**Please deploy your own server cause mine exceeds the free plan limit.** (`2025.03.18` I've added an optional "server password" feature to prevent unauthorized access.)
 
 | ![](./readme/3.png) | ![](./readme/4.png) |
 | :-----------------: | :-----------------: |
@@ -33,7 +33,7 @@ Set following environment variables in `.env` file or `Vercel`.
 |  `CF_USER_ID`   |  `Cloudflare` user id   |    ✅    |
 | `CF_AI_API_KEY` | `Cloudflare AI` api key |    ✅    |
 |  `HF_API_KEY`   |  `HuggingFace` api key  |          |
-| `SERVER_PASSWORD` | `Password` for accessing the server |  |
+| `SERVER_PASSWORD` | Password for accessing the server |  |
 
 > The free plan of `Vercel` has a limit of 10s for each request, which may cause `504` error (especially when using `HuggingFace` models). You can subscribe to a `Vercel` paid plan, run the server locally, or use `Client-Server` mode. <span id="vervel-limit-resolution"></span>
 
