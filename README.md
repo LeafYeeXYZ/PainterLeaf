@@ -1,6 +1,7 @@
 **Please deploy your own server cause mine exceeds the free plan limit.**
 
-![](./readme/3.png)
+| ![](./readme/3.png) | ![](./readme/4.png) |
+| :-----------------: | :-----------------: |
 
 # Painter Leaf
 
