@@ -17,7 +17,9 @@ import {
 } from '@ant-design/icons'
 
 export default function Images({ containerID }: { containerID: string }) {
-  const { images, setImages, messageApi } = useZustand()
+  const images = useZustand((state) => state.images)
+  const setImages = useZustand((state) => state.setImages)
+  const messageApi = useZustand((state) => state.messageApi)
   const imageSize = useImageSize(containerID)
   return (
     <section className='w-full h-full flex justify-center items-center'>

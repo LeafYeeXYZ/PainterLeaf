@@ -15,7 +15,8 @@ type FormValues = {
 }
 
 export default function Prompt() {
-  const { setTasks, messageApi } = useZustand()
+  const setTasks = useZustand((state) => state.setTasks)
+  const messageApi = useZustand((state) => state.messageApi)
   const [disabled, setDisabled] = useState(false)
   const handleFinish = (value: FormValues) => {
     flushSync(() => setDisabled(true))

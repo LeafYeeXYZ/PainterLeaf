@@ -13,7 +13,7 @@ import Config from '../widgets/Config'
 import { useZustand } from '../lib/useZustand'
 
 export default function Painting() {
-  const { tasks } = useZustand()
+  const tasks = useZustand((state) => state.tasks)
   const containerID = 'images-container'
   const [page, setPage] = useState<React.ReactNode>(
     <Images containerID={containerID} />,

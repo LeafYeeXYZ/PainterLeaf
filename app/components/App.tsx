@@ -27,7 +27,11 @@ export default function App() {
         .removeEventListener('change', subTheme)
   }, [])
   // 初始化图片
-  const { tasks, setTasks, setImages, hasImage, setMessageApi } = useZustand()
+  const tasks = useZustand((state) => state.tasks)
+  const setTasks = useZustand((state) => state.setTasks)
+  const setImages = useZustand((state) => state.setImages)
+  const hasImage = useZustand((state) => state.hasImage)
+  const setMessageApi = useZustand((state) => state.setMessageApi)
   useEffect(() => {
     getStaredImages().then((images) => setImages(() => images))
   }, [setImages])

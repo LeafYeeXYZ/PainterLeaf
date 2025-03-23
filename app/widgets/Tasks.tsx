@@ -5,7 +5,8 @@ import { DeleteOutlined, LoadingOutlined } from '@ant-design/icons'
 import { useZustand } from '../lib/useZustand'
 
 export default function Tasks() {
-  const { tasks, setTasks } = useZustand()
+  const tasks = useZustand((state) => state.tasks)
+  const setTasks = useZustand((state) => state.setTasks)
   return (
     <section className='w-full h-full flex justify-center items-center overflow-hidden py-4'>
       {tasks.length > 0 ? (
