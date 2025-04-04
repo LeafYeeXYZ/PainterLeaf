@@ -23,6 +23,11 @@ export const Models: Model[] = [
     label: '🤗 SD 3.5 Large Turbo',
   },
   {
+    value: '@hf/strangerzonehf/Flux-Ghibli-Art-LoRA',
+    label: '🤗 FLUX.1 Dev Ghibli-Lora',
+    trigger: 'Ghibli Art',
+  },
+  {
     value: '@hf/Shakker-Labs/FLUX.1-dev-LoRA-Children-Simple-Sketch',
     label: '🤗 FLUX.1 Dev Sketch-Lora',
     trigger: 'sketched style',
