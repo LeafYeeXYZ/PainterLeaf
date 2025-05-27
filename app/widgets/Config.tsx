@@ -46,8 +46,10 @@ export default function Config() {
             <Input.Password
               defaultValue={getPassword()}
               onChange={(e) => {
-                return typeof e.target.value === 'string' &&
+                return (
+                  typeof e.target.value === 'string' &&
                   setPassword(e.target.value)
+                )
               }}
             />
           </div>

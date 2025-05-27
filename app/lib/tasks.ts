@@ -97,8 +97,8 @@ async function generateImage(
         `${process.env.NEXT_PUBLIC_WORKERS_SERVER}/painter/generate`,
         {
           method: 'POST',
-          body: JSON.stringify({ 
-            prompt: promptEN, 
+          body: JSON.stringify({
+            prompt: promptEN,
             model,
             password,
           }),
@@ -107,15 +107,17 @@ async function generateImage(
     } else {
       res = await fetch('/api/image', {
         method: 'POST',
-        body: JSON.stringify({ 
-          prompt: promptEN, 
+        body: JSON.stringify({
+          prompt: promptEN,
           model,
           password,
         }),
       })
     }
     if (!res!.ok) {
-      throw new Error(`Failed to generate the image, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`)
+      throw new Error(
+        `Failed to generate the image, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`,
+      )
     }
     const data = await res!.blob()
     return { success: true, data: await getBase64(data) }
@@ -147,14 +149,16 @@ async function translate(prompt: string): Promise<string> {
   } else {
     res = await fetch('/api/translate', {
       method: 'POST',
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         zh: prompt,
         password,
       }),
     })
   }
   if (!res!.ok) {
-    throw new Error(`Failed to translate the prompt, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`)
+    throw new Error(
+      `Failed to translate the prompt, error: ${res!.status}${res!.statusText ? ` ${res!.statusText}` : ''}`,
+    )
   }
   const { result } = await res!.json()
   return result.translated_text

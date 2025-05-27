@@ -38,8 +38,8 @@ bun dep
 
 ## API Reference
 
-| Function | Path | Method | Query Parameters | Request Body | Response |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| Generate image | `/painter/generate` | `POST` | - | `prompt`: prompt words<br>`model`: model name<br>If img2img: `image: Array.from(uint8Array)` | `image/png` |
-| Translate prompt words | `/painter/translate` | `POST` | - | `text`: text<br>`source_lang`: source language<br>`target_lang`: target language | `application/json` |
-| Generate text from image<br />with `llama3.2 vision` | `/painter/genprompt/v4` | `POST` | - | `image: Array.from(uint8Array)` | `application/json` |
+|                       Function                       |          Path           | Method | Query Parameters |                                         Request Body                                         |      Response      |
+| :--------------------------------------------------: | :---------------------: | :----: | :--------------: | :------------------------------------------------------------------------------------------: | :----------------: |
+|                    Generate image                    |   `/painter/generate`   | `POST` |        -         | `prompt`: prompt words<br>`model`: model name<br>If img2img: `image: Array.from(uint8Array)` |    `image/png`     |
+|                Translate prompt words                |  `/painter/translate`   | `POST` |        -         |       `text`: text<br>`source_lang`: source language<br>`target_lang`: target language       | `application/json` |
+| Generate text from image<br />with `llama3.2 vision` | `/painter/genprompt/v4` | `POST` |        -         |                               `image: Array.from(uint8Array)`                                | `application/json` |

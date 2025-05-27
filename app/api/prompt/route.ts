@@ -1,7 +1,10 @@
 export async function POST(req: Request): Promise<Response> {
   try {
     const { image, password } = await req.json()
-    if (process.env.SERVER_PASSWORD && password !== process.env.SERVER_PASSWORD) {
+    if (
+      process.env.SERVER_PASSWORD &&
+      password !== process.env.SERVER_PASSWORD
+    ) {
       return new Response('Unauthorized - Invalid Server Password', {
         status: 401,
         statusText: 'Unauthorized - Invalid Server Password',

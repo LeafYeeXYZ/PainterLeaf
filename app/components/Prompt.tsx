@@ -135,14 +135,16 @@ export default function Prompt() {
                     } else {
                       res = await fetch('/api/prompt', {
                         method: 'POST',
-                        body: JSON.stringify({ 
+                        body: JSON.stringify({
                           image: Array.from(uint8array),
                           password: getPassword(),
                         }),
                       })
                     }
                     if (!res.ok) {
-                      throw new Error(`${res.status}${res.statusText ? ` ${res.statusText}` : ''}`)
+                      throw new Error(
+                        `${res.status}${res.statusText ? ` ${res.statusText}` : ''}`,
+                      )
                     }
                     const data = await res.json()
                     console.log(data)

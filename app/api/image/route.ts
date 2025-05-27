@@ -1,105 +1,111 @@
-/** 生成请求地址和请求选项 */
-class PainterRequest {
-  #cfReg = /^@cf\//
-  #hfReg = /^@hf\//
-  url: string
-  options: {
-    method: string
-    headers: HeadersInit
-    body: string
+import { InferenceClient } from '@huggingface/inference'
+
+async function getImageFromHuggingFace(
+  model: string,
+  prompt: string,
+  env: { HF_API_KEY: string },
+): Promise<Response> {
+  const client = new InferenceClient(env.HF_API_KEY)
+  const image = (await client.textToImage(
+    {
+      provider: 'auto',
+      model: model.replace(/^@hf\//, ''), // 移除 @hf/ 前缀
+      inputs: prompt,
+    },
+    { outputType: 'blob' },
+  )) as Blob
+  return new Response(image, {
+    status: 200,
+    headers: {
+      'content-type': 'image/png',
+    },
+  })
+}
+
+async function getImageFromCloudflare(
+  model: string,
+  prompt: string,
+  env: { CF_USER_ID: string; CF_AI_API_KEY: string },
+): Promise<Response> {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${env.CF_USER_ID}/ai/run/${model}`
+  const options = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${env.CF_AI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      prompt: prompt,
+      negative_prompt:
+        'lowres, bad, text, error, missing, extra, fewer, cropped, jpeg artifacts, worst quality, bad quality, watermark, bad aesthetic, unfinished, chromatic aberration, scan, scan artifacts',
+    }),
   }
-  constructor(
-    model: string,
-    prompt: string,
-    env: { CF_USER_ID: string; CF_AI_API_KEY: string; HF_API_KEY: string },
-  ) {
-    // 判断模型
-    if (this.#cfReg.test(model)) {
-      // Cloudflare
-      this.url = `https://api.cloudflare.com/client/v4/accounts/${env.CF_USER_ID}/ai/run/${model}`
-      this.options = {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${env.CF_AI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          prompt: prompt,
-          negative_prompt:
-            'lowres, bad, text, error, missing, extra, fewer, cropped, jpeg artifacts, worst quality, bad quality, watermark, bad aesthetic, unfinished, chromatic aberration, scan, scan artifacts',
-        }),
-      }
-      // 针对 Cloudflare 的 FLUX.1 Schnell 模型的特殊处理
-      if (model === '@cf/black-forest-labs/flux-1-schnell') {
-        this.options.body = JSON.stringify({
-          num_steps: 8,
-          ...JSON.parse(this.options.body),
-        })
-      }
-    } else if (this.#hfReg.test(model)) {
-      // Hugging Face
-      // this.url = `https://api-inference.huggingface.co/models/${model.replace(this.#hfReg, '')}`
-      this.url = `https://router.huggingface.co/hf-inference/models/${model.replace(this.#hfReg, '')}`
-      this.options = {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${env.HF_API_KEY}`,
-        },
-        body: JSON.stringify({
-          inputs: prompt,
-          prompt: prompt,
-          negative_prompt:
-            'lowres, bad, text, error, missing, extra, fewer, cropped, jpeg artifacts, worst quality, bad quality, watermark, bad aesthetic, unfinished, chromatic aberration, scan, scan artifacts',
-        }),
-      }
-    } else {
-      throw new Error(`Unsupported model: ${model}`)
-    }
+  // 针对 Cloudflare 的 FLUX.1 Schnell 模型的特殊处理
+  if (model === '@cf/black-forest-labs/flux-1-schnell') {
+    options.body = JSON.stringify({
+      num_steps: 8,
+      ...JSON.parse(options.body),
+    })
   }
+  const response = await fetch(url, options)
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`Cloudflare API Error: ${errorText}`)
+  }
+  // 针对 Cloudflare 的 FLUX.1 Schnell 模型的特殊处理
+  if (model === '@cf/black-forest-labs/flux-1-schnell') {
+    const res = await response.json()
+    const base64 = res.result.image as string
+    const buffer = new Uint8Array(
+      atob(base64)
+        .split('')
+        .map((c) => c.charCodeAt(0)),
+    )
+    return new Response(buffer, {
+      status: response.status,
+      headers: {
+        'content-type': 'image/png',
+      },
+    })
+  }
+  return new Response(response.body, {
+    status: response.status,
+    headers: {
+      'content-type': response.headers.get('content-type') ?? 'text/plain',
+    },
+  })
 }
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    // 图片
     const { model, prompt, password } = await req.json()
-    // 验证密码
-    if (process.env.SERVER_PASSWORD && password !== process.env.SERVER_PASSWORD) {
+    if (
+      process.env.SERVER_PASSWORD &&
+      password !== process.env.SERVER_PASSWORD
+    ) {
       return new Response('Unauthorized - Invalid Server Password', {
         status: 401,
         statusText: 'Unauthorized - Invalid Server Password',
       })
     }
-    // 请求参数和请求地址
-    const { options, url } = new PainterRequest(model, prompt, {
-      CF_USER_ID: process.env.CF_USER_ID ?? '',
-      CF_AI_API_KEY: process.env.CF_AI_API_KEY ?? '',
-      HF_API_KEY: process.env.HF_API_KEY ?? '',
-    })
-    // 发送请求
-    const response = await fetch(url, options)
-    // 针对 Cloudflare 的 FLUX.1 Schnell 模型的特殊处理
-    if (model === '@cf/black-forest-labs/flux-1-schnell') {
-      const res = await response.json()
-      const base64 = res.result.image as string
-      const buffer = new Uint8Array(
-        atob(base64)
-          .split('')
-          .map((c) => c.charCodeAt(0)),
-      )
-      return new Response(buffer, {
-        status: response.status,
-        headers: {
-          'content-type': 'image/png',
-        },
+    const cfReg = /^@cf\//
+    const hfReg = /^@hf\//
+    if (cfReg.test(model)) {
+      const response = await getImageFromCloudflare(model, prompt, {
+        CF_USER_ID: process.env.CF_USER_ID ?? '',
+        CF_AI_API_KEY: process.env.CF_AI_API_KEY ?? '',
       })
+      return response
     }
-    // 返回结果
-    return new Response(response.body, {
-      status: response.status,
-      headers: {
-        'content-type': response.headers.get('content-type') ?? 'text/plain',
-      },
+    if (hfReg.test(model)) {
+      const response = await getImageFromHuggingFace(model, prompt, {
+        HF_API_KEY: process.env.HF_API_KEY ?? '',
+      })
+      return response
+    }
+    return new Response('Unsupported model', {
+      status: 400,
+      statusText: 'Unsupported model',
     })
   } catch (e) {
     return new Response(
