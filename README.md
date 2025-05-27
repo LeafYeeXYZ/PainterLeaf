@@ -39,7 +39,7 @@ Set following environment variables in `.env` file or `Vercel`.
 
 #### 1.1.2 Client-Server
 
-Deploy the server (see [this project](https://github.com/LeafYeeXYZ/MyAPIs)) to `Cloudflare Workers` and set following environment variables in `.env` file or `Vercel`.
+Deploy the server (see `workers` folder) to `Cloudflare Workers` and set following environment variables in `.env` file or `Vercel`.
 
 |             Key              |                       Value                       | Required |
 | :--------------------------: | :-----------------------------------------------: | :------: |
