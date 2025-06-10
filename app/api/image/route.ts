@@ -11,6 +11,10 @@ async function getImageFromHuggingFace(
       provider: 'auto',
       model: model.replace(/^@hf\//, ''), // 移除 @hf/ 前缀
       inputs: prompt,
+      parameters: {
+        width: 1024,
+        height: 1024,
+      },
     },
     { outputType: 'blob' },
   )) as Blob
